@@ -24,7 +24,7 @@ export const WelcomeScreen = () => {
       <View
         style={{
           paddingHorizontal: 30,
-          paddingTop: 40,
+          paddingTop: "10%",
         }}
       >
         <Text style={styles.titleTextSyle}>
@@ -39,7 +39,7 @@ export const WelcomeScreen = () => {
       <View
         style={{
           paddingHorizontal: 20,
-          paddingTop: 40,
+          paddingTop: "11%",
           flexDirection: "row",
         }}
       >
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     height: height,
   },
   imageBackgroundStyle: {
+    marginTop: "20%",
     height: height / 2.5,
   },
   titleTextSyle: {
