@@ -8,16 +8,17 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
+
 const { height } = Dimensions.get("window");
 
-export const WelomeScreen = () => {
+export const WelcomeScreen = () => {
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
       <View>
         <ImageBackground
           style={styles.imageBackgroundStyle}
           resizeMode="contain"
-          source={require("./assets/welcome-img.png")}
+          source={require("../assets/welcome-img.png")}
         />
       </View>
       <View

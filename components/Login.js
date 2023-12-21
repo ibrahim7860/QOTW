@@ -13,7 +13,7 @@ export const Login = () => {
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
-        <View style={{ padding: 20 }}>
+        <View style={{ padding: 20, marginTop: "25%" }}>
           <View>
             <Text style={styles.headerStyle}>QOTW</Text>
             <Text style={styles.descriptionStyle}>
