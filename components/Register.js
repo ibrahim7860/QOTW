@@ -13,7 +13,7 @@ export const Register = () => {
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
-        <View style={{ padding: 20, marginTop: "10%" }}>
+        <View style={{ paddingHorizontal: 20 }}>
           <View>
             <Text style={styles.headerStyle}>QOTW</Text>
             <Text style={styles.descriptionStyle}>
@@ -21,7 +21,7 @@ export const Register = () => {
             </Text>
           </View>
 
-          <View style={{ marginVertical: 30 }}>
+          <View style={{ marginVertical: "12%" }}>
             <TextInput
               placeholder="Username"
               placeholderTextColor="white"
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 70,
     fontWeight: "700",
-    marginVertical: 30,
+    marginVertical: "10%",
     textAlign: "center",
   },
   descriptionStyle: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#424140",
     borderRadius: 15,
-    marginVertical: 10,
+    marginVertical: "2%",
   },
   createTextStyle: {
     color: "#291400",
@@ -105,14 +105,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingVertical: 15,
     paddingHorizontal: 20,
-    marginTop: 30,
+    marginTop: "9%",
     borderRadius: 20,
   },
   haveAccountStyle: {
     color: "white",
     textAlign: "center",
     fontSize: 15,
-    marginTop: 20,
+    marginTop: "10%",
     fontWeight: "600",
   },
 });
