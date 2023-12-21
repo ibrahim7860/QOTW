@@ -1,14 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import { UserProfile } from "./UserProfile";
-import { WelomeScreen } from "./WelomeScreen";
-import { Login } from "./Login";
-import { Register } from "./Register";
+import { UserProfile } from "./components/UserProfile";
+import { FriendProfile } from "./components/FriendProfile";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Register />
+      <UserProfile firstName="Nayeem" lastName="Belal" username="dababy1212" />
     </View>
   );
 }

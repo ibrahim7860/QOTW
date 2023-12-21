@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { Shadow } from "react-native-shadow-2";
-import defaultProfilePic from "./assets/default.jpeg";
+import defaultProfilePic from "../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
 export const UserProfile = ({ firstName, lastName, username }) => {
@@ -25,16 +25,18 @@ export const UserProfile = ({ firstName, lastName, username }) => {
   };
 
   const handleArrowClick = () => {
-    console.log("Arrow clicked");
+    console.log("Hello there");
   };
 
   return (
     <View style={styles.mainContainer}>
-      <TouchableOpacity
-        style={styles.arrowContainer}
-        onPress={handleArrowClick}
-      >
-        <Ripple rippleColor="#fff" rippleOpacity={0.9} rippleSize={100}>
+      <TouchableOpacity style={styles.arrowContainer}>
+        <Ripple
+          rippleColor="#fff"
+          rippleOpacity={0.9}
+          rippleSize={100}
+          onPress={handleArrowClick}
+        >
           <Icon name="arrow-forward" size={30} color="white" />
         </Ripple>
       </TouchableOpacity>
