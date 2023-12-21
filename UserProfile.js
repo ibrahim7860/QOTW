@@ -3,6 +3,8 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { Shadow } from "react-native-shadow-2";
+import defaultProfilePic from "./assets/default.jpeg";
+import Ripple from "react-native-material-ripple";
 
 export const UserProfile = ({ firstName, lastName, username }) => {
   const [profilePic, setProfilePic] = useState(null);
@@ -22,25 +24,48 @@ export const UserProfile = ({ firstName, lastName, username }) => {
     }
   };
 
+  const handleArrowClick = () => {
+    console.log("Arrow clicked");
+  };
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={updateProfilePic}>
-        <View style={styles.imageContainer}>
-          <Shadow distance="10" radius="5" size="10">
-            <Image source={{ uri: profilePic }} style={styles.profilePic} />
-          </Shadow>
-          <View style={styles.iconContainer}>
-            <Icon name="camera-alt" size={19} color="#291400" />
-          </View>
-        </View>
+    <View style={styles.mainContainer}>
+      <TouchableOpacity
+        style={styles.arrowContainer}
+        onPress={handleArrowClick}
+      >
+        <Ripple rippleColor="#fff" rippleOpacity={0.9} rippleSize={100}>
+          <Icon name="arrow-forward" size={30} color="white" />
+        </Ripple>
       </TouchableOpacity>
-      <Text style={styles.name}>{`${firstName} ${lastName}`}</Text>
-      <Text style={styles.username}>{username}</Text>
+
+      <View style={styles.container}>
+        <TouchableOpacity onPress={updateProfilePic}>
+          <View style={styles.imageContainer}>
+            <Shadow distance="10" radius="5" size="10">
+              <Image
+                source={profilePic ? { uri: profilePic } : defaultProfilePic}
+                style={styles.profilePic}
+              />
+            </Shadow>
+            <View style={styles.iconContainer}>
+              <Icon name="camera-alt" size={19} color="#291400" />
+            </View>
+          </View>
+        </TouchableOpacity>
+        <Text style={styles.name}>{`${firstName} ${lastName}`}</Text>
+        <Text style={styles.username}>{username}</Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     alignItems: "center",
     justifyContent: "center",
@@ -76,5 +101,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 3,
     borderColor: "#291400",
+  },
+  arrowContainer: {
+    position: "absolute",
+    top: "7%",
+    right: "5%",
+    zIndex: 1,
   },
 });
