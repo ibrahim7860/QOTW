@@ -13,7 +13,7 @@ export const Login = () => {
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
-        <View style={{ padding: 20, marginTop: "25%" }}>
+        <View style={{ padding: 20, marginTop: "20%" }}>
           <View>
             <Text style={styles.headerStyle}>QOTW</Text>
             <Text style={styles.descriptionStyle}>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 70,
     fontWeight: "700",
-    marginVertical: 30,
+    marginVertical: "9%",
     textAlign: "center",
   },
   descriptionStyle: {
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#424140",
     borderRadius: 15,
-    marginVertical: 10,
+    marginVertical: "2%",
   },
   forgotPasswordStyle: {
     fontSize: 15,
@@ -101,14 +101,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingVertical: 15,
     paddingHorizontal: 20,
-    marginTop: 30,
+    marginTop: "9%",
     borderRadius: 20,
   },
   createAccountStyle: {
     color: "white",
     textAlign: "center",
     fontSize: 15,
-    marginTop: 20,
+    marginTop: "5%",
     fontWeight: "600",
   },
 });

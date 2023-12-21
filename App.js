@@ -4,11 +4,12 @@ import { UserProfile } from "./components/UserProfile";
 import { FriendProfile } from "./components/FriendProfile";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import { Register } from "./components/Register";
+import { Login } from "./components/Login";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <WelcomeScreen />
+      <Login />
     </View>
   );
 }
