@@ -1,30 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import * as ImagePicker from "expo-image-picker";
 import { Shadow } from "react-native-shadow-2";
 import defaultProfilePic from "./assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
-export const UserProfile = ({ firstName, lastName, username }) => {
-  const [profilePic, setProfilePic] = useState(null);
-
-  const updateProfilePic = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setProfilePic(result.assets[0].uri);
-    }
-  };
-
-  const handleArrowClick = () => {
+export const FriendProfile = ({ firstName, lastName, username, isAdding }) => {
+  const handleCancelClick = () => {
     console.log("Hello there");
   };
 
@@ -35,28 +17,29 @@ export const UserProfile = ({ firstName, lastName, username }) => {
           rippleColor="#fff"
           rippleOpacity={0.9}
           rippleSize={100}
-          onPress={handleArrowClick}
+          onPress={handleCancelClick}
         >
-          <Icon name="arrow-forward" size={30} color="white" />
+          <Icon name="close" size={30} color="white" />
         </Ripple>
       </TouchableOpacity>
 
       <View style={styles.container}>
-        <TouchableOpacity onPress={updateProfilePic}>
-          <View style={styles.imageContainer}>
-            <Shadow distance="10" radius="5" size="10">
-              <Image
-                source={profilePic ? { uri: profilePic } : defaultProfilePic}
-                style={styles.profilePic}
-              />
-            </Shadow>
-            <View style={styles.iconContainer}>
-              <Icon name="camera-alt" size={19} color="#291400" />
-            </View>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.imageContainer}>
+          <Shadow distance="10" radius="5" size="10">
+            <Image source={defaultProfilePic} style={styles.profilePic} />
+          </Shadow>
+        </View>
         <Text style={styles.name}>{`${firstName} ${lastName}`}</Text>
         <Text style={styles.username}>{username}</Text>
+        {isAdding && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log("Add friend clicked")}
+          >
+            <Icon name="person-add" size={20} color="black" />
+            <Text style={styles.buttonText}>Add Friend</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -109,5 +92,20 @@ const styles = StyleSheet.create({
     top: "7%",
     right: "5%",
     zIndex: 1,
+  },
+  button: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    paddingHorizontal: "25%",
+    paddingVertical: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  buttonText: {
+    marginLeft: 10,
+    color: "black",
+    fontSize: 16,
   },
 });
