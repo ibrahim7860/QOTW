@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { Shadow } from "react-native-shadow-2";
-import defaultProfilePic from "./assets/default.jpeg";
+import defaultProfilePic from "../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
 export const UserProfile = ({ firstName, lastName, username }) => {

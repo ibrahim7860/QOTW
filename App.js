@@ -1,17 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import { UserProfile } from "./UserProfile";
-import { FriendProfile } from "./FriendProfile";
+import { UserProfile } from "./components/UserProfile";
+import { FriendProfile } from "./components/FriendProfile";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <FriendProfile
-        firstName="Nayeem"
-        lastName="Belal"
-        username="dababy1212"
-        isAdding={true}
-      />
+      <UserProfile firstName="Nayeem" lastName="Belal" username="dababy1212" />
     </View>
   );
 }
