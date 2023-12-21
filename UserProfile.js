@@ -30,7 +30,7 @@ export const UserProfile = ({ firstName, lastName, username }) => {
             <Image source={{ uri: profilePic }} style={styles.profilePic} />
           </Shadow>
           <View style={styles.iconContainer}>
-            <Icon name="camera-alt" size={27} color="#291400" />
+            <Icon name="camera-alt" size={19} color="#291400" />
           </View>
         </View>
       </TouchableOpacity>
@@ -50,31 +50,31 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   profilePic: {
-    width: 250,
-    height: 250,
+    width: 170,
+    height: 170,
     borderRadius: 150,
   },
   name: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
     marginTop: 10,
     color: "white",
   },
   username: {
-    fontSize: 23,
+    fontSize: 15,
     color: "white",
   },
   iconContainer: {
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "white",
+    backgroundColor: "#e0e0e0",
     borderRadius: 50,
-    width: 50,
-    height: 50,
+    width: 35,
+    height: 35,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 4,
+    borderWidth: 3,
     borderColor: "#291400",
   },
 });
