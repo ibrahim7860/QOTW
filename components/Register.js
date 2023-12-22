@@ -10,6 +10,10 @@ import {
 } from "react-native";
 
 export const Register = () => {
+  const handleClick = () => {
+    console.log("Clicked");
+  };
+
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
       <ScrollView
@@ -24,7 +28,7 @@ export const Register = () => {
             </Text>
           </View>
 
-          <View style={{ marginVertical: "12%" }}>
+          <View style={{ marginVertical: "10%" }}>
             <TextInput
               placeholder="Username"
               placeholderTextColor="white"
@@ -62,7 +66,7 @@ export const Register = () => {
           </TouchableOpacity>
 
           <View>
-            <Text style={styles.haveAccountStyle}>
+            <Text style={styles.haveAccountStyle} onPress={handleClick}>
               Already have an account?
             </Text>
           </View>
@@ -109,14 +113,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingVertical: 15,
     paddingHorizontal: 20,
-    marginTop: "9%",
     borderRadius: 20,
   },
   haveAccountStyle: {
     color: "white",
     textAlign: "center",
     fontSize: 15,
-    marginTop: "10%",
+    marginTop: "4%",
     fontWeight: "600",
   },
 });
