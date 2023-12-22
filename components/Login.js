@@ -12,8 +12,11 @@ import {
 export const Login = () => {
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
-      <ScrollView automaticallyAdjustKeyboardInsets={true}>
-        <View style={{ padding: 20, marginTop: "20%" }}>
+      <ScrollView
+        contentContainerStyle={styles.mainContainerStyle}
+        automaticallyAdjustKeyboardInsets={true}
+      >
+        <View style={{ padding: 20 }}>
           <View>
             <Text style={styles.headerStyle}>QOTW</Text>
             <Text style={styles.descriptionStyle}>
@@ -61,13 +64,14 @@ export const Login = () => {
 const styles = StyleSheet.create({
   mainContainerStyle: {
     flex: 1,
+    justifyContent: "center",
     backgroundColor: "#291400",
   },
   headerStyle: {
     color: "white",
     fontSize: 70,
     fontWeight: "700",
-    marginVertical: "9%",
+    marginVertical: "5%",
     textAlign: "center",
   },
   descriptionStyle: {

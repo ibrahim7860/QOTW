@@ -12,7 +12,10 @@ import {
 export const Register = () => {
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
-      <ScrollView automaticallyAdjustKeyboardInsets={true}>
+      <ScrollView
+        contentContainerStyle={styles.mainContainerStyle}
+        automaticallyAdjustKeyboardInsets={true}
+      >
         <View style={{ paddingHorizontal: 20 }}>
           <View>
             <Text style={styles.headerStyle}>QOTW</Text>
@@ -71,13 +74,14 @@ export const Register = () => {
 const styles = StyleSheet.create({
   mainContainerStyle: {
     flex: 1,
+    justifyContent: "center",
     backgroundColor: "#291400",
   },
   headerStyle: {
     color: "white",
     fontSize: 70,
     fontWeight: "700",
-    marginVertical: "10%",
+    marginVertical: "8%",
     textAlign: "center",
   },
   descriptionStyle: {

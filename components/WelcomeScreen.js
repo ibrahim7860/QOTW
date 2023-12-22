@@ -58,10 +58,10 @@ export const WelcomeScreen = () => {
 const styles = StyleSheet.create({
   mainContainerStyle: {
     backgroundColor: "#291400",
+    justifyContent: "center",
     height: height,
   },
   imageBackgroundStyle: {
-    marginTop: "20%",
     height: height / 2.5,
   },
   titleTextSyle: {
