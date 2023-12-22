@@ -31,7 +31,7 @@ export const WelcomeScreen = () => {
           Experience. Meaningful. Conversations.
         </Text>
         <Text style={styles.descriptionTextStyle}>
-          Sign up or log in to indulge in healthy conversations with people
+          Sign up or log in to engage in purposeful conversations with people
           across the world
         </Text>
       </View>
