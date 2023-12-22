@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 export const Register = () => {
-  const handleClick = () => {
+  const handleAlreadyHaveAccount = () => {
     console.log("Clicked");
   };
 
@@ -66,7 +66,10 @@ export const Register = () => {
           </TouchableOpacity>
 
           <View>
-            <Text style={styles.haveAccountStyle} onPress={handleClick}>
+            <Text
+              style={styles.haveAccountStyle}
+              onPress={handleAlreadyHaveAccount}
+            >
               Already have an account?
             </Text>
           </View>

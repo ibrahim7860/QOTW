@@ -10,6 +10,14 @@ import {
 } from "react-native";
 
 export const Login = () => {
+  const handleForgotPassword = () => {
+    console.log("Clicked");
+  };
+
+  const handleCreateNewAccount = () => {
+    console.log("Clicked");
+  };
+
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
       <ScrollView
@@ -43,7 +51,10 @@ export const Login = () => {
           </View>
 
           <View>
-            <Text style={styles.forgotPasswordStyle}>
+            <Text
+              style={styles.forgotPasswordStyle}
+              onPress={handleForgotPassword}
+            >
               Forgot your password?
             </Text>
           </View>
@@ -53,7 +64,12 @@ export const Login = () => {
           </TouchableOpacity>
 
           <View>
-            <Text style={styles.createAccountStyle}>Create new account</Text>
+            <Text
+              style={styles.createAccountStyle}
+              onPress={handleCreateNewAccount}
+            >
+              Create new account
+            </Text>
           </View>
         </View>
       </ScrollView>

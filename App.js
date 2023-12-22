@@ -9,7 +9,11 @@ import { Login } from "./components/Login";
 export default function App() {
   return (
     <View style={styles.container}>
-      <Register />
+      <UserProfile
+        firstName="Ibrahim"
+        lastName="Ahmed"
+        username="ibbytoolitty"
+      />
     </View>
   );
 }

@@ -65,14 +65,15 @@ const styles = StyleSheet.create({
     borderRadius: 150,
   },
   name: {
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: "bold",
     marginTop: 10,
     color: "white",
   },
   username: {
-    fontSize: 15,
+    fontSize: 20,
     color: "white",
+    marginVertical: 10,
   },
   iconContainer: {
     position: "absolute",
@@ -99,13 +100,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
     paddingHorizontal: "25%",
-    paddingVertical: 10,
-    borderRadius: 5,
+    paddingVertical: 15,
+    borderRadius: 20,
     marginTop: 10,
   },
   buttonText: {
     marginLeft: 10,
-    color: "black",
-    fontSize: 16,
+    color: "#291400",
+    fontSize: 20,
+    fontWeight: "600",
   },
 });

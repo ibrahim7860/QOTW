@@ -82,14 +82,15 @@ const styles = StyleSheet.create({
     borderRadius: 150,
   },
   name: {
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: "bold",
     marginTop: 10,
     color: "white",
   },
   username: {
-    fontSize: 15,
+    fontSize: 20,
     color: "white",
+    marginVertical: 10,
   },
   iconContainer: {
     position: "absolute",
