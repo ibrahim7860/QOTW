@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, FlatList, Text, StyleSheet, SafeAreaView } from "react-native";
 import { FriendItem } from "./FriendItem";
 import defaultProfilePic from "../assets/default.jpeg";
+import { SearchBar } from "./SearchBar";
 
 export const MyFriends = () => {
   const [friends, setFriends] = useState([
@@ -19,6 +20,23 @@ export const MyFriends = () => {
     },
   ]);
 
+  const [filteredFriends, setFilteredFriends] = useState(friends);
+
+  const handleSearch = (query) => {
+    if (query.trim() === "") {
+      setFilteredFriends(friends);
+    } else {
+      const filtered = friends.filter((friend) =>
+        friend.fullName.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredFriends(filtered);
+    }
+  };
+
+  useEffect(() => {
+    setFilteredFriends(friends);
+  }, [friends]);
+
   const removeFriend = (id) => {
     setFriends(friends.filter((friend) => friend.id !== id));
   };
@@ -30,12 +48,13 @@ export const MyFriends = () => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>My Friends</Text>
       <FlatList
-        data={friends}
+        data={filteredFriends}
         renderItem={({ item }) => (
           <FriendItem friend={item} onRemove={removeFriend} />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
       />
+      <SearchBar onSearch={handleSearch} />
     </SafeAreaView>
   );
 };
