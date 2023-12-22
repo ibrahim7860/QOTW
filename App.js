@@ -5,15 +5,12 @@ import { FriendProfile } from "./components/FriendProfile";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import { Register } from "./components/Register";
 import { Login } from "./components/Login";
+import { Question } from "./components/Question";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <UserProfile
-        firstName="Ibrahim"
-        lastName="Ahmed"
-        username="ibbytoolitty"
-      />
+      <Question />
     </View>
   );
 }
