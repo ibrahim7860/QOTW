@@ -5,12 +5,12 @@ import { FriendProfile } from "./components/FriendProfile";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import { Register } from "./components/Register";
 import { Login } from "./components/Login";
-import { Question } from "./components/Question";
+import { MyFriends } from "./components/MyFriends";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Question />
+      <MyFriends />
     </View>
   );
 }

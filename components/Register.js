@@ -24,7 +24,7 @@ export const Register = () => {
           <View>
             <Text style={styles.headerStyle}>QOTW</Text>
             <Text style={styles.descriptionStyle}>
-              Welcome, let's get right into it
+              Just a few quick steps and you'll be all set!
             </Text>
           </View>
 
