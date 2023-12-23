@@ -9,11 +9,12 @@ import { MyFriends } from "./components/MyFriends";
 import { Question } from "./components/Question";
 import { FriendRequests } from "./components/FriendRequests";
 import { SearchBar } from "./components/SearchBar";
+import { FriendItem } from "./components/FriendItem";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <FriendRequests />
+      <Login />
     </View>
   );
 }

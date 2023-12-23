@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,13 +6,11 @@ import {
   View,
   FlatList,
   ScrollView,
-  TextInput,
-  Image,
-  KeyboardAvoidingView,
 } from "react-native";
 import { FriendItem } from "./FriendItem";
 import { Button } from "./Button";
 import defaultProfilePic from "../assets/default.jpeg";
+import { SearchBar } from "./SearchBar";
 
 export const FriendRequests = () => {
   const [FriendRequests, setFriendRequests] = useState([
@@ -21,12 +19,98 @@ export const FriendRequests = () => {
       fullName: "Uzair Qureshi",
       username: "fat_guy",
       profilePicUri: defaultProfilePic,
+      isFriend: false,
     },
     {
       id: "4",
       fullName: "Ibrahim Ahmed",
       username: "yourdad",
       profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
     },
   ]);
 
@@ -36,17 +120,37 @@ export const FriendRequests = () => {
       fullName: "John Doe",
       username: "john_doe",
       profilePicUri: defaultProfilePic,
+      isFriend: true,
     },
     {
       id: "2",
       fullName: "Nayeem Belal",
       username: "dababy1212",
       profilePicUri: defaultProfilePic,
+      isFriend: true,
     },
   ]);
 
+  const [filteredFriends, setFilteredFriends] = useState(FriendRequests);
+
+  const handleSearch = (query) => {
+    if (query.trim() === "") {
+      setFilteredFriends(FriendRequests);
+    } else {
+      const filtered = FriendRequests.filter((friend) =>
+        friend.fullName.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredFriends(filtered);
+    }
+  };
+
+  useEffect(() => {
+    setFilteredFriends(FriendRequests);
+  }, [FriendRequests]);
+
   const acceptFriendRequest = (id) => {
     const friendToAdd = FriendRequests.find((friend) => friend.id === id);
+    friendToAdd.isFriend = true;
 
     if (friendToAdd) {
       setFriends((currentFriends) => [...currentFriends, friendToAdd]);
@@ -67,29 +171,16 @@ export const FriendRequests = () => {
         <Text style={styles.headerStyle}>Friend Requests</Text>
       </View>
       <ScrollView>
-        {FriendRequests.map((item) => (
+        {filteredFriends.map((item) => (
           <FriendItem
-            key={item.id}
+            key={item.id.toString()}
             friend={item}
             onRemove={removeFriendRequest}
             onAcceptRequest={acceptFriendRequest}
-            isAdding={true}
           />
         ))}
       </ScrollView>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={{ paddingHorizontal: 10, paddingBottom: 10 }}>
-          <TextInput
-            placeholder="Add or search friends"
-            placeholderTextColor="#ababab"
-            keyboardAppearance="dark"
-            selectionColor="white"
-            style={styles.textInputStyle}
-          />
-        </View>
-      </KeyboardAvoidingView>
+      <SearchBar onSearch={handleSearch} />
     </SafeAreaView>
   );
 };
@@ -97,7 +188,6 @@ export const FriendRequests = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: "#291400",
   },
   headerStyle: {
     fontSize: 30,
@@ -106,17 +196,5 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     marginLeft: 20,
     color: "white",
-  },
-
-  textInputStyle: {
-    fontSize: 17,
-    color: "white",
-    fontWeight: "400",
-    padding: 14,
-    backgroundColor: "#424140",
-    borderRadius: 15,
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "center",
   },
 });

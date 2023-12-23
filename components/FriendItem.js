@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-export const FriendItem = ({ friend, onRemove, onAcceptRequest, isAdding }) => {
+export const FriendItem = ({ friend, onRemove, onAcceptRequest }) => {
   const handleRemovePress = () => {
     Alert.alert(
       "Remove Friend",
@@ -38,7 +38,7 @@ export const FriendItem = ({ friend, onRemove, onAcceptRequest, isAdding }) => {
         <Text style={styles.fullName}>{friend.fullName}</Text>
         <Text style={styles.username}>{friend.username}</Text>
       </View>
-      {isAdding && (
+      {!friend.isFriend && (
         <TouchableOpacity onPress={handleAddPress}>
           <Icon
             name="check"
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fullName: {
-    fontWeight: "bold",
+    fontWeight: "700",
     color: "white",
     fontSize: 20,
   },

@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
   TextInput,
-  ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 export const Login = () => {
   const handleForgotPassword = () => {
     console.log("Clicked");
@@ -18,12 +25,16 @@ export const Login = () => {
     console.log("Clicked");
   };
 
+  const [focus, setFocus] = useState(false);
+  const [passwordfocus, setPasswordFocus] = useState(false);
+  const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
+  const inputPassStyle = passwordfocus
+    ? styles.focusInput
+    : styles.textInputStyle;
+
   return (
-    <SafeAreaView style={styles.mainContainerStyle}>
-      <ScrollView
-        contentContainerStyle={styles.mainContainerStyle}
-        automaticallyAdjustKeyboardInsets={true}
-      >
+    <DismissKeyboard>
+      <SafeAreaView style={styles.mainContainerStyle}>
         <View style={{ padding: 20 }}>
           <View>
             <Text style={styles.headerStyle}>QOTW</Text>
@@ -32,24 +43,32 @@ export const Login = () => {
             </Text>
           </View>
 
-          <View style={{ marginVertical: 30 }}>
-            <TextInput
-              placeholder="Username or Email"
-              placeholderTextColor="white"
-              keyboardAppearance="dark"
-              selectionColor={"white"}
-              style={styles.textInputStyle}
-            />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="white"
-              secureTextEntry
-              keyboardAppearance="dark"
-              selectionColor={"white"}
-              style={styles.textInputStyle}
-            />
-          </View>
-
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ marginVertical: 10 }}
+          >
+            <View style={{ marginVertical: 30 }}>
+              <TextInput
+                placeholder="Username or Email"
+                placeholderTextColor="#ababab"
+                keyboardAppearance="dark"
+                selectionColor={"white"}
+                onFocus={() => setFocus(true)}
+                onBlur={() => setFocus(false)}
+                style={inputUserStyle}
+              />
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="#ababab"
+                secureTextEntry
+                keyboardAppearance="dark"
+                selectionColor={"white"}
+                onFocus={() => setPasswordFocus(true)}
+                onBlur={() => setPasswordFocus(false)}
+                style={inputPassStyle}
+              />
+            </View>
+          </KeyboardAvoidingView>
           <View>
             <Text
               style={styles.forgotPasswordStyle}
@@ -72,8 +91,8 @@ export const Login = () => {
             </Text>
           </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </DismissKeyboard>
   );
 };
 
@@ -93,17 +112,28 @@ const styles = StyleSheet.create({
   descriptionStyle: {
     color: "white",
     fontSize: 20,
-    fontWeight: "500",
+    fontWeight: "700",
     textAlign: "center",
   },
   textInputStyle: {
     fontSize: 15,
     color: "white",
     fontWeight: "600",
-    padding: 20,
+    padding: 15,
     backgroundColor: "#424140",
-    borderRadius: 15,
+    borderRadius: 10,
     marginVertical: "2%",
+  },
+  focusInput: {
+    fontSize: 15,
+    color: "white",
+    fontWeight: "600",
+    padding: 15,
+    backgroundColor: "#424140",
+    borderRadius: 10,
+    marginVertical: "2%",
+    borderWidth: 1,
+    borderColor: "#ababab",
   },
   forgotPasswordStyle: {
     fontSize: 15,
@@ -129,6 +159,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 15,
     marginTop: "5%",
-    fontWeight: "600",
+    fontWeight: "700",
   },
 });

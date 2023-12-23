@@ -19,44 +19,44 @@ export const SearchBar = ({ onSearch }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.keyboardView}
+      style={{ marginVertical: 10 }}
     >
       <View style={styles.container}>
-        <Button onPress={() => console.log("Search Pressed")}>
-          <MaterialIcons name="search" size={25} color="gray" />
-        </Button>
-        <TextInput
-          style={styles.input}
-          placeholder="Add or search friends"
-          value={searchQuery}
-          placeholderTextColor="white"
-          keyboardAppearance="dark"
-          selectionColor={"white"}
-          onChangeText={handleInputChange}
-        />
+        <View>
+          <Button onPress={() => console.log("Search Pressed")}>
+            <MaterialIcons name="search" size={25} color="gray" />
+          </Button>
+        </View>
+        <View style={{ flex: 1 }}>
+          <TextInput
+            style={styles.input}
+            placeholder="Add or search friends"
+            value={searchQuery}
+            placeholderTextColor="#ababab"
+            keyboardAppearance="dark"
+            selectionColor={"white"}
+            onChangeText={handleInputChange}
+          />
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  keyboardView: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
   container: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    padding: 8,
     backgroundColor: "#424140",
-    borderRadius: 30,
-    margin: 20,
-    marginBottom: 30,
+    borderRadius: 10,
+    marginHorizontal: 10,
+    marginBottom: 10,
   },
   input: {
     flex: 1,
     marginLeft: 10,
-    fontSize: 20,
+    fontSize: 18,
     color: "white",
     fontWeight: "500",
     paddingTop: 7,

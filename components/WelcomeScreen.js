@@ -27,8 +27,8 @@ export const WelcomeScreen = () => {
           paddingTop: "10%",
         }}
       >
-        <Text style={styles.titleTextSyle}>
-          Experience. Meaningful. Conversations.
+        <Text style={styles.headerStyle}>
+          Experience.{"\n"}Meaningful.{"\n"}Conversations.
         </Text>
         <Text style={styles.descriptionTextStyle}>
           Sign up or log in to engage in purposeful conversations with people
@@ -64,11 +64,11 @@ const styles = StyleSheet.create({
   imageBackgroundStyle: {
     height: height / 2.5,
   },
-  titleTextSyle: {
-    fontSize: 32,
-    color: "white",
+  headerStyle: {
+    fontSize: 30,
+    fontWeight: "bold",
     textAlign: "center",
-    fontWeight: "600",
+    color: "white",
   },
   descriptionTextStyle: {
     marginTop: 20,

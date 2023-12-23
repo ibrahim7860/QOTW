@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, Text, StyleSheet, SafeAreaView } from "react-native";
+import { Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { FriendItem } from "./FriendItem";
 import defaultProfilePic from "../assets/default.jpeg";
 import { SearchBar } from "./SearchBar";
@@ -7,16 +7,102 @@ import { SearchBar } from "./SearchBar";
 export const MyFriends = () => {
   const [friends, setFriends] = useState([
     {
-      id: "1",
-      fullName: "John Doe",
-      username: "john_doe",
+      id: "3",
+      fullName: "Uzair Qureshi",
+      username: "fat_guy",
       profilePicUri: defaultProfilePic,
+      isFriend: true,
     },
     {
-      id: "2",
-      fullName: "Nayeem Belal",
-      username: "dababy1212",
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
       profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
+    },
+    {
+      id: "4",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: true,
     },
   ]);
 
@@ -40,30 +126,26 @@ export const MyFriends = () => {
   const removeFriend = (id) => {
     setFriends(friends.filter((friend) => friend.id !== id));
   };
-  console.log(friends);
-  if (!friends) {
-    console.log("Empty");
-  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>My Friends</Text>
-      <FlatList
-        data={filteredFriends}
-        renderItem={({ item }) => (
-          <FriendItem friend={item} onRemove={removeFriend} />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
+    <SafeAreaView style={{ flex: 1 }}>
+      <Text style={styles.headerStyle}>My Friends</Text>
+      <ScrollView>
+        {filteredFriends.map((item) => (
+          <FriendItem
+            key={item.id.toString()}
+            friend={item}
+            onRemove={removeFriend}
+          />
+        ))}
+      </ScrollView>
       <SearchBar onSearch={handleSearch} />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
+  headerStyle: {
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "left",
