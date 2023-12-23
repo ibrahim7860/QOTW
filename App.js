@@ -14,7 +14,7 @@ import { FriendItem } from "./components/FriendItem";
 export default function App() {
   return (
     <View style={styles.container}>
-      <Login />
+      <MyFriends />
     </View>
   );
 }
