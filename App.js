@@ -8,6 +8,7 @@ import { Login } from "./components/Login";
 import { MyFriends } from "./components/MyFriends";
 import { Question } from "./components/Question";
 import { FriendRequests } from "./components/FriendRequests";
+import { SearchBar } from "./components/SearchBar";
 
 export default function App() {
   return (
