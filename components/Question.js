@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: "#291400",
+    marginVertical: 15,
   },
   qotwStyle: {
     fontSize: 30,

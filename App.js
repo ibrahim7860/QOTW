@@ -6,11 +6,13 @@ import { WelcomeScreen } from "./components/WelcomeScreen";
 import { Register } from "./components/Register";
 import { Login } from "./components/Login";
 import { MyFriends } from "./components/MyFriends";
+import { Question } from "./components/Question";
+import { FriendRequests } from "./components/FriendRequests";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <MyFriends />
+      <FriendRequests />
     </View>
   );
 }

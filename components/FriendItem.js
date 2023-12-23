@@ -10,12 +10,22 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-export const FriendItem = ({ friend, onRemove }) => {
+export const FriendItem = ({ friend, onRemove, onAcceptRequest, isAdding }) => {
   const handleRemovePress = () => {
     Alert.alert(
       "Remove Friend",
       `Do you really want to remove ${friend.username} as a friend?`,
       [{ text: "No" }, { text: "Yes", onPress: () => onRemove(friend.id) }]
+    );
+  };
+  const handleAddPress = () => {
+    Alert.alert(
+      "Add Friend",
+      `Do you really want to add ${friend.username} as a friend?`,
+      [
+        { text: "No" },
+        { text: "Yes", onPress: () => onAcceptRequest(friend.id) },
+      ]
     );
   };
 
@@ -28,6 +38,16 @@ export const FriendItem = ({ friend, onRemove }) => {
         <Text style={styles.fullName}>{friend.fullName}</Text>
         <Text style={styles.username}>{friend.username}</Text>
       </View>
+      {isAdding && (
+        <TouchableOpacity onPress={handleAddPress}>
+          <Icon
+            name="check"
+            size={24}
+            color="white"
+            style={{ marginRight: 10 }}
+          />
+        </TouchableOpacity>
+      )}
       <TouchableOpacity onPress={handleRemovePress}>
         <Icon
           name="close"
