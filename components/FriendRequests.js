@@ -11,123 +11,80 @@ import { FriendItem } from "./FriendItem";
 import { Button } from "./Button";
 import defaultProfilePic from "../assets/default.jpeg";
 import { SearchBar } from "./SearchBar";
+import { useFriends } from "./FriendsContext";
 
 export const FriendRequests = () => {
+  const { addFriend } = useFriends();
   const [FriendRequests, setFriendRequests] = useState([
     {
-      id: "3",
+      id: "1",
       fullName: "Uzair Qureshi",
       username: "fat_guy",
       profilePicUri: defaultProfilePic,
       isFriend: false,
     },
     {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-  ]);
-
-  const [friends, setFriends] = useState([
-    {
-      id: "1",
-      fullName: "John Doe",
-      username: "john_doe",
-      profilePicUri: defaultProfilePic,
-      isFriend: true,
-    },
-    {
       id: "2",
+      fullName: "Ibrahim Ahmed",
+      username: "yourdad",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "3",
       fullName: "Nayeem Belal",
       username: "dababy1212",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
+      isFriend: false,
+    },
+    {
+      id: "4",
+      fullName: "John Doe",
+      username: "john_doe",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "5",
+      fullName: "Jane Doe",
+      username: "jane_doe",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "6",
+      fullName: "Big Man",
+      username: "big_man",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "7",
+      fullName: "Gangatron Rex",
+      username: "gang_rex",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "8",
+      fullName: "Saad Syed",
+      username: "saad_syed",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "9",
+      fullName: "Silly Sully",
+      username: "silly_sully",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
+    },
+    {
+      id: "10",
+      fullName: "Zubi Goat",
+      username: "zubi_goat",
+      profilePicUri: defaultProfilePic,
+      isFriend: false,
     },
   ]);
 
@@ -153,7 +110,7 @@ export const FriendRequests = () => {
     friendToAdd.isFriend = true;
 
     if (friendToAdd) {
-      setFriends((currentFriends) => [...currentFriends, friendToAdd]);
+      addFriend(friendToAdd);
 
       setFriendRequests((currentRequests) =>
         currentRequests.filter((friend) => friend.id !== id)
@@ -175,8 +132,9 @@ export const FriendRequests = () => {
           <FriendItem
             key={item.id.toString()}
             friend={item}
-            onRemove={removeFriendRequest}
+            onRejectRequest={removeFriendRequest}
             onAcceptRequest={acceptFriendRequest}
+            isRequest={true}
           />
         ))}
       </ScrollView>
@@ -188,6 +146,7 @@ export const FriendRequests = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    backgroundColor: "#291400",
   },
   headerStyle: {
     fontSize: 30,

@@ -13,6 +13,7 @@ import { FriendItem } from "./components/FriendItem";
 import { Messages } from "./components/Messages";
 import { ChatScreen } from "./components/ChatScreen";
 import { ConversationsProvider } from "./components/ConversationsContext";
+import { FriendsProvider } from "./components/FriendsContext";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -20,16 +21,21 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <ConversationsProvider>
+    // <ConversationsProvider>
+    //   <View style={styles.container}>
+    //     <NavigationContainer>
+    //       <Stack.Navigator screenOptions={{ headerShown: false }}>
+    //         <Stack.Screen name="Messages" component={Messages} />
+    //         <Stack.Screen name="Chat" component={ChatScreen} />
+    //       </Stack.Navigator>
+    //     </NavigationContainer>
+    //   </View>
+    // </ConversationsProvider>
+    <FriendsProvider>
       <View style={styles.container}>
-        <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Messages" component={Messages} />
-            <Stack.Screen name="Chat" component={ChatScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <MyFriends />
       </View>
-    </ConversationsProvider>
+    </FriendsProvider>
   );
 }
 
