@@ -3,31 +3,18 @@ import { View, FlatList, StyleSheet, SafeAreaView, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ConversationItem } from "./ConversationItem";
 import { ChatScreen } from "./ChatScreen";
-import defaultProfilePic from "../assets/default.jpeg";
+import { useConversations } from "./ConversationsContext";
 
 export const Messages = () => {
   const navigation = useNavigation();
 
-  const [conversations, setConversations] = useState([
-    // Placeholder data
-    {
-      id: "1",
-      name: "John Doe",
-      lastMessage: "Hey, how are you?",
-      profilePicUri: defaultProfilePic,
-    },
-    {
-      id: "2",
-      name: "Nayeem Belal",
-      lastMessage: "Wassup, how are you?",
-      profilePicUri: defaultProfilePic,
-    },
-  ]);
+  const { conversations } = useConversations();
 
   const handleConversationPress = (conversation) => {
     navigation.navigate("Chat", {
       conversationId: conversation.id,
       conversationName: conversation.name,
+      profilePic: conversation.profilePicUri,
     });
   };
 

@@ -13,18 +13,17 @@ import {
 import { MessageBubble } from "./MessageBubble";
 import Button from "./Button";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useConversations } from "./ConversationsContext";
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;
   const { conversationName } = route.params;
+  const { profilePic } = route.params;
+  const { updateLastMessage } = useConversations();
 
   // Fetch and display messages based on conversationId
   // Replace this with your logic to fetch real messages
-  const [messages, setMessages] = useState([
-    { id: "1", text: "Hi there!", isSender: true },
-    { id: "2", text: "Hello! How are you?", isSender: false },
-    // ... more messages
-  ]);
+  const [messages, setMessages] = useState([]);
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -38,6 +37,7 @@ export const ChatScreen = ({ route, navigation }) => {
 
       setMessages([...messages, newMessageObj]);
       setNewMessage("");
+      updateLastMessage(conversationId, newMessage);
     }
   };
 
@@ -51,6 +51,7 @@ export const ChatScreen = ({ route, navigation }) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <MaterialIcons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
+          <Image source={profilePic} style={styles.profilePic} />
           <Text style={styles.headerText}>{conversationName}</Text>
         </View>
         <FlatList
@@ -67,6 +68,8 @@ export const ChatScreen = ({ route, navigation }) => {
             placeholderTextColor="white"
             value={newMessage}
             onChangeText={(text) => setNewMessage(text)}
+            onSubmitEditing={handleSend}
+            returnKeyType="send"
           />
           <Button onPress={handleSend}>
             <Image
@@ -101,6 +104,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
+  },
+  profilePic: {
+    width: 35,
+    height: 35,
+    borderRadius: 25,
+    marginLeft: 10,
   },
   inputContainer: {
     flexDirection: "row",
