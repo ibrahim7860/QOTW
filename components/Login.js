@@ -45,7 +45,7 @@ export const Login = () => {
 
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ marginVertical: 10 }}
+            style={{ marginVertical: 10, marginBottom: 0 }}
           >
             <View style={{ marginVertical: 30 }}>
               <TextInput

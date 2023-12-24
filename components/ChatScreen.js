@@ -129,14 +129,4 @@ const styles = StyleSheet.create({
     marginRight: 10,
     fontSize: 18,
   },
-  sendButton: {
-    marginLeft: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    backgroundColor: "#291400",
-    borderRadius: 5,
-  },
-  sendButtonText: {
-    color: "white",
-  },
 });
