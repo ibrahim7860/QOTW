@@ -17,9 +17,24 @@ const DismissKeyboard = ({ children }) => (
   </TouchableWithoutFeedback>
 );
 export const ForgotPassword = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+
   const backToLogin = () => {
     navigation.navigate("Login");
   };
+
+  const handleForgotPassword = () => {
+    if (email === confirmEmail) {
+      // Proceed with the registration process
+      setEmailError("");
+      // ... registration logic
+    } else {
+      setEmailError("Emails do not match.");
+    }
+  };
+
   return (
     <DismissKeyboard>
       <SafeAreaView style={styles.mainContainerStyle}>
@@ -42,6 +57,8 @@ export const ForgotPassword = ({ navigation }) => {
                 keyboardAppearance="dark"
                 selectionColor={"white"}
                 style={styles.textInputStyle}
+                onChangeText={setEmail}
+                value={email}
               />
               <TextInput
                 placeholder="Re-Enter Email"
@@ -50,11 +67,19 @@ export const ForgotPassword = ({ navigation }) => {
                 keyboardAppearance="dark"
                 selectionColor={"white"}
                 style={styles.textInputStyle}
+                onChangeText={setConfirmEmail}
+                value={confirmEmail}
               />
+              {emailError ? (
+                <Text style={styles.errorText}>{emailError}</Text>
+              ) : null}
             </View>
           </KeyboardAvoidingView>
 
-          <TouchableOpacity style={styles.resetPasswordButtonStyle}>
+          <TouchableOpacity
+            style={styles.resetPasswordButtonStyle}
+            onPress={handleForgotPassword}
+          >
             <Text style={styles.resetPasswordTextStyle}>Reset Password</Text>
           </TouchableOpacity>
 
@@ -116,5 +141,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: "5%",
     fontWeight: "600",
+  },
+  errorText: {
+    color: "red",
   },
 });
