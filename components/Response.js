@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#ababab",
     borderWidth: 2,
+    width: 350,
   },
   textInputStyle: {
     fontSize: 14,

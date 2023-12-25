@@ -21,8 +21,7 @@ export const ResponsePage = () => {
       username: "fat_guy",
       profilePicUri: defaultProfilePic,
       isFriend: true,
-      userResponse:
-        "Palestine, a region in Western Asia, holds profound historical and c.",
+      userResponse: "Palestine, ",
     },
     {
       id: "2",
@@ -176,11 +175,10 @@ const styles = StyleSheet.create({
   myBoxStyle: {
     backgroundColor: "#ababab",
     borderRadius: 20,
-    borderColor: "#ababab",
-    borderWidth: 2,
     padding: "5%",
-    margin: 30,
     marginVertical: 10,
+    width: 320,
+    alignSelf: "center",
   },
   myResponseStyle: {
     fontSize: 19,
