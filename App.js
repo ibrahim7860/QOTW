@@ -15,6 +15,7 @@ import { ChatScreen } from "./components/ChatScreen";
 import { ConversationsProvider } from "./components/ConversationsContext";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { FriendsProvider } from "./components/FriendsContext";
+import { ForgotPassword } from "./components/ForgotPassword";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -30,6 +31,9 @@ export default function App() {
             initialRouteName="Loading"
           >
             <Stack.Screen name="Loading" component={LoadingScreen} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Forgot Password" component={ForgotPassword} />
             <Stack.Screen name="Messages" component={Messages} />
             <Stack.Screen name="Chat" component={ChatScreen} />
           </Stack.Navigator>
@@ -38,7 +42,7 @@ export default function App() {
     </ConversationsProvider>
     // <FriendsProvider>
     //   <View style={styles.container}>
-    //     <MyFriends />
+    //     <Register />
     //   </View>
     // </FriendsProvider>
   );

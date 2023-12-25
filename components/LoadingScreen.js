@@ -10,7 +10,7 @@ export const LoadingScreen = ({ navigation }) => {
     }, 1000);
 
     const navigateTimer = setTimeout(() => {
-      navigation.navigate("Messages");
+      navigation.navigate("Login");
     }, 4000);
 
     return () => {
