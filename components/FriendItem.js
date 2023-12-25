@@ -10,7 +10,13 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-export const FriendItem = ({ friend, onRemove, onAcceptRequest }) => {
+export const FriendItem = ({
+  friend,
+  onRemove,
+  onAcceptRequest,
+  onRejectRequest,
+  isRequest,
+}) => {
   const handleRemovePress = () => {
     Alert.alert(
       "Remove Friend",
@@ -20,11 +26,21 @@ export const FriendItem = ({ friend, onRemove, onAcceptRequest }) => {
   };
   const handleAddPress = () => {
     Alert.alert(
-      "Add Friend",
-      `Do you really want to add ${friend.username} as a friend?`,
+      "Accept Request",
+      `Do you really want to accept ${friend.username}'s friend request?`,
       [
         { text: "No" },
         { text: "Yes", onPress: () => onAcceptRequest(friend.id) },
+      ]
+    );
+  };
+  const handleRejectPress = () => {
+    Alert.alert(
+      "Remove Request",
+      `Do you really want to reject ${friend.username}'s friend request?`,
+      [
+        { text: "No" },
+        { text: "Yes", onPress: () => onRejectRequest(friend.id) },
       ]
     );
   };
@@ -48,14 +64,25 @@ export const FriendItem = ({ friend, onRemove, onAcceptRequest }) => {
           />
         </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={handleRemovePress}>
-        <Icon
-          name="close"
-          size={24}
-          color="white"
-          style={{ marginRight: 10 }}
-        />
-      </TouchableOpacity>
+      {isRequest ? (
+        <TouchableOpacity onPress={handleRejectPress}>
+          <Icon
+            name="close"
+            size={24}
+            color="white"
+            style={{ marginRight: 10 }}
+          />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={handleRemovePress}>
+          <Icon
+            name="close"
+            size={24}
+            color="white"
+            style={{ marginRight: 10 }}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

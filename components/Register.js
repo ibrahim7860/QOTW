@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export const Register = () => {
+export const Register = ({ navigation }) => {
   const handleAlreadyHaveAccount = () => {
-    console.log("Clicked");
+    navigation.navigate("Login");
   };
 
   return (
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   descriptionStyle: {
     color: "white",
     fontSize: 20,
-    fontWeight: "500",
+    fontWeight: "700",
     textAlign: "center",
   },
   textInputStyle: {

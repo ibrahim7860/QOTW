@@ -13,7 +13,7 @@ export const SearchBar = ({ onSearch }) => {
 
   const handleInputChange = (text) => {
     setSearchQuery(text);
-    onSearch(text); // Call the function passed from the parent component
+    onSearch(text);
   };
 
   return (

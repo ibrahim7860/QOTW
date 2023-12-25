@@ -9,161 +9,27 @@ import {
 } from "react-native";
 import { FriendItem } from "./FriendItem";
 import { Button } from "./Button";
-import defaultProfilePic from "../assets/default.jpeg";
 import { SearchBar } from "./SearchBar";
+import { useFriends } from "./FriendsContext";
 
 export const FriendRequests = () => {
-  const [FriendRequests, setFriendRequests] = useState([
-    {
-      id: "3",
-      fullName: "Uzair Qureshi",
-      username: "fat_guy",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-  ]);
+  const {
+    friendRequests,
+    removeFriendRequest,
+    acceptFriendRequest,
+    handleSearch,
+  } = useFriends();
 
-  const [friends, setFriends] = useState([
-    {
-      id: "1",
-      fullName: "John Doe",
-      username: "john_doe",
-      profilePicUri: defaultProfilePic,
-      isFriend: true,
-    },
-    {
-      id: "2",
-      fullName: "Nayeem Belal",
-      username: "dababy1212",
-      profilePicUri: defaultProfilePic,
-      isFriend: true,
-    },
-  ]);
+  const [filteredFriends, setFilteredFriends] = useState(friendRequests);
 
-  const [filteredFriends, setFilteredFriends] = useState(FriendRequests);
-
-  const handleSearch = (query) => {
-    if (query.trim() === "") {
-      setFilteredFriends(FriendRequests);
-    } else {
-      const filtered = FriendRequests.filter((friend) =>
-        friend.fullName.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredFriends(filtered);
-    }
+  const handleSearchChange = (query) => {
+    const results = handleSearch(friendRequests, query);
+    setFilteredFriends(results);
   };
 
   useEffect(() => {
-    setFilteredFriends(FriendRequests);
-  }, [FriendRequests]);
-
-  const acceptFriendRequest = (id) => {
-    const friendToAdd = FriendRequests.find((friend) => friend.id === id);
-    friendToAdd.isFriend = true;
-
-    if (friendToAdd) {
-      setFriends((currentFriends) => [...currentFriends, friendToAdd]);
-
-      setFriendRequests((currentRequests) =>
-        currentRequests.filter((friend) => friend.id !== id)
-      );
-    }
-  };
-
-  const removeFriendRequest = (id) => {
-    setFriendRequests(FriendRequests.filter((friend) => friend.id !== id));
-  };
+    setFilteredFriends(friendRequests);
+  }, [friendRequests]);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -175,12 +41,13 @@ export const FriendRequests = () => {
           <FriendItem
             key={item.id.toString()}
             friend={item}
-            onRemove={removeFriendRequest}
+            onRejectRequest={removeFriendRequest}
             onAcceptRequest={acceptFriendRequest}
+            isRequest={true}
           />
         ))}
       </ScrollView>
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar onSearch={handleSearchChange} />
     </SafeAreaView>
   );
 };
@@ -188,6 +55,7 @@ export const FriendRequests = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    backgroundColor: "#291400",
   },
   headerStyle: {
     fontSize: 30,
