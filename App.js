@@ -10,11 +10,13 @@ import { Question } from "./components/Question";
 import { FriendRequests } from "./components/FriendRequests";
 import { SearchBar } from "./components/SearchBar";
 import { FriendItem } from "./components/FriendItem";
+import { Response } from "./components/Response";
+import { ResponsePage } from "./components/ResponsePage";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <MyFriends />
+      <ResponsePage />
     </View>
   );
 }
