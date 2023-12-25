@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,8 +10,22 @@ import {
 } from "react-native";
 
 export const Register = ({ navigation }) => {
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
+  };
+
+  const handleRegister = () => {
+    if (password === confirmPassword) {
+      // Proceed with the registration process
+      setPasswordError("");
+      // ... registration logic
+    } else {
+      setPasswordError("Passwords do not match.");
+    }
   };
 
   return (
@@ -50,6 +64,8 @@ export const Register = ({ navigation }) => {
               keyboardAppearance="dark"
               selectionColor={"white"}
               style={styles.textInputStyle}
+              onChangeText={setPassword}
+              value={password}
             />
             <TextInput
               placeholder="Re-Enter Password"
@@ -58,10 +74,18 @@ export const Register = ({ navigation }) => {
               keyboardAppearance="dark"
               selectionColor={"white"}
               style={styles.textInputStyle}
+              onChangeText={setConfirmPassword}
+              value={confirmPassword}
             />
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
           </View>
 
-          <TouchableOpacity style={styles.createAccountStyle}>
+          <TouchableOpacity
+            style={styles.createAccountStyle}
+            onPress={handleRegister}
+          >
             <Text style={styles.createTextStyle}>Create Account</Text>
           </TouchableOpacity>
 
@@ -124,5 +148,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: "4%",
     fontWeight: "600",
+  },
+  errorText: {
+    color: "red",
   },
 });

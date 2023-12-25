@@ -12,6 +12,7 @@ import { Response } from "./Response";
 import defaultProfilePic from "../assets/default.jpeg";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Ripple from "react-native-material-ripple";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export const ResponsePage = () => {
   const friends = [
@@ -126,30 +127,25 @@ export const ResponsePage = () => {
           <Icon name="user-alt" size={28} color="white" />
         </TouchableOpacity>
       </View>
-      <KeyboardAvoidingView
+      <KeyboardAwareScrollView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView
-          contentContainerStyle={{ paddingHorizontal: 20, flexGrow: 1 }}
-        >
-          <TouchableOpacity>
-            <View style={styles.myBoxStyle}>
-              <Text style={styles.myResponseStyle}>
-                {myResponse.userResponse}
-              </Text>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Text style={styles.myTextStyle}>Your Response</Text>
-            </View>
-          </TouchableOpacity>
-          {friends.map((item) => (
-            <Response user={item} />
-          ))}
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <TouchableOpacity>
+          <View style={styles.myBoxStyle}>
+            <Text style={styles.myResponseStyle}>
+              {myResponse.userResponse}
+            </Text>
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.myTextStyle}>Your Response</Text>
+          </View>
+        </TouchableOpacity>
+        {friends.map((item) => (
+          <Response user={item} />
+        ))}
+      </KeyboardAwareScrollView>
     </SafeAreaView>
-    // </KeyboardAvoidingView>
   );
 };
 
