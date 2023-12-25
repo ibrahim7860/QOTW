@@ -93,8 +93,13 @@ export const FriendsProvider = ({ children }) => {
     );
   };
 
-  const addFriendRequest = (newRequest) => {
-    setFriendRequests((currentRequests) => [...currentRequests, newRequest]);
+  const acceptFriendRequest = (id) => {
+    const friendToAdd = friendRequests.find((friend) => friend.id === id);
+    if (friendToAdd) {
+      friendToAdd.isFriend = true;
+      addFriend(friendToAdd);
+      removeFriendRequest(id);
+    }
   };
 
   const removeFriendRequest = (id) => {
@@ -103,15 +108,25 @@ export const FriendsProvider = ({ children }) => {
     );
   };
 
+  const handleSearch = (array, query) => {
+    if (query.trim() === "") {
+      return array;
+    } else {
+      return array.filter((friend) =>
+        friend.fullName.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+  };
+
   return (
     <FriendsContext.Provider
       value={{
         friends,
-        addFriend,
         removeFriend,
         friendRequests,
-        addFriendRequest,
         removeFriendRequest,
+        acceptFriendRequest,
+        handleSearch,
       }}
     >
       {children}

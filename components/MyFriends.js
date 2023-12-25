@@ -6,19 +6,13 @@ import { SearchBar } from "./SearchBar";
 import { useFriends } from "./FriendsContext";
 
 export const MyFriends = () => {
-  const { friends, removeFriend } = useFriends();
+  const { friends, removeFriend, handleSearch } = useFriends();
 
   const [filteredFriends, setFilteredFriends] = useState(friends);
 
-  const handleSearch = (query) => {
-    if (query.trim() === "") {
-      setFilteredFriends(friends);
-    } else {
-      const filtered = friends.filter((friend) =>
-        friend.fullName.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredFriends(filtered);
-    }
+  const handleSearchChange = (query) => {
+    const results = handleSearch(friends, query);
+    setFilteredFriends(results);
   };
 
   useEffect(() => {
@@ -38,7 +32,7 @@ export const MyFriends = () => {
           />
         ))}
       </ScrollView>
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar onSearch={handleSearchChange} />
     </SafeAreaView>
   );
 };
