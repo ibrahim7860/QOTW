@@ -117,38 +117,40 @@ export const ResponsePage = () => {
   };
 
   return (
-    <>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#1b0a01" }} />
-      <SafeAreaView>
-        <View style={styles.topContainer}>
-          <TouchableOpacity style={styles.arrowContainer}>
-            <Icon name="user-friends" size={30} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.headerStyle}>QOTW</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
+      <View style={styles.topContainer}>
+        <TouchableOpacity style={styles.arrowContainer}>
+          <Icon name="user-friends" size={30} color="white" />
+        </TouchableOpacity>
+        <Text style={styles.headerStyle}>QOTW</Text>
+        <TouchableOpacity>
+          <Icon name="user-alt" size={28} color="white" />
+        </TouchableOpacity>
+      </View>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView
+          contentContainerStyle={{ paddingHorizontal: 20, flexGrow: 1 }}
+        >
           <TouchableOpacity>
-            <Icon name="user-alt" size={28} color="white" />
+            <View style={styles.myBoxStyle}>
+              <Text style={styles.myResponseStyle}>
+                {myResponse.userResponse}
+              </Text>
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.myTextStyle}>Your Response</Text>
+            </View>
           </TouchableOpacity>
-        </View>
-        <KeyboardAvoidingView behavior={"padding"}>
-          <ScrollView style={{ paddingHorizontal: 20 }}>
-            <TouchableOpacity>
-              <View style={styles.myBoxStyle}>
-                <Text style={styles.myResponseStyle}>
-                  {myResponse.userResponse}
-                </Text>
-              </View>
-              <View style={{ alignItems: "center" }}>
-                <Text style={styles.myTextStyle}>Your Response</Text>
-              </View>
-            </TouchableOpacity>
-
-            {friends.map((item) => (
-              <Response user={item} />
-            ))}
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </>
+          {friends.map((item) => (
+            <Response user={item} />
+          ))}
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+    // </KeyboardAvoidingView>
   );
 };
 
@@ -162,7 +164,7 @@ const styles = StyleSheet.create({
     marginHorizontal: "20%",
   },
   topContainer: {
-    backgroundColor: "#1b0a01",
+    backgroundColor: "#291400",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.5,

@@ -25,23 +25,26 @@ import { ResponsePage } from "./components/ResponsePage";
 
 export default function App() {
   return (
-    <ConversationsProvider>
-      <View style={styles.container}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{ headerShown: false }}
-            initialRouteName="Loading"
-          >
-            <Stack.Screen name="Loading" component={LoadingScreen} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
-            <Stack.Screen name="Forgot Password" component={ForgotPassword} />
-            <Stack.Screen name="Messages" component={Messages} />
-            <Stack.Screen name="Chat" component={ChatScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
-    </ConversationsProvider>
+    // <ConversationsProvider>
+    //   <View style={styles.container}>
+    //     <NavigationContainer>
+    //       <Stack.Navigator
+    //         screenOptions={{ headerShown: false }}
+    //         initialRouteName="Loading"
+    //       >
+    //         <Stack.Screen name="Loading" component={LoadingScreen} />
+    //         <Stack.Screen name="Login" component={Login} />
+    //         <Stack.Screen name="Register" component={Register} />
+    //         <Stack.Screen name="Forgot Password" component={ForgotPassword} />
+    //         <Stack.Screen name="Messages" component={Messages} />
+    //         <Stack.Screen name="Chat" component={ChatScreen} />
+    //       </Stack.Navigator>
+    //     </NavigationContainer>
+    //   </View>
+    // </ConversationsProvider>
+    <View style={styles.container}>
+      <ResponsePage />
+    </View>
     // <FriendsProvider>
     //   <View style={styles.container}>
     //     <Register />
@@ -53,5 +56,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#291400",
   },
 });
