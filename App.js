@@ -17,39 +17,76 @@ import { ForgotPassword } from "./components/ForgotPassword";
 import { ResponsePage } from "./components/ResponsePage";
 import { ResponsesProvider } from "./components/ResponsesContext";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
+
+const leftToRightAnimation = {
+  gestureDirection: "horizontal-inverted",
+  cardStyleInterpolator: ({ current, layouts }) => {
+    return {
+      cardStyle: {
+        transform: [
+          {
+            translateX: current.progress.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-layouts.screen.width, 0],
+            }),
+          },
+        ],
+      },
+    };
+  },
+};
 
 export default function App() {
   return (
-    // <ConversationsProvider>
-    //   <FriendsProvider>
-    //     <ResponsesProvider>
-    //     <View style={styles.container}>
-    //       <NavigationContainer>
-    //         <Stack.Navigator
-    //           screenOptions={{ headerShown: false }}
-    //           initialRouteName="Loading"
-    //         >
-    //           <Stack.Screen name="Loading" component={LoadingScreen} />
-    //           <Stack.Screen name="Login" component={Login} />
-    //           <Stack.Screen name="Register" component={Register} />
-    //           <Stack.Screen name="Forgot Password" component={ForgotPassword} />
-    //           <Stack.Screen name="Messages" component={Messages} />
-    //           <Stack.Screen name="Chat" component={ChatScreen} />
-    //           <Stack.Screen name="Welcome Screen" component={WelcomeScreen} />
-    //         </Stack.Navigator>
-    //       </NavigationContainer>
-    //     </View>
-    //     </ResponsesProvider>
-    //   </FriendsProvider>
-    // </ConversationsProvider>
-    <ResponsesProvider>
-      <View style={styles.container}>
-        <ResponsePage />
-      </View>
-    </ResponsesProvider>
+    <ConversationsProvider>
+      <FriendsProvider>
+        <ResponsesProvider>
+          <View style={styles.container}>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{ headerShown: false }}
+                initialRouteName="Loading"
+              >
+                <Stack.Screen name="Loading" component={LoadingScreen} />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Register" component={Register} />
+                <Stack.Screen
+                  name="Forgot Password"
+                  component={ForgotPassword}
+                />
+                <Stack.Screen name="Messages" component={Messages} />
+                <Stack.Screen name="Chat" component={ChatScreen} />
+                <Stack.Screen name="Welcome Screen" component={WelcomeScreen} />
+                <Stack.Screen name="Responses" component={ResponsePage} />
+                <Stack.Screen name="User Profile" component={UserProfile} />
+                <Stack.Screen name="Friend Profile" component={FriendProfile} />
+                <Stack.Screen
+                  name="My Friends"
+                  component={MyFriends}
+                  options={leftToRightAnimation}
+                />
+                <Stack.Screen
+                  name="Friend Requests"
+                  component={FriendRequests}
+                  options={{ animationEnabled: false }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </ResponsesProvider>
+      </FriendsProvider>
+    </ConversationsProvider>
+    // <ResponsesProvider>
+    //   <View style={styles.container}>
+    //     <ResponsePage />
+    //   </View>
+    // </ResponsesProvider>
   );
 }
 
