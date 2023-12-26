@@ -23,7 +23,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     // <ConversationsProvider>
-    //   <FriendsProvider>
+    //   <>
     //     <View style={styles.container}>
     //       <NavigationContainer>
     //         <Stack.Navigator
