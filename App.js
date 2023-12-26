@@ -15,6 +15,7 @@ import { LoadingScreen } from "./components/LoadingScreen";
 import { FriendsProvider } from "./components/FriendsContext";
 import { ForgotPassword } from "./components/ForgotPassword";
 import { ResponsePage } from "./components/ResponsePage";
+import { ResponsesProvider } from "./components/ResponsesContext";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -23,7 +24,8 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     // <ConversationsProvider>
-    //   <>
+    //   <FriendsProvider>
+    //     <ResponsesProvider>
     //     <View style={styles.container}>
     //       <NavigationContainer>
     //         <Stack.Navigator
@@ -36,14 +38,18 @@ export default function App() {
     //           <Stack.Screen name="Forgot Password" component={ForgotPassword} />
     //           <Stack.Screen name="Messages" component={Messages} />
     //           <Stack.Screen name="Chat" component={ChatScreen} />
+    //           <Stack.Screen name="Welcome Screen" component={WelcomeScreen} />
     //         </Stack.Navigator>
     //       </NavigationContainer>
     //     </View>
+    //     </ResponsesProvider>
     //   </FriendsProvider>
     // </ConversationsProvider>
-    <View style={styles.container}>
-      <ResponsePage />
-    </View>
+    <ResponsesProvider>
+      <View style={styles.container}>
+        <ResponsePage />
+      </View>
+    </ResponsesProvider>
   );
 }
 
