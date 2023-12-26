@@ -6,7 +6,8 @@ import { Shadow } from "react-native-shadow-2";
 import defaultProfilePic from "../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
-export const UserProfile = ({ firstName, lastName, username }) => {
+export const UserProfile = ({ route, navigation }) => {
+  const { fullName, username } = route.params;
   const [profilePic, setProfilePic] = useState(null);
 
   const updateProfilePic = async () => {
@@ -25,7 +26,7 @@ export const UserProfile = ({ firstName, lastName, username }) => {
   };
 
   const handleArrowClick = () => {
-    console.log("Hello there");
+    navigation.navigate("Responses");
   };
 
   return (
@@ -37,7 +38,7 @@ export const UserProfile = ({ firstName, lastName, username }) => {
           rippleSize={100}
           onPress={handleArrowClick}
         >
-          <Icon name="arrow-forward" size={30} color="white" />
+          <Icon name="arrow-back" size={24} color="white" />
         </Ripple>
       </TouchableOpacity>
 
@@ -55,7 +56,7 @@ export const UserProfile = ({ firstName, lastName, username }) => {
             </View>
           </View>
         </TouchableOpacity>
-        <Text style={styles.name}>{`${firstName} ${lastName}`}</Text>
+        <Text style={styles.name}>{fullName}</Text>
         <Text style={styles.username}>{username}</Text>
       </View>
     </View>
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
   arrowContainer: {
     position: "absolute",
     top: "7%",
-    right: "5%",
+    left: "5%",
     zIndex: 1,
   },
 });

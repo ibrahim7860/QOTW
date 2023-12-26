@@ -5,10 +5,8 @@ import { Shadow } from "react-native-shadow-2";
 import defaultProfilePic from "../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
-export const FriendProfile = ({ firstName, lastName, username, isAdding }) => {
-  const handleCancelClick = () => {
-    console.log("Hello there");
-  };
+export const FriendProfile = ({ route, navigation }) => {
+  const { fullName, username, isAdding } = route.params;
 
   return (
     <View style={styles.mainContainer}>
@@ -17,7 +15,7 @@ export const FriendProfile = ({ firstName, lastName, username, isAdding }) => {
           rippleColor="#fff"
           rippleOpacity={0.9}
           rippleSize={100}
-          onPress={handleCancelClick}
+          onPress={() => navigation.goBack()}
         >
           <Icon name="close" size={30} color="white" />
         </Ripple>
@@ -29,7 +27,7 @@ export const FriendProfile = ({ firstName, lastName, username, isAdding }) => {
             <Image source={defaultProfilePic} style={styles.profilePic} />
           </Shadow>
         </View>
-        <Text style={styles.name}>{`${firstName} ${lastName}`}</Text>
+        <Text style={styles.name}>{fullName}</Text>
         <Text style={styles.username}>{username}</Text>
         {isAdding && (
           <TouchableOpacity

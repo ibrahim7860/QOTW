@@ -23,6 +23,7 @@ export const Register = ({ navigation }) => {
       // Proceed with the registration process
       setPasswordError("");
       // ... registration logic
+      navigation.navigate("Responses");
     } else {
       setPasswordError("Passwords do not match.");
     }

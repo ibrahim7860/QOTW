@@ -25,6 +25,11 @@ export const Login = ({ navigation }) => {
     navigation.navigate("Register");
   };
 
+  const onSignIn = () => {
+    // Logic for signing in
+    navigation.navigate("Responses");
+  };
+
   const [focus, setFocus] = useState(false);
   const [passwordfocus, setPasswordFocus] = useState(false);
   const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
@@ -78,7 +83,7 @@ export const Login = ({ navigation }) => {
             </Text>
           </View>
 
-          <TouchableOpacity style={styles.loginButtonStyle}>
+          <TouchableOpacity style={styles.loginButtonStyle} onPress={onSignIn}>
             <Text style={styles.loginTextStyle}>Sign in</Text>
           </TouchableOpacity>
 

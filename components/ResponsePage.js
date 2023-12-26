@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { Response } from "./Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -14,19 +15,44 @@ import Ripple from "react-native-material-ripple";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useResponses } from "./ResponsesContext";
 
-export const ResponsePage = () => {
+export const ResponsePage = ({ navigation }) => {
   const { responses, myResponse } = useResponses();
+
+  const goToMessages = () => {
+    navigation.navigate("Messages");
+  };
+
+  const goToUserProfile = () => {
+    navigation.navigate("User Profile", {
+      fullName: myResponse.fullName,
+      username: myResponse.username,
+    });
+  };
+
+  const goToFriends = () => {
+    navigation.navigate("My Friends");
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
       <View style={styles.topContainer}>
-        <TouchableOpacity style={styles.arrowContainer}>
+        <TouchableOpacity onPress={goToFriends}>
           <Icon name="user-friends" size={30} color="white" />
         </TouchableOpacity>
+
         <Text style={styles.headerStyle}>QOTW</Text>
-        <TouchableOpacity>
-          <Icon name="user-alt" size={28} color="white" />
-        </TouchableOpacity>
+
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity onPress={goToMessages}>
+            <Icon name="comment-dots" size={28} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={goToUserProfile}>
+            <Image
+              source={myResponse.profilePicUri}
+              style={styles.profilePic}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <KeyboardAwareScrollView
         style={{ flex: 1 }}
@@ -55,9 +81,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 30,
     fontWeight: "700",
-    padding: 15,
-    alignItems: "center",
-    marginHorizontal: "20%",
+    textAlign: "center",
+    // Remove any unnecessary margins or padding here
   },
   topContainer: {
     backgroundColor: "#291400",
@@ -66,8 +91,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 6,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
+    padding: 10, // Add some padding to prevent cutting off
   },
   myBoxStyle: {
     backgroundColor: "#ababab",
@@ -86,5 +112,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
     color: "#ababab",
+  },
+  profilePic: {
+    width: 30,
+    height: 30,
+    borderWidth: 1,
+    borderRadius: 30,
+    marginLeft: 10,
   },
 });

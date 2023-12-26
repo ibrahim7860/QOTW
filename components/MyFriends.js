@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { FriendItem } from "./FriendItem";
 import defaultProfilePic from "../assets/default.jpeg";
 import { SearchBar } from "./SearchBar";
 import { useFriends } from "./FriendsContext";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FriendsHeader } from "./FriendsHeader";
 
-export const MyFriends = () => {
+export const MyFriends = ({ navigation }) => {
   const { friends, removeFriend, handleSearch } = useFriends();
 
   const [filteredFriends, setFilteredFriends] = useState(friends);
@@ -21,7 +30,10 @@ export const MyFriends = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
-      <Text style={styles.headerStyle}>My Friends</Text>
+      <FriendsHeader />
+      <View style={styles.containerStyle}>
+        <Text style={styles.headerStyle}>My Friends</Text>
+      </View>
       <ScrollView>
         {filteredFriends.map((item) => (
           <FriendItem
@@ -38,12 +50,16 @@ export const MyFriends = () => {
 };
 
 const styles = StyleSheet.create({
+  containerStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   headerStyle: {
     fontSize: 30,
-    fontWeight: "bold",
-    textAlign: "left",
     marginVertical: 20,
     marginLeft: 20,
     color: "white",
+    fontWeight: "bold",
   },
 });

@@ -9,8 +9,19 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import Button from "./Button";
+import { useNavigation } from "@react-navigation/native";
 
 export const Response = ({ user }) => {
+  const navigation = useNavigation();
+
+  const goToFriendProfile = () => {
+    navigation.navigate("Friend Profile", {
+      fullName: user.fullName,
+      username: user.username,
+      isAdding: false,
+    });
+  };
+
   return (
     <View style={styles.responseBox}>
       <View
@@ -19,7 +30,7 @@ export const Response = ({ user }) => {
           alignItems: "center",
         }}
       >
-        <Button onPress={() => console.log("Submit Pressed")}>
+        <Button onPress={goToFriendProfile}>
           <Image
             source={require("../assets/default.jpeg")}
             style={styles.profilePic}

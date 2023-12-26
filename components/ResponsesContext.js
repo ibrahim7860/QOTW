@@ -12,7 +12,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Uzair Qureshi",
       username: "fat_guy",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse: "Palestine, ",
     },
     {
@@ -20,7 +19,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Ibrahim Ahmed",
       username: "yourdad",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -29,7 +27,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Nayeem Belal",
       username: "dababy1212",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -38,7 +35,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "John Doe",
       username: "john_doe",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -47,7 +43,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Jane Doe",
       username: "jane_doe",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -56,7 +51,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Big Man",
       username: "big_man",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -65,7 +59,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Gangatron Rex",
       username: "gang_rex",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -74,7 +67,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Saad Syed",
       username: "saad_syed",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -83,7 +75,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Silly Sully",
       username: "silly_sully",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -92,7 +83,6 @@ export const ResponsesProvider = ({ children }) => {
       fullName: "Zubi Goat",
       username: "zubi_goat",
       profilePicUri: defaultProfilePic,
-      isFriend: true,
       userResponse:
         "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
     },
@@ -103,7 +93,6 @@ export const ResponsesProvider = ({ children }) => {
     fullName: "Nayeem Belal",
     username: "nabansnd",
     profilePicUri: defaultProfilePic,
-    isFriend: true,
     userResponse:
       "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
   });

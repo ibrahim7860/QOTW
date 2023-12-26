@@ -6,13 +6,16 @@ import {
   View,
   FlatList,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { FriendItem } from "./FriendItem";
 import { Button } from "./Button";
 import { SearchBar } from "./SearchBar";
 import { useFriends } from "./FriendsContext";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FriendsHeader } from "./FriendsHeader";
 
-export const FriendRequests = () => {
+export const FriendRequests = ({ navigation }) => {
   const {
     friendRequests,
     removeFriendRequest,
@@ -32,8 +35,9 @@ export const FriendRequests = () => {
   }, [friendRequests]);
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
-      <View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
+      <FriendsHeader />
+      <View style={styles.containerStyle}>
         <Text style={styles.headerStyle}>Friend Requests</Text>
       </View>
       <ScrollView>
@@ -53,9 +57,10 @@ export const FriendRequests = () => {
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: "#291400",
+  containerStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   headerStyle: {
     fontSize: 30,
