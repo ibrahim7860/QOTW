@@ -11,7 +11,15 @@ import {
 
 const { height } = Dimensions.get("window");
 
-export const WelcomeScreen = () => {
+export const WelcomeScreen = ({ navigation }) => {
+  const goToLogin = () => {
+    navigation.navigate("Login");
+  };
+
+  const goToRegister = () => {
+    navigation.navigate("Register");
+  };
+
   return (
     <SafeAreaView style={styles.mainContainerStyle}>
       <View>
@@ -43,11 +51,14 @@ export const WelcomeScreen = () => {
           flexDirection: "row",
         }}
       >
-        <TouchableOpacity style={styles.loginButtonStyle}>
+        <TouchableOpacity style={styles.loginButtonStyle} onPress={goToLogin}>
           <Text style={styles.loginTextStyle}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.registerButtonStyle}>
+        <TouchableOpacity
+          style={styles.registerButtonStyle}
+          onPress={goToRegister}
+        >
           <Text style={styles.registerTextStyle}>Register</Text>
         </TouchableOpacity>
       </View>
