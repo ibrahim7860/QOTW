@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
   },
   responseText: {
     color: "white",
-    // paddingHorizontal: 10,
   },
   containerStyle: {
     backgroundColor: "#1b0a01",

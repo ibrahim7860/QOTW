@@ -1,40 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export const FriendsHeader = () => {
-  const [activeButton, setActiveButton] = useState("myFriends");
   const navigation = useNavigation();
+  const state = useNavigationState((state) => state);
 
-  console.log(activeButton);
-
-  const handleMyFriendsPress = () => {
-    setActiveButton("myFriends");
-    navigation.navigate("My Friends");
-  };
-
-  const handleFriendRequestsPress = () => {
-    setActiveButton("friendRequests");
-    navigation.navigate("Friend Requests");
+  const isActive = (routeName) => {
+    const currentRoute = state.routes[state.index].name;
+    return currentRoute === routeName;
   };
 
   return (
     <View style={styles.headerContainer}>
       <TouchableOpacity
-        onPress={handleMyFriendsPress}
-        style={
-          activeButton === "myFriends" ? styles.activeButton : styles.button
-        }
+        onPress={() => navigation.navigate("My Friends")}
+        style={isActive("My Friends") ? styles.activeButton : styles.button}
       >
         <Text style={styles.buttonText}>My Friends</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={handleFriendRequestsPress}
+        onPress={() => navigation.navigate("Friend Requests")}
         style={
-          activeButton === "friendRequests"
-            ? styles.activeButton
-            : styles.button
+          isActive("Friend Requests") ? styles.activeButton : styles.button
         }
       >
         <Text style={styles.buttonText}>Friend Requests</Text>
@@ -53,6 +42,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     padding: 10,
+    position: "relative",
   },
   button: {
     backgroundColor: "#291400",

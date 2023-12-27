@@ -33,11 +33,15 @@ export const ResponsePage = ({ navigation }) => {
     navigation.navigate("My Friends");
   };
 
+  const goToQOTW = () => {
+    navigation.navigate("Question", { alreadyResponded: true });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
       <View style={styles.topContainer}>
         <TouchableOpacity onPress={goToFriends}>
-          <Icon name="user-friends" size={30} color="white" />
+          <Icon name="user-friends" size={28} color="white" />
         </TouchableOpacity>
 
         <Text style={styles.headerStyle}>QOTW</Text>
@@ -72,6 +76,9 @@ export const ResponsePage = ({ navigation }) => {
           <Response user={item} />
         ))}
       </KeyboardAwareScrollView>
+      <TouchableOpacity style={styles.floatingButton} onPress={goToQOTW}>
+        <Icon name="question" size={24} color="white" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -82,7 +89,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "700",
     textAlign: "center",
-    // Remove any unnecessary margins or padding here
   },
   topContainer: {
     backgroundColor: "#291400",
@@ -119,5 +125,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     marginLeft: 10,
+  },
+  floatingButton: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    width: 50,
+    height: 50,
+    backgroundColor: "brown",
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
 });

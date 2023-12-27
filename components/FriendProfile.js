@@ -17,7 +17,7 @@ export const FriendProfile = ({ route, navigation }) => {
           rippleSize={100}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="close" size={30} color="white" />
+          <Icon name="close" size={24} color="white" />
         </Ripple>
       </TouchableOpacity>
 

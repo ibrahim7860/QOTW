@@ -14,10 +14,25 @@ import {
   Pressable,
 } from "react-native";
 import Button from "./Button";
+import { MaterialIcons } from "@expo/vector-icons";
 
-export const Question = () => {
+export const Question = ({ route, navigation }) => {
+  const { alreadyResponded } = route.params;
+
   return (
     <SafeAreaView style={styles.mainContainer}>
+      {alreadyResponded && (
+        <View style={styles.iconContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <MaterialIcons name="close" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      )}
+
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 20,
@@ -29,32 +44,35 @@ export const Question = () => {
           right to defend itself?
         </Text>
       </ScrollView>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ marginVertical: 10 }}
-      >
-        <View style={styles.textInputStyle}>
-          <View style={{ flex: 1 }}>
-            <TextInput
-              multiline
-              placeholder="Your response..."
-              placeholderTextColor="white"
-              keyboardAppearance="dark"
-              selectionColor={"white"}
-              style={styles.textInputStyle}
-            />
-          </View>
 
-          <View>
-            <Button onPress={() => console.log("Submit Pressed")}>
-              <Image
-                source={require("../assets/send.png")}
-                style={{ width: 30, height: 30 }}
+      {!alreadyResponded && (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ marginVertical: 10 }}
+        >
+          <View style={styles.textInputStyle}>
+            <View style={{ flex: 1 }}>
+              <TextInput
+                multiline
+                placeholder="Your response..."
+                placeholderTextColor="white"
+                keyboardAppearance="dark"
+                selectionColor={"white"}
+                style={styles.textInputStyle}
               />
-            </Button>
+            </View>
+
+            <View>
+              <Button onPress={() => console.log("Submit Pressed")}>
+                <Image
+                  source={require("../assets/send.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </Button>
+            </View>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };
@@ -63,6 +81,10 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: "#291400",
+  },
+  iconContainer: {
+    padding: 10,
+    alignItems: "flex-end",
   },
   qotwStyle: {
     fontSize: 30,

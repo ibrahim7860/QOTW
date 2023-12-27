@@ -42,6 +42,21 @@ const leftToRightAnimation = {
   },
 };
 
+const bottomToTopAnimation = ({ current, layouts }) => {
+  return {
+    cardStyle: {
+      transform: [
+        {
+          translateY: current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [layouts.screen.height, 0], // Transition from bottom to top
+          }),
+        },
+      ],
+    },
+  };
+};
+
 export default function App() {
   return (
     <ConversationsProvider>
@@ -75,6 +90,13 @@ export default function App() {
                   name="Friend Requests"
                   component={FriendRequests}
                   options={{ animationEnabled: false }}
+                />
+                <Stack.Screen
+                  name="Question"
+                  component={Question}
+                  options={{
+                    cardStyleInterpolator: bottomToTopAnimation,
+                  }}
                 />
               </Stack.Navigator>
             </NavigationContainer>
