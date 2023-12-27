@@ -17,6 +17,7 @@ import {ResponsesScreen} from "./src/screens/ResponsesScreen";
 import {ResponsesProvider} from "./src/context/ResponsesContext";
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator,} from "@react-navigation/stack";
+import {ReactionsProvider} from "./src/context/ReactionsContext";
 
 const Stack = createStackNavigator();
 
@@ -58,6 +59,7 @@ export default function App() {
     <ConversationsProvider>
       <FriendsProvider>
         <ResponsesProvider>
+          <ReactionsProvider>
           <View style={styles.container}>
             <NavigationContainer>
               <Stack.Navigator
@@ -97,14 +99,10 @@ export default function App() {
               </Stack.Navigator>
             </NavigationContainer>
           </View>
+          </ReactionsProvider>
         </ResponsesProvider>
       </FriendsProvider>
     </ConversationsProvider>
-    // <ResponsesProvider>
-    //   <View style={styles.container}>
-    //     <ResponsePage />
-    //   </View>
-    // </ResponsesProvider>
   );
 }
 

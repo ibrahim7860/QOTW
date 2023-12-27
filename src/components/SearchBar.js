@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#424140",
     borderRadius: 10,
     marginHorizontal: 10,
-    marginBottom: 10,
   },
   input: {
     flex: 1,

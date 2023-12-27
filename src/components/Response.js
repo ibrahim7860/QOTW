@@ -1,10 +1,13 @@
 import React from "react";
-import {Image, StyleSheet, Text, TextInput, View,} from "react-native";
+import {Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
 import Button from "./Button";
 import {useNavigation} from "@react-navigation/native";
+import { ResponseReaction } from "./ResponseReaction";
+import { useReactions } from "../context/ReactionsContext";
 
 export const Response = ({ user }) => {
   const navigation = useNavigation();
+  const { reactions } = useReactions();
 
   const goToFriendProfile = () => {
     navigation.navigate("Friend Profile", {
@@ -15,6 +18,7 @@ export const Response = ({ user }) => {
   };
 
   return (
+      <>
     <View style={styles.responseBox}>
       <View
         style={{
@@ -57,6 +61,16 @@ export const Response = ({ user }) => {
         </View>
       </View>
     </View>
+        <View style={styles.reactionsContainerStyle}>
+          <ScrollView horizontal={true}>
+            {reactions.map((item) => (
+                <TouchableOpacity onPress={() => console.log("daddy")}>
+                  <ResponseReaction reaction={item} />
+                </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </>
   );
 };
 
@@ -94,6 +108,11 @@ const styles = StyleSheet.create({
     borderColor: "#ababab",
     borderWidth: 2,
     width: 350,
+  },
+  reactionsContainerStyle: {
+    alignSelf: "center",
+    width: 350,
+    marginBottom: "5%",
   },
   textInputStyle: {
     fontSize: 14,
