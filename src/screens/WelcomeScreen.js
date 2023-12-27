@@ -26,7 +26,7 @@ export const WelcomeScreen = ({ navigation }) => {
         <ImageBackground
           style={styles.imageBackgroundStyle}
           resizeMode="contain"
-          source={require("../assets/welcome-img.png")}
+          source={require("../../assets/welcome-img.png")}
         />
       </View>
       <View

@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { FriendItem } from "./FriendItem";
-import { Button } from "./Button";
-import { SearchBar } from "./SearchBar";
-import { useFriends } from "./FriendsContext";
-import { MaterialIcons } from "@expo/vector-icons";
-import { FriendsHeader } from "./FriendsHeader";
+import React, {useEffect, useState} from "react";
+import {SafeAreaView, ScrollView, StyleSheet, Text, View,} from "react-native";
+import {FriendItem} from "../components/FriendItem";
+import {Button} from "../components/Button";
+import {SearchBar} from "../components/SearchBar";
+import {useFriends} from "../context/FriendsContext";
+import {FriendsHeader} from "../components/FriendsHeader";
 
-export const FriendRequests = ({ navigation }) => {
+export const FriendRequestsScreen = ({ navigation }) => {
   const {
     friendRequests,
     removeFriendRequest,

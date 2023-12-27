@@ -10,10 +10,10 @@ import {
   Image,
   KeyboardAvoidingView,
 } from "react-native";
-import { MessageBubble } from "./MessageBubble";
-import Button from "./Button";
+import { MessageBubble } from "../components/MessageBubble";
+import Button from "../components/Button";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useConversations } from "./ConversationsContext";
+import { useConversations } from "../context/ConversationsContext";
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;
@@ -71,10 +71,10 @@ export const ChatScreen = ({ route, navigation }) => {
             onSubmitEditing={handleSend}
             returnKeyType="send"
           />
-          <Button onPress={handleSend}>
+          <Button onPress={handleSend} style={{ marginTop: 5 }}>
             <Image
-              source={require("../assets/send.png")}
-              style={{ width: 25, height: 25 }}
+              source={require("../../assets/send.png")}
+              style={{ width: 30, height: 30 }}
             />
           </Button>
         </View>

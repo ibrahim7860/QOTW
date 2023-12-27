@@ -1,35 +1,24 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TouchableOpacity,
-  Image,
-  KeyboardAvoidingView,
-  Pressable,
-} from "react-native";
-import Button from "./Button";
-import { MaterialIcons } from "@expo/vector-icons";
+import React from "react";
+import {Image, KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View,} from "react-native";
+import Button from "../components/Button";
+import {MaterialIcons} from "@expo/vector-icons";
+import Ripple from "react-native-material-ripple";
 
-export const Question = ({ route, navigation }) => {
+export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       {alreadyResponded && (
         <View style={styles.iconContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
+          <Ripple
+            rippleColor="#fff"
+            rippleOpacity={0.9}
+            rippleSize={100}
+            onPress={() => navigation.goBack()}
           >
             <MaterialIcons name="close" size={24} color="white" />
-          </TouchableOpacity>
+          </Ripple>
         </View>
       )}
 
@@ -65,7 +54,7 @@ export const Question = ({ route, navigation }) => {
             <View>
               <Button onPress={() => console.log("Submit Pressed")}>
                 <Image
-                  source={require("../assets/send.png")}
+                  source={require("../../assets/send.png")}
                   style={{ width: 30, height: 30 }}
                 />
               </Button>
@@ -83,7 +72,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#291400",
   },
   iconContainer: {
-    padding: 10,
+    paddingHorizontal: "5%",
+    paddingTop: "5%",
     alignItems: "flex-end",
   },
   qotwStyle: {

@@ -1,21 +1,11 @@
 import React from "react";
-import {
-  ScrollView,
-  KeyboardAvoidingView,
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { Response } from "./Response";
+import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Response} from "../components/Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import Ripple from "react-native-material-ripple";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useResponses } from "./ResponsesContext";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {useResponses} from "../context/ResponsesContext";
 
-export const ResponsePage = ({ navigation }) => {
+export const ResponsesScreen = ({ navigation }) => {
   const { responses, myResponse } = useResponses();
 
   const goToMessages = () => {
@@ -38,26 +28,28 @@ export const ResponsePage = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
-      <View style={styles.topContainer}>
-        <TouchableOpacity onPress={goToFriends}>
-          <Icon name="user-friends" size={28} color="white" />
-        </TouchableOpacity>
-
-        <Text style={styles.headerStyle}>QOTW</Text>
-
-        <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={goToMessages}>
-            <Icon name="comment-dots" size={28} color="white" />
+    <View style={{ flex: 1, backgroundColor: "#291400" }}>
+      <SafeAreaView>
+        <View style={styles.topContainer}>
+          <TouchableOpacity onPress={goToFriends}>
+            <Icon name="user-friends" size={28} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={goToUserProfile}>
-            <Image
-              source={myResponse.profilePicUri}
-              style={styles.profilePic}
-            />
-          </TouchableOpacity>
+
+          <Text style={styles.headerStyle}>QOTW</Text>
+
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity onPress={goToMessages}>
+              <Icon name="comment-dots" size={28} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goToUserProfile}>
+              <Image
+                source={myResponse.profilePicUri}
+                style={styles.profilePic}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
       <KeyboardAwareScrollView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -79,7 +71,7 @@ export const ResponsePage = ({ navigation }) => {
       <TouchableOpacity style={styles.floatingButton} onPress={goToQOTW}>
         <Icon name="question" size={24} color="white" />
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -89,6 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "700",
     textAlign: "center",
+    marginLeft: "7%",
   },
   topContainer: {
     backgroundColor: "#291400",
@@ -106,7 +99,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: "5%",
     marginVertical: 10,
-    width: 320,
+    width: 350,
     alignSelf: "center",
   },
   myResponseStyle: {

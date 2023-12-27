@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
-import defaultProfilePic from "../assets/default.jpeg";
+import defaultProfilePic from "../../assets/default.jpeg";
 
 const FriendsContext = createContext();
 

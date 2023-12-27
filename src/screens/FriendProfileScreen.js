@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Shadow } from "react-native-shadow-2";
-import defaultProfilePic from "../assets/default.jpeg";
+import {Shadow} from "react-native-shadow-2";
+import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
-export const FriendProfile = ({ route, navigation }) => {
+export const FriendProfileScreen = ({ route, navigation }) => {
   const { fullName, username, isAdding } = route.params;
 
   return (
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   arrowContainer: {
     position: "absolute",
     top: "7%",
-    right: "5%",
+    left: "5%",
     zIndex: 1,
   },
   button: {

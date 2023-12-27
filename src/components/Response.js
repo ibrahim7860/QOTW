@@ -1,15 +1,7 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  KeyboardAvoidingView,
-} from "react-native";
+import {Image, StyleSheet, Text, TextInput, View,} from "react-native";
 import Button from "./Button";
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation} from "@react-navigation/native";
 
 export const Response = ({ user }) => {
   const navigation = useNavigation();
@@ -32,7 +24,7 @@ export const Response = ({ user }) => {
       >
         <Button onPress={goToFriendProfile}>
           <Image
-            source={require("../assets/default.jpeg")}
+            source={require("../../assets/default.jpeg")}
             style={styles.profilePic}
           />
         </Button>
@@ -57,7 +49,7 @@ export const Response = ({ user }) => {
           <View style={{ justifyContent: "center" }}>
             <Button onPress={() => console.log("Submit Pressed")}>
               <Image
-                source={require("../assets/send.png")}
+                source={require("../../assets/send.png")}
                 style={{ width: 25, height: 25 }}
               />
             </Button>

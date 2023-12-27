@@ -16,26 +16,24 @@ const DismissKeyboard = ({ children }) => (
     {children}
   </TouchableWithoutFeedback>
 );
-export const Login = ({ navigation }) => {
+export const ForgotPasswordScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const backToLogin = () => {
+    navigation.navigate("Login");
+  };
+
   const handleForgotPassword = () => {
-    navigation.navigate("Forgot Password");
+    if (email === confirmEmail) {
+      // Proceed with the registration process
+      setEmailError("");
+      // ... registration logic
+    } else {
+      setEmailError("Emails do not match.");
+    }
   };
-
-  const handleCreateNewAccount = () => {
-    navigation.navigate("Register");
-  };
-
-  const onSignIn = () => {
-    // Logic for signing in
-    navigation.navigate("Responses");
-  };
-
-  const [focus, setFocus] = useState(false);
-  const [passwordfocus, setPasswordFocus] = useState(false);
-  const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
-  const inputPassStyle = passwordfocus
-    ? styles.focusInput
-    : styles.textInputStyle;
 
   return (
     <DismissKeyboard>
@@ -44,7 +42,7 @@ export const Login = ({ navigation }) => {
           <View>
             <Text style={styles.headerStyle}>QOTW</Text>
             <Text style={styles.descriptionStyle}>
-              Welcome, let's get right into it
+              Forgot your password? Let's reset it.
             </Text>
           </View>
 
@@ -52,47 +50,42 @@ export const Login = ({ navigation }) => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ marginVertical: 10, marginBottom: 0 }}
           >
-            <View style={{ marginVertical: 30 }}>
+            <View style={{ marginVertical: 15 }}>
               <TextInput
-                placeholder="Username or Email"
+                placeholder="Email"
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
                 selectionColor={"white"}
-                onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
-                style={inputUserStyle}
+                style={styles.textInputStyle}
+                onChangeText={setEmail}
+                value={email}
               />
               <TextInput
-                placeholder="Password"
+                placeholder="Re-Enter Email"
                 placeholderTextColor="#ababab"
                 secureTextEntry
                 keyboardAppearance="dark"
                 selectionColor={"white"}
-                onFocus={() => setPasswordFocus(true)}
-                onBlur={() => setPasswordFocus(false)}
-                style={inputPassStyle}
+                style={styles.textInputStyle}
+                onChangeText={setConfirmEmail}
+                value={confirmEmail}
               />
+              {emailError ? (
+                <Text style={styles.errorText}>{emailError}</Text>
+              ) : null}
             </View>
           </KeyboardAvoidingView>
-          <View>
-            <Text
-              style={styles.forgotPasswordStyle}
-              onPress={handleForgotPassword}
-            >
-              Forgot your password?
-            </Text>
-          </View>
 
-          <TouchableOpacity style={styles.loginButtonStyle} onPress={onSignIn}>
-            <Text style={styles.loginTextStyle}>Sign in</Text>
+          <TouchableOpacity
+            style={styles.resetPasswordButtonStyle}
+            onPress={handleForgotPassword}
+          >
+            <Text style={styles.resetPasswordTextStyle}>Reset Password</Text>
           </TouchableOpacity>
 
           <View>
-            <Text
-              style={styles.createAccountStyle}
-              onPress={handleCreateNewAccount}
-            >
-              Create new account
+            <Text style={styles.backToLoginStyle} onPress={backToLogin}>
+              Back to Login
             </Text>
           </View>
         </View>
@@ -111,8 +104,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 70,
     fontWeight: "700",
-    marginVertical: "5%",
     textAlign: "center",
+    marginBottom: "8%",
   },
   descriptionStyle: {
     color: "white",
@@ -129,41 +122,27 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: "2%",
   },
-  focusInput: {
-    fontSize: 15,
-    color: "white",
-    fontWeight: "600",
-    padding: 15,
-    backgroundColor: "#424140",
-    borderRadius: 10,
-    marginVertical: "2%",
-    borderWidth: 1,
-    borderColor: "#ababab",
-  },
-  forgotPasswordStyle: {
-    fontSize: 15,
-    alignSelf: "flex-end",
-    color: "white",
-    fontWeight: "700",
-  },
-  loginTextStyle: {
+  resetPasswordTextStyle: {
     color: "#291400",
     fontSize: 25,
     fontWeight: "600",
     textAlign: "center",
   },
-  loginButtonStyle: {
+  resetPasswordButtonStyle: {
     backgroundColor: "white",
     paddingVertical: 15,
     paddingHorizontal: 20,
     marginTop: "9%",
     borderRadius: 20,
   },
-  createAccountStyle: {
+  backToLoginStyle: {
     color: "white",
     textAlign: "center",
     fontSize: 15,
     marginTop: "5%",
-    fontWeight: "700",
+    fontWeight: "600",
+  },
+  errorText: {
+    color: "red",
   },
 });

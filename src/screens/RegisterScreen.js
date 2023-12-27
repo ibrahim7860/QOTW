@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export const Register = ({ navigation }) => {
+export const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");

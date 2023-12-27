@@ -1,19 +1,12 @@
-import React, { useState } from "react";
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { ConversationItem } from "./ConversationItem";
-import { ChatScreen } from "./ChatScreen";
-import { useConversations } from "./ConversationsContext";
-import { MaterialIcons } from "@expo/vector-icons";
+import React from "react";
+import {FlatList, SafeAreaView, StyleSheet, Text, View,} from "react-native";
+import {useNavigation} from "@react-navigation/native";
+import {ConversationItem} from "../components/ConversationItem";
+import {useConversations} from "../context/ConversationsContext";
+import {MaterialIcons} from "@expo/vector-icons";
+import Ripple from "react-native-material-ripple";
 
-export const Messages = () => {
+export const MessagesScreen = () => {
   const navigation = useNavigation();
 
   const { conversations } = useConversations();
@@ -29,12 +22,15 @@ export const Messages = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
+        <Ripple
+          rippleColor="#fff"
+          rippleOpacity={0.9}
+          rippleSize={100}
           onPress={() => navigation.goBack()}
           style={styles.backArrow}
         >
           <MaterialIcons name="arrow-back" size={24} color="white" />
-        </TouchableOpacity>
+        </Ripple>
         <Text style={styles.headerStyle}>My Messages</Text>
       </View>
       <FlatList

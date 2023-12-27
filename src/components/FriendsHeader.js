@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import Ripple from "react-native-material-ripple";
 
 export const FriendsHeader = () => {
   const navigation = useNavigation();
@@ -29,9 +30,14 @@ export const FriendsHeader = () => {
         <Text style={styles.buttonText}>Friend Requests</Text>
       </TouchableOpacity>
       <View style={styles.topRightButton}>
-        <TouchableOpacity onPress={() => navigation.navigate("Responses")}>
+        <Ripple
+          rippleColor="#fff"
+          rippleOpacity={0.9}
+          rippleSize={100}
+          onPress={() => navigation.navigate("Responses")}
+        >
           <MaterialIcons name="arrow-forward" size={24} color="white" />
-        </TouchableOpacity>
+        </Ripple>
       </View>
     </View>
   );

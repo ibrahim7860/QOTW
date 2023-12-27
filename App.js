@@ -1,26 +1,22 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import { UserProfile } from "./components/UserProfile";
-import { FriendProfile } from "./components/FriendProfile";
-import { WelcomeScreen } from "./components/WelcomeScreen";
-import { Register } from "./components/Register";
-import { Login } from "./components/Login";
-import { MyFriends } from "./components/MyFriends";
-import { Question } from "./components/Question";
-import { FriendRequests } from "./components/FriendRequests";
-import { Messages } from "./components/Messages";
-import { ChatScreen } from "./components/ChatScreen";
-import { ConversationsProvider } from "./components/ConversationsContext";
-import { LoadingScreen } from "./components/LoadingScreen";
-import { FriendsProvider } from "./components/FriendsContext";
-import { ForgotPassword } from "./components/ForgotPassword";
-import { ResponsePage } from "./components/ResponsePage";
-import { ResponsesProvider } from "./components/ResponsesContext";
-import { NavigationContainer } from "@react-navigation/native";
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
+import {StyleSheet, View} from "react-native";
+import {UserProfileScreen} from "./src/screens/UserProfileScreen";
+import {FriendProfileScreen} from "./src/screens/FriendProfileScreen";
+import {WelcomeScreen} from "./src/screens/WelcomeScreen";
+import {RegisterScreen} from "./src/screens/RegisterScreen";
+import {LoginScreen} from "./src/screens/LoginScreen";
+import {MyFriendsScreen} from "./src/screens/MyFriendsScreen";
+import {QuestionScreen} from "./src/screens/QuestionScreen";
+import {FriendRequestsScreen} from "./src/screens/FriendRequestsScreen";
+import {MessagesScreen} from "./src/screens/MessagesScreen";
+import {ChatScreen} from "./src/screens/ChatScreen";
+import {ConversationsProvider} from "./src/context/ConversationsContext";
+import {LoadingScreen} from "./src/screens/LoadingScreen";
+import {FriendsProvider} from "./src/context/FriendsContext";
+import {ForgotPasswordScreen} from "./src/screens/ForgotPasswordScreen";
+import {ResponsesScreen} from "./src/screens/ResponsesScreen";
+import {ResponsesProvider} from "./src/context/ResponsesContext";
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator,} from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
@@ -69,31 +65,31 @@ export default function App() {
                 initialRouteName="Loading"
               >
                 <Stack.Screen name="Loading" component={LoadingScreen} />
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Register" component={Register} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Register" component={RegisterScreen} />
                 <Stack.Screen
                   name="Forgot Password"
-                  component={ForgotPassword}
+                  component={ForgotPasswordScreen}
                 />
-                <Stack.Screen name="Messages" component={Messages} />
+                <Stack.Screen name="Messages" component={MessagesScreen} />
                 <Stack.Screen name="Chat" component={ChatScreen} />
                 <Stack.Screen name="Welcome Screen" component={WelcomeScreen} />
-                <Stack.Screen name="Responses" component={ResponsePage} />
-                <Stack.Screen name="User Profile" component={UserProfile} />
-                <Stack.Screen name="Friend Profile" component={FriendProfile} />
+                <Stack.Screen name="Responses" component={ResponsesScreen} />
+                <Stack.Screen name="User Profile" component={UserProfileScreen} />
+                <Stack.Screen name="Friend Profile" component={FriendProfileScreen} />
                 <Stack.Screen
                   name="My Friends"
-                  component={MyFriends}
+                  component={MyFriendsScreen}
                   options={leftToRightAnimation}
                 />
                 <Stack.Screen
                   name="Friend Requests"
-                  component={FriendRequests}
+                  component={FriendRequestsScreen}
                   options={{ animationEnabled: false }}
                 />
                 <Stack.Screen
                   name="Question"
-                  component={Question}
+                  component={QuestionScreen}
                   options={{
                     cardStyleInterpolator: bottomToTopAnimation,
                   }}

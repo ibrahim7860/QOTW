@@ -3,10 +3,10 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { Shadow } from "react-native-shadow-2";
-import defaultProfilePic from "../assets/default.jpeg";
+import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
-export const UserProfile = ({ route, navigation }) => {
+export const UserProfileScreen = ({ route, navigation }) => {
   const { fullName, username } = route.params;
   const [profilePic, setProfilePic] = useState(null);
 
@@ -29,6 +29,10 @@ export const UserProfile = ({ route, navigation }) => {
     navigation.navigate("Responses");
   };
 
+  const handleSettingsClick = () => {
+    console.log("Settings");
+  };
+
   return (
     <View style={styles.mainContainer}>
       <TouchableOpacity style={styles.arrowContainer}>
@@ -39,6 +43,17 @@ export const UserProfile = ({ route, navigation }) => {
           onPress={handleArrowClick}
         >
           <Icon name="arrow-back" size={24} color="white" />
+        </Ripple>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.settingsContainer}>
+        <Ripple
+          rippleColor="#fff"
+          rippleOpacity={0.9}
+          rippleSize={100}
+          onPress={handleSettingsClick}
+        >
+          <Icon name="settings" size={24} color="white" />
         </Ripple>
       </TouchableOpacity>
 
@@ -111,6 +126,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "7%",
     left: "5%",
+    zIndex: 1,
+  },
+  settingsContainer: {
+    position: "absolute",
+    top: "7%",
+    right: "5%",
     zIndex: 1,
   },
 });

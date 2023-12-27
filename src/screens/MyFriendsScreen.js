@@ -1,20 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { FriendItem } from "./FriendItem";
-import defaultProfilePic from "../assets/default.jpeg";
-import { SearchBar } from "./SearchBar";
-import { useFriends } from "./FriendsContext";
-import { MaterialIcons } from "@expo/vector-icons";
-import { FriendsHeader } from "./FriendsHeader";
+import React, {useEffect, useState} from "react";
+import {SafeAreaView, ScrollView, StyleSheet, Text, View,} from "react-native";
+import {FriendItem} from "../components/FriendItem";
+import {SearchBar} from "../components/SearchBar";
+import {useFriends} from "../context/FriendsContext";
+import {FriendsHeader} from "../components/FriendsHeader";
 
-export const MyFriends = ({ navigation }) => {
+export const MyFriendsScreen = ({ navigation }) => {
   const { friends, removeFriend, handleSearch } = useFriends();
 
   const [filteredFriends, setFilteredFriends] = useState(friends);
