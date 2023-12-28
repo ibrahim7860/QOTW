@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Response} from "../components/Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
@@ -24,7 +24,7 @@ export const ResponsesScreen = ({ navigation }) => {
   };
 
   const goToQOTW = () => {
-    navigation.navigate("Question", { alreadyResponded: true });
+    navigation.push("Question", { alreadyResponded: true });
   };
 
   return (
@@ -32,14 +32,14 @@ export const ResponsesScreen = ({ navigation }) => {
       <SafeAreaView>
         <View style={styles.topContainer}>
           <TouchableOpacity onPress={goToFriends}>
-            <Icon name="user-friends" size={28} color="white" />
+            <Icon name="user-friends" size={27} color="white" />
           </TouchableOpacity>
 
           <Text style={styles.headerStyle}>QOTW</Text>
 
           <View style={{ flexDirection: "row" }}>
             <TouchableOpacity onPress={goToMessages}>
-              <Icon name="comment-dots" size={28} color="white" />
+              <Icon name="comment" size={28} color="white" solid />
             </TouchableOpacity>
             <TouchableOpacity onPress={goToUserProfile}>
               <Image
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
     color: "#ababab",
   },
   profilePic: {
-    width: 30,
-    height: 30,
+    width: 32,
+    height: 32,
     borderWidth: 1,
     borderRadius: 30,
     marginLeft: 10,

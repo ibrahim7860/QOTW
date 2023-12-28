@@ -52,7 +52,7 @@ export const QuestionScreen = ({ route, navigation }) => {
             </View>
 
             <View>
-              <Button onPress={() => console.log("Submit Pressed")}>
+              <Button onPress={() => navigation.navigate('Responses')}>
                 <Image
                   source={require("../../assets/send.png")}
                   style={{ width: 30, height: 30 }}

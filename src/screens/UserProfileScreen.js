@@ -18,8 +18,6 @@ export const UserProfileScreen = ({ route, navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setProfilePic(result.assets[0].uri);
     }
@@ -29,9 +27,9 @@ export const UserProfileScreen = ({ route, navigation }) => {
     navigation.navigate("Responses");
   };
 
-  const handleSettingsClick = () => {
-    console.log("Settings");
-  };
+  const handleLogout = () => {
+    navigation.navigate("Welcome Screen")
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -51,9 +49,9 @@ export const UserProfileScreen = ({ route, navigation }) => {
           rippleColor="#fff"
           rippleOpacity={0.9}
           rippleSize={100}
-          onPress={handleSettingsClick}
+          onPress={handleLogout}
         >
-          <Icon name="settings" size={24} color="white" />
+          <Icon name="logout" size={24} color="white" />
         </Ripple>
       </TouchableOpacity>
 
