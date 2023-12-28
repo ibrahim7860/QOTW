@@ -93,8 +93,7 @@ export const ResponsesProvider = ({ children }) => {
     fullName: "Nayeem Belal",
     username: "nabansnd",
     profilePicUri: defaultProfilePic,
-    userResponse:
-      "Palestine, a region in Western Asia, holds profound historical and cultural significance. Encompassing parts of modern Israel and the Palestinian territories of the West Bank and Gaza Strip, it has been a crossroads of religion, culture, and politics. Historically known as the land of the Philistines, it has witnessed diverse.",
+    userResponse: null
   });
 
   const addResponse = (newResponse) => {
@@ -111,7 +110,7 @@ export const ResponsesProvider = ({ children }) => {
 
   return (
     <ResponsesContext.Provider
-      value={{ responses, myResponse, addResponse, updateResponse }}
+      value={{ responses, myResponse, setMyResponse, addResponse, updateResponse }}
     >
       {children}
     </ResponsesContext.Provider>
