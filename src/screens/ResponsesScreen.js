@@ -4,9 +4,12 @@ import {Response} from "../components/Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {useResponses} from "../context/ResponsesContext";
+import {useReactions} from "../context/ReactionsContext";
+import {MyResponse} from "../components/MyResponse";
 
 export const ResponsesScreen = ({ navigation }) => {
   const { responses, myResponse } = useResponses();
+  const { reactions } = useReactions();
 
   const goToMessages = () => {
     navigation.navigate("Messages");
@@ -54,16 +57,11 @@ export const ResponsesScreen = ({ navigation }) => {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <TouchableOpacity>
-          <View style={styles.myBoxStyle}>
-            <Text style={styles.myResponseStyle}>
-              {myResponse.userResponse}
-            </Text>
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <Text style={styles.myTextStyle}>Your Response</Text>
-          </View>
-        </TouchableOpacity>
+        <MyResponse
+            myResponse={myResponse}
+            reactions={reactions}
+            navigation={navigation}
+        />
         {responses.map((item) => (
           <Response user={item} />
         ))}
@@ -98,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ababab",
     borderRadius: 20,
     padding: "5%",
-    marginVertical: 10,
+    marginVertical: "3%",
     width: 350,
     alignSelf: "center",
   },

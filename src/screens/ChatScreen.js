@@ -13,31 +13,46 @@ import {
 import { MessageBubble } from "../components/MessageBubble";
 import Button from "../components/Button";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useConversations } from "../context/ConversationsContext";
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;
   const { conversationName } = route.params;
   const { profilePic } = route.params;
-  const { updateLastMessage } = useConversations();
+  const { isReadOnly } = route.params;
+  const { senderName } = route.params;
 
   // Fetch and display messages based on conversationId
   // Replace this with your logic to fetch real messages
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([{
+    id: 1,
+    text: "Hello There",
+    isSender: true
+  },
+    {
+      id: 2,
+      text: "Woah There",
+      isSender: false
+    },
+    {
+      id: 3,
+      text: "Wassup There",
+      isSender: true
+    },
+  ]);
 
   const [newMessage, setNewMessage] = useState("");
 
   const handleSend = () => {
-    if (newMessage.trim() !== "") {
+    if (!isReadOnly && newMessage.trim() !== "") {
       const newMessageObj = {
         id: `${messages.length + 1}`,
         text: newMessage,
         isSender: true, // Assuming the user sending the message is the sender
+        senderName: senderName,
       };
 
       setMessages([...messages, newMessageObj]);
       setNewMessage("");
-      updateLastMessage(conversationId, newMessage);
     }
   };
 
@@ -58,9 +73,15 @@ export const ChatScreen = ({ route, navigation }) => {
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <MessageBubble message={item.text} isSender={item.isSender} />
+              <View>
+                <Text style={[styles.senderName, item.isSender ? styles.senderRight : styles.senderLeft]}>
+                  {item.isSender ? conversationName : senderName}
+                </Text>
+                <MessageBubble message={item.text} isSender={item.isSender} />
+              </View>
           )}
         />
+        {!isReadOnly && (
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -78,6 +99,7 @@ export const ChatScreen = ({ route, navigation }) => {
             />
           </Button>
         </View>
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -126,5 +148,18 @@ const styles = StyleSheet.create({
     color: "white",
     marginRight: 10,
     fontSize: 18,
+  },
+  senderName: {
+    fontSize: 14,
+    color: 'gray',
+    marginVertical: 3,
+  },
+  senderRight: {
+    textAlign: 'right',
+    marginRight: "7%", // Adjust the margin as needed
+  },
+  senderLeft: {
+    textAlign: 'left',
+    marginLeft: "7%",
   },
 });

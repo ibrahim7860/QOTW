@@ -10,7 +10,7 @@ export const ConversationItem = ({ conversation, onPress }) => {
       <Image source={conversation.profilePicUri} style={styles.profilePic} />
       <View style={styles.textContainer}>
         <Text style={styles.name}>{conversation.name}</Text>
-        <Text style={styles.lastMessage}>{conversation.lastMessage}</Text>
+        <Text style={styles.username}>{conversation.username}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -40,5 +40,9 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 15,
   },
-  // ... other styles ...
+  username: {
+    color: 'white',
+    fontWeight: "500",
+    fontSize: 15,
+  }
 });

@@ -4,9 +4,11 @@ import Button from "./Button";
 import {useNavigation} from "@react-navigation/native";
 import { ResponseReaction } from "./ResponseReaction";
 import { useReactions } from "../context/ReactionsContext";
+import {useResponses} from "../context/ResponsesContext";
 
 export const Response = ({ user }) => {
   const navigation = useNavigation();
+  const { responses, myResponse } = useResponses();
   const { reactions } = useReactions();
 
   const goToFriendProfile = () => {
@@ -14,6 +16,25 @@ export const Response = ({ user }) => {
       fullName: user.fullName,
       username: user.username,
       isAdding: false,
+    });
+  };
+
+  const handleReactionClick = (reaction) => {
+    // Find the response associated with this reaction
+    const associatedResponse = responses.find(response => response.id === reaction.responseId);
+
+    const responseAuthor = {
+      name: associatedResponse.fullName,
+      username: associatedResponse.username,
+      profilePic: associatedResponse.profilePicUri,
+    };
+
+    navigation.navigate('Chat', {
+      conversationId: reaction.id,
+      conversationName: responseAuthor.name,
+      profilePic: reaction.profilePic,
+      isReadOnly: true,
+      senderName: reaction.name
     });
   };
 
@@ -62,10 +83,10 @@ export const Response = ({ user }) => {
       </View>
     </View>
         <View style={styles.reactionsContainerStyle}>
-          <ScrollView horizontal={true}>
-            {reactions.map((item) => (
-                <TouchableOpacity onPress={() => console.log("daddy")}>
-                  <ResponseReaction reaction={item} />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {reactions.map((reaction) => (
+                <TouchableOpacity onPress={() => handleReactionClick(reaction)}>
+                  <ResponseReaction reaction={reaction} />
                 </TouchableOpacity>
             ))}
           </ScrollView>
