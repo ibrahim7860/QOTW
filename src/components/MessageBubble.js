@@ -15,7 +15,7 @@ export const MessageBubble = ({ isSender, message }) => {
 const styles = StyleSheet.create({
   bubble: {
     maxWidth: "70%",
-    padding: 10,
+    padding: 8,
     borderRadius: 20,
     marginVertical: 5,
     marginHorizontal: 10,

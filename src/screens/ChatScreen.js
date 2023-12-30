@@ -68,7 +68,7 @@ export const ChatScreen = ({ route, navigation }) => {
             <MaterialIcons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
           <Image source={profilePic} style={styles.profilePic} />
-          <Text style={styles.headerText}>{conversationName}</Text>
+          <Text style={styles.headerText}>{senderName}</Text>
         </View>
         <FlatList
           data={messages}
@@ -149,11 +149,11 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 40,
+    minHeight: 40,
     borderColor: "gray",
     borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingTop: 9,
+    paddingTop: 10,
+    padding: 10,
     color: "white",
     backgroundColor: "#424140",
     marginRight: 5,
@@ -165,11 +165,11 @@ const styles = StyleSheet.create({
     marginVertical: 3,
   },
   senderRight: {
-    textAlign: "right",
-    marginRight: "7%",
+    alignSelf: "flex-end",
+    marginHorizontal: 15
   },
   senderLeft: {
-    textAlign: "left",
-    marginLeft: "7%",
+    alignSelf: "flex-start",
+    marginHorizontal: 15
   },
 });
