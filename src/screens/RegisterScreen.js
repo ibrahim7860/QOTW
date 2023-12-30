@@ -66,8 +66,7 @@ export const RegisterScreen = ({ navigation }) => {
             Just a few quick steps and you'll be all set!
           </Text>
         </View>
-        <View style={{ flex: 1 }}>
-          <KeyboardAwareScrollView keyboardShouldPersistTaps='handled' showsVerticalScrollIndicator={false} keyboardOpeningTime={0} >
+        <KeyboardAwareScrollView contentContainerStyle={{flex: 1}} keyboardShouldPersistTaps='handled' showsVerticalScrollIndicator={false} keyboardOpeningTime={100} >
             <View style={{ paddingHorizontal: 20 }}>
               <TextInput
                 placeholder="Full Name"
@@ -120,11 +119,11 @@ export const RegisterScreen = ({ navigation }) => {
                 onChangeText={setConfirmPassword}
                 value={confirmPassword}
               />
+              <View style={{ height: 60 }} />
               {passwordError ? (
                 <Text style={styles.errorText}>{passwordError}</Text>
               ) : null}
             </View>
-          </KeyboardAwareScrollView>
           <View style={{ flexGrow: 3, paddingHorizontal: 20 }}>
             <TouchableOpacity
               style={styles.createAccountStyle}
@@ -142,7 +141,7 @@ export const RegisterScreen = ({ navigation }) => {
               </Text>
             </View>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
