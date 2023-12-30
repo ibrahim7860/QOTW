@@ -1,65 +1,68 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import {ResponseReaction} from "./ResponseReaction";
+import React from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import { ResponseReaction } from "./ResponseReaction";
 
 export const MyResponse = ({ myResponse, reactions, navigation }) => {
-    const handleReactionClick = (reaction) => {
+  const handleReactionClick = (reaction) => {
+    navigation.navigate("Chat", {
+      conversationId: reaction.id,
+      conversationName: myResponse.fullName,
+      profilePic: reaction.profilePic,
+      isReadOnly: true,
+      senderName: reaction.name,
+    });
+  };
 
-        navigation.navigate('Chat', {
-            conversationId: reaction.id,
-            conversationName: myResponse.fullName,
-            profilePic: reaction.profilePic,
-            isReadOnly: true,
-            senderName: reaction.name
-        });
-    };
-
-    return (
-        <TouchableOpacity>
-            <View style={{ alignItems: "center", marginTop: 10 }}>
-                <Text style={styles.myTextStyle}>Your Response</Text>
-            </View>
-            <View style={styles.myBoxStyle}>
-                <Text style={styles.myResponseStyle}>
-                    {myResponse.userResponse}
-                </Text>
-            </View>
-            <View style={styles.reactionsContainerStyle}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {reactions.map((reaction) => (
-                        <TouchableOpacity onPress={() => handleReactionClick(reaction)}>
-                            <ResponseReaction reaction={reaction} />
-                        </TouchableOpacity>
-                    ))}
-                </ScrollView>
-            </View>
-        </TouchableOpacity>
-    );
+  return (
+    <TouchableOpacity>
+      <View style={{ alignItems: "center", marginTop: 10 }}>
+        <Text style={styles.myTextStyle}>Your Response</Text>
+      </View>
+      <View style={styles.myBoxStyle}>
+        <Text style={styles.myResponseStyle}>{myResponse.userResponse}</Text>
+      </View>
+      <View style={styles.reactionsContainerStyle}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {reactions.map((reaction) => (
+            <TouchableOpacity onPress={() => handleReactionClick(reaction)}>
+              <ResponseReaction reaction={reaction} />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({
-    myBoxStyle: {
-        backgroundColor: "#ababab",
-        borderRadius: 20,
-        padding: "5%",
-        marginVertical: "3%",
-        width: 350,
-        alignSelf: "center",
-    },
-    myResponseStyle: {
-        fontSize: 19,
-        fontWeight: "700",
-        color: "#1b0a01",
-    },
-    myTextStyle: {
-        fontSize: 15,
-        fontWeight: "600",
-        color: "#ababab",
-    },
-    reactionsContainerStyle: {
-        alignSelf: "center",
-        width: 350,
-        marginBottom: "5%",
-        marginTop: "2%"
-    },
+  myBoxStyle: {
+    backgroundColor: "#ababab",
+    borderRadius: 20,
+    padding: "5%",
+    marginVertical: "3%",
+    width: 350,
+    alignSelf: "center",
+  },
+  myResponseStyle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#1b0a01",
+  },
+  myTextStyle: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#ababab",
+  },
+  reactionsContainerStyle: {
+    alignSelf: "center",
+    width: 350,
+    marginBottom: "5%",
+    marginTop: "2%",
+  },
 });
