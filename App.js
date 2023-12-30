@@ -21,13 +21,31 @@ import { ReactionsProvider } from "./src/context/ReactionsContext";
 
 const Stack = createStackNavigator();
 
-const leftToRightAnimation = {
+const slightAnimation = {
   animationEnabled: true,
   transitionSpec: {
     open: { animation: 'timing', config: { duration: 100 } },
     close: { animation: 'timing', config: { duration: 100 } },
   },
   cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
+};
+
+const leftToRightAnimation = {
+  gestureDirection: "horizontal-inverted",
+  cardStyleInterpolator: ({ current, layouts }) => {
+    return {
+      cardStyle: {
+        transform: [
+          {
+            translateX: current.progress.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-layouts.screen.width, 0],
+            }),
+          },
+        ],
+      },
+    };
+  },
 };
 
 const bottomToTopAnimation = ({ current, layouts }) => {
@@ -87,7 +105,7 @@ export default function App() {
                   <Stack.Screen
                     name="Friend Requests"
                     component={FriendRequestsScreen}
-                    options={leftToRightAnimation}
+                    options={slightAnimation}
                   />
                   <Stack.Screen
                     name="Question"

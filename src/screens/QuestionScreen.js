@@ -75,7 +75,7 @@ export const QuestionScreen = ({ route, navigation }) => {
             </View>
 
             <View>
-              <Button onPress={handleSubmit}>
+              <Button onPress={handleSubmit} disabled={!userInput.trim()}>
                 <Image
                   source={require("../../assets/send.png")}
                   style={{ width: 30, height: 30 }}

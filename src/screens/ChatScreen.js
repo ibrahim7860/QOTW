@@ -101,7 +101,7 @@ export const ChatScreen = ({ route, navigation }) => {
               onSubmitEditing={handleSend}
               returnKeyType="send"
             />
-            <Button onPress={handleSend} style={{ marginTop: 5 }}>
+            <Button onPress={handleSend} style={{ marginTop: 5 }} disabled={!newMessage.trim()}>
               <Image
                 source={require("../../assets/send.png")}
                 style={{ width: 30, height: 30 }}
@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     paddingTop: 9,
     color: "white",
     backgroundColor: "#424140",
-    borderRadius: 10,
     marginRight: 5,
     fontSize: 18,
   },
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
   },
   senderRight: {
     textAlign: "right",
-    marginRight: "7%", // Adjust the margin as needed
+    marginRight: "7%",
   },
   senderLeft: {
     textAlign: "left",

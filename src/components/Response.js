@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Image,
   ScrollView,
@@ -18,6 +18,7 @@ export const Response = ({ user }) => {
   const navigation = useNavigation();
   const { responses, myResponse } = useResponses();
   const { reactions } = useReactions();
+  const [userInput, setUserInput] = useState("");
 
   const goToFriendProfile = () => {
     navigation.navigate("Friend Profile", {
@@ -79,11 +80,13 @@ export const Response = ({ user }) => {
                 multiline
                 selectionColor={"white"}
                 style={styles.textInputStyle}
+                onChangeText={setUserInput}
+                value={userInput}
               />
             </View>
 
             <View style={{ justifyContent: "center" }}>
-              <Button onPress={() => console.log("Submit Pressed")}>
+              <Button onPress={() => console.log("Submit Pressed")} disabled={!userInput.trim()}>
                 <Image
                   source={require("../../assets/send.png")}
                   style={{ width: 25, height: 25 }}
