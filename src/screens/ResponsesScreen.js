@@ -137,6 +137,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     marginLeft: 20,
-    color: "#ababab",
   },
 });

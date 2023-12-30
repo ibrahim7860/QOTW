@@ -1,22 +1,45 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+  Alert,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import { Shadow } from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
-import { askAsync, CAMERA } from "expo-permissions";
+import { Camera } from "expo-camera";
 
 export const UserProfileScreen = ({ route, navigation }) => {
   const { fullName, username } = route.params;
   const [profilePic, setProfilePic] = useState(null);
 
+  const checkAndRequestCameraPermission = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+    return status;
+  };
+  const openSettings = () => {
+    Linking.openSettings();
+  };
+
   const updateProfilePic = async () => {
-    // Requesting the permission to use the camera
-    const { status } = await askAsync(CAMERA);
+    const status = await checkAndRequestCameraPermission();
 
     if (status !== "granted") {
-      alert("Sorry, we need camera permissions to make this work!");
+      Alert.alert(
+        "Camera Permission",
+        "Camera permission is required to take pictures. Please enable it in the app settings.",
+        [
+          { text: "Cancel", style: "cancel" },
+          { text: "OK", onPress: openSettings },
+        ],
+        { cancelable: false }
+      );
       return;
     }
 
