@@ -1,9 +1,16 @@
 import React from "react";
-import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
-import {Response} from "../components/Response";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Response } from "../components/Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import {useResponses} from "../context/ResponsesContext";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useResponses } from "../context/ResponsesContext";
 
 export const ResponsesScreen = ({ navigation }) => {
   const { responses, myResponse } = useResponses();
@@ -50,10 +57,7 @@ export const ResponsesScreen = ({ navigation }) => {
           </View>
         </View>
       </SafeAreaView>
-      <KeyboardAwareScrollView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
+      <KeyboardAwareScrollView extraScrollHeight={25}>
         <TouchableOpacity>
           <View style={styles.myBoxStyle}>
             <Text style={styles.myResponseStyle}>
@@ -125,7 +129,7 @@ const styles = StyleSheet.create({
     right: 10,
     width: 50,
     height: 50,
-    backgroundColor: "brown",
+    // backgroundColor: "#291400",
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",

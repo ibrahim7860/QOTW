@@ -1,7 +1,16 @@
 import React from "react";
-import {Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Button from "./Button";
-import {useNavigation} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { ResponseReaction } from "./ResponseReaction";
 import { useReactions } from "../context/ReactionsContext";
 
@@ -18,59 +27,60 @@ export const Response = ({ user }) => {
   };
 
   return (
-      <>
-    <View style={styles.responseBox}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <Button onPress={goToFriendProfile}>
-          <Image
-            source={require("../../assets/default.jpeg")}
-            style={styles.profilePic}
-          />
-        </Button>
-        <View style={{ flexDirection: "column", padding: 10 }}>
-          <Text style={styles.fullName}>{user.fullName}</Text>
-          <Text style={styles.responseText}>{user.username}</Text>
-        </View>
-      </View>
-      <View style={styles.containerStyle}>
-        <Text style={styles.repsonseText}>{user.userResponse}</Text>
-        <View style={styles.textInputStyle}>
-          <View style={{ flex: 1 }}>
-            <TextInput
-              placeholder="Start a conversation"
-              placeholderTextColor="#ababab"
-              keyboardAppearance="dark"
-              selectionColor={"white"}
-              style={styles.textInputStyle}
+    <>
+      <View style={styles.responseBox}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Button onPress={goToFriendProfile}>
+            <Image
+              source={require("../../assets/default.jpeg")}
+              style={styles.profilePic}
             />
+          </Button>
+          <View style={{ flexDirection: "column", padding: 10 }}>
+            <Text style={styles.fullName}>{user.fullName}</Text>
+            <Text style={styles.responseText}>{user.username}</Text>
           </View>
-
-          <View style={{ justifyContent: "center" }}>
-            <Button onPress={() => console.log("Submit Pressed")}>
-              <Image
-                source={require("../../assets/send.png")}
-                style={{ width: 25, height: 25 }}
+        </View>
+        <View style={styles.containerStyle}>
+          <Text style={styles.repsonseText}>{user.userResponse}</Text>
+          <View style={styles.textInputStyle}>
+            <View style={{ flex: 1 }}>
+              <TextInput
+                placeholder="Start a conversation"
+                placeholderTextColor="#ababab"
+                keyboardAppearance="dark"
+                multiline
+                selectionColor={"white"}
+                style={styles.textInputStyle}
               />
-            </Button>
+            </View>
+
+            <View style={{ justifyContent: "center" }}>
+              <Button onPress={() => console.log("Submit Pressed")}>
+                <Image
+                  source={require("../../assets/send.png")}
+                  style={{ width: 25, height: 25 }}
+                />
+              </Button>
+            </View>
           </View>
         </View>
       </View>
-    </View>
-        <View style={styles.reactionsContainerStyle}>
-          <ScrollView horizontal={true}>
-            {reactions.map((item) => (
-                <TouchableOpacity onPress={() => console.log("daddy")}>
-                  <ResponseReaction reaction={item} />
-                </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      </>
+      <View style={styles.reactionsContainerStyle}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {reactions.map((item) => (
+            <TouchableOpacity onPress={() => console.log("daddy")}>
+              <ResponseReaction reaction={item} />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+    </>
   );
 };
 

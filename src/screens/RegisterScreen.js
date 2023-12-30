@@ -7,6 +7,8 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
 export const RegisterScreen = ({ navigation }) => {
@@ -29,84 +31,98 @@ export const RegisterScreen = ({ navigation }) => {
     }
   };
 
+  const handleDismissKeyboard = () => {
+    Keyboard.dismiss(); // Dismiss the keyboard when tapped outside
+  };
+
   return (
-    <SafeAreaView style={styles.mainContainerStyle}>
-      <ScrollView
-        contentContainerStyle={styles.mainContainerStyle}
-        automaticallyAdjustKeyboardInsets={true}
-      >
-        <View style={{ paddingHorizontal: 20 }}>
-          <View>
-            <Text style={styles.headerStyle}>QOTW</Text>
-            <Text style={styles.descriptionStyle}>
-              Just a few quick steps and you'll be all set!
-            </Text>
-          </View>
-
-          <View style={{ marginVertical: "10%" }}>
-            <TextInput
-              placeholder="Username"
-              placeholderTextColor="white"
-              keyboardAppearance="dark"
-              selectionColor={"white"}
-              style={styles.textInputStyle}
-            />
-            <TextInput
-              placeholder="Email"
-              placeholderTextColor="white"
-              keyboardAppearance="dark"
-              selectionColor={"white"}
-              style={styles.textInputStyle}
-            />
-            <TextInput
-              placeholder="Password"
-              placeholderTextColor="white"
-              secureTextEntry
-              keyboardAppearance="dark"
-              selectionColor={"white"}
-              style={styles.textInputStyle}
-              onChangeText={setPassword}
-              value={password}
-            />
-            <TextInput
-              placeholder="Re-Enter Password"
-              placeholderTextColor="white"
-              secureTextEntry
-              keyboardAppearance="dark"
-              selectionColor={"white"}
-              style={styles.textInputStyle}
-              onChangeText={setConfirmPassword}
-              value={confirmPassword}
-            />
-            {passwordError ? (
-              <Text style={styles.errorText}>{passwordError}</Text>
-            ) : null}
-          </View>
-
-          <TouchableOpacity
-            style={styles.createAccountStyle}
-            onPress={handleRegister}
-          >
-            <Text style={styles.createTextStyle}>Create Account</Text>
-          </TouchableOpacity>
-
-          <View>
-            <Text
-              style={styles.haveAccountStyle}
-              onPress={handleAlreadyHaveAccount}
+    <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
+      <SafeAreaView style={styles.mainContainerStyle}>
+        <View
+          style={{
+            paddingHorizontal: 20,
+            paddingBottom: 10,
+          }}
+        >
+          <Text style={styles.headerStyle}>QOTW</Text>
+          <Text style={styles.descriptionStyle}>
+            Just a few quick steps and you'll be all set!
+          </Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <ScrollView automaticallyAdjustKeyboardInsets={true}>
+            <View style={{ paddingHorizontal: 20 }}>
+              <TextInput
+                placeholder="Full Name"
+                placeholderTextColor="white"
+                keyboardAppearance="dark"
+                selectionColor={"white"}
+                style={styles.textInputStyle}
+              />
+              <TextInput
+                placeholder="Username"
+                placeholderTextColor="white"
+                keyboardAppearance="dark"
+                selectionColor={"white"}
+                style={styles.textInputStyle}
+              />
+              <TextInput
+                placeholder="Email"
+                placeholderTextColor="white"
+                keyboardAppearance="dark"
+                selectionColor={"white"}
+                style={styles.textInputStyle}
+              />
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="white"
+                secureTextEntry
+                keyboardAppearance="dark"
+                selectionColor={"white"}
+                style={styles.textInputStyle}
+                onChangeText={setPassword}
+                value={password}
+              />
+              <TextInput
+                placeholder="Re-Enter Password"
+                placeholderTextColor="white"
+                secureTextEntry
+                keyboardAppearance="dark"
+                selectionColor={"white"}
+                style={styles.textInputStyle}
+                onChangeText={setConfirmPassword}
+                value={confirmPassword}
+              />
+              {passwordError ? (
+                <Text style={styles.errorText}>{passwordError}</Text>
+              ) : null}
+            </View>
+          </ScrollView>
+          <View style={{ flexGrow: 3, paddingHorizontal: 20 }}>
+            <TouchableOpacity
+              style={styles.createAccountStyle}
+              onPress={handleRegister}
             >
-              Already have an account?
-            </Text>
+              <Text style={styles.createTextStyle}>Create Account</Text>
+            </TouchableOpacity>
+
+            <View>
+              <Text
+                style={styles.haveAccountStyle}
+                onPress={handleAlreadyHaveAccount}
+              >
+                Already have an account?
+              </Text>
+            </View>
           </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
   mainContainerStyle: {
     flex: 1,
-    justifyContent: "center",
     backgroundColor: "#291400",
   },
   headerStyle: {
