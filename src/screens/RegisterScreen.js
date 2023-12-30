@@ -124,7 +124,7 @@ export const RegisterScreen = ({ navigation }) => {
               onChangeText={setConfirmPassword}
               value={confirmPassword}
             />
-            <View style={{ height: 60 }} />
+            <View style={{ height: "5%" }} />
             {passwordError ? (
               <Text style={styles.errorText}>{passwordError}</Text>
             ) : null}
