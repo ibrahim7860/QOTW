@@ -15,15 +15,23 @@ export const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [username, setUsername] = useState("");
+  const MIN_USERNAME_LENGTH = 3;
 
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
   };
 
   const handleRegister = () => {
+    if (username.length < MIN_USERNAME_LENGTH) {
+      setUsernameError("Username must be at least 3 characters");
+      return;
+    }
     if (password === confirmPassword) {
       // Proceed with the registration process
       setPasswordError("");
+      setUsernameError("");
       // ... registration logic
       navigation.navigate("Question", { alreadyResponded: false });
     } else {
@@ -90,7 +98,13 @@ export const RegisterScreen = ({ navigation }) => {
               style={inputnameStyle}
               onFocus={() => setUserFocus(true)}
               onBlur={() => setUserFocus(false)}
+              value={username}
+              onChangeText={setUsername}
+              maxLength={18}
             />
+            {usernameError ? (
+              <Text style={{ color: "red" }}>{usernameError}</Text>
+            ) : null}
             <TextInput
               placeholder="Email"
               placeholderTextColor="#ababab"
