@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
   View,
   Text,
@@ -44,6 +44,15 @@ export const ChatScreen = ({ route, navigation }) => {
   ]);
 
   const [newMessage, setNewMessage] = useState("");
+  const flatListRef = useRef();
+
+  useEffect(() => {
+    if (flatListRef.current) {
+      setTimeout(() => {
+        flatListRef.current.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [messages]);
 
   const handleSend = () => {
     if (!isReadOnly && newMessage.trim() !== "") {
@@ -74,6 +83,7 @@ export const ChatScreen = ({ route, navigation }) => {
           <Text style={styles.headerText}>{senderName}</Text>
         </View>
         <FlatList
+            ref={flatListRef}
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
