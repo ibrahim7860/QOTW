@@ -11,27 +11,21 @@ export const ConversationsProvider = ({ children }) => {
     {
       id: "1",
       name: "John Doe",
+      username: "john_doe",
       lastMessage: null,
       profilePicUri: defaultProfilePic,
     },
     {
       id: "2",
-      name: "Nayeem Belal",
+      name: "Ibrahim Ahmed",
+      username: "ibbytoolitty",
       lastMessage: null,
       profilePicUri: defaultProfilePic,
     },
   ]);
 
-  const updateLastMessage = (conversationId, lastMessage) => {
-    setConversations((prevConversations) =>
-      prevConversations.map((conv) =>
-        conv.id === conversationId ? { ...conv, lastMessage } : conv
-      )
-    );
-  };
-
   return (
-    <ConversationsContext.Provider value={{ conversations, updateLastMessage }}>
+    <ConversationsContext.Provider value={{ conversations }}>
       {children}
     </ConversationsContext.Provider>
   );

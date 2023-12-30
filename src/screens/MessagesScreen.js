@@ -5,17 +5,19 @@ import {ConversationItem} from "../components/ConversationItem";
 import {useConversations} from "../context/ConversationsContext";
 import {MaterialIcons} from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
+import {useResponses} from "../context/ResponsesContext";
 
 export const MessagesScreen = () => {
   const navigation = useNavigation();
-
   const { conversations } = useConversations();
+  const { responses, myResponse } = useResponses();
 
   const handleConversationPress = (conversation) => {
     navigation.navigate("Chat", {
       conversationId: conversation.id,
-      conversationName: conversation.name,
+      conversationName: myResponse.fullName,
       profilePic: conversation.profilePicUri,
+      senderName: conversation.name,
     });
   };
 

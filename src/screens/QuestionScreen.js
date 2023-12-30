@@ -1,11 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import {Image, KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View,} from "react-native";
 import Button from "../components/Button";
 import {MaterialIcons} from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
+import {useResponses} from "../context/ResponsesContext";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
+  const { setMyResponse } = useResponses();
+  const [userInput, setUserInput] = useState("");
+
+  const handleSubmit = () => {
+    setMyResponse(prevState => ({
+      ...prevState,
+      userResponse: userInput
+    }));
+    navigation.navigate('Responses');
+  };
+
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -48,11 +60,13 @@ export const QuestionScreen = ({ route, navigation }) => {
                 keyboardAppearance="dark"
                 selectionColor={"white"}
                 style={styles.textInputStyle}
+                onChangeText={setUserInput}
+                value={userInput}
               />
             </View>
 
             <View>
-              <Button onPress={() => console.log("Submit Pressed")}>
+              <Button onPress={handleSubmit}>
                 <Image
                   source={require("../../assets/send.png")}
                   style={{ width: 30, height: 30 }}
