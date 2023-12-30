@@ -35,6 +35,23 @@ export const RegisterScreen = ({ navigation }) => {
     Keyboard.dismiss(); // Dismiss the keyboard when tapped outside
   };
 
+  const [focus, setFocus] = useState(false);
+  const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
+
+  const [userfocus, setUserFocus] = useState(false);
+  const inputnameStyle = userfocus ? styles.focusInput : styles.textInputStyle;
+
+  const [emailfocus, setemailFocus] = useState(false);
+  const inputEmailStyle = emailfocus
+    ? styles.focusInput
+    : styles.textInputStyle;
+
+  const [passfocus, setpassFocus] = useState(false);
+  const inputpassStyle = passfocus ? styles.focusInput : styles.textInputStyle;
+
+  const [rePassfocus, setrePassFocus] = useState(false);
+  const inputreStyle = rePassfocus ? styles.focusInput : styles.textInputStyle;
+
   return (
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
       <SafeAreaView style={styles.mainContainerStyle}>
@@ -49,71 +66,84 @@ export const RegisterScreen = ({ navigation }) => {
             Just a few quick steps and you'll be all set!
           </Text>
         </View>
-        <View style={{ flex: 1 }}>
-          <ScrollView automaticallyAdjustKeyboardInsets={true}>
-            <View style={{ paddingHorizontal: 20 }}>
-              <TextInput
-                placeholder="Full Name"
-                placeholderTextColor="#ababab"
-                keyboardAppearance="dark"
-                selectionColor={"white"}
-                style={styles.textInputStyle}
-              />
-              <TextInput
-                placeholder="Username"
-                placeholderTextColor="#ababab"
-                keyboardAppearance="dark"
-                selectionColor={"white"}
-                style={styles.textInputStyle}
-              />
-              <TextInput
-                placeholder="Email"
-                placeholderTextColor="#ababab"
-                keyboardAppearance="dark"
-                selectionColor={"white"}
-                style={styles.textInputStyle}
-              />
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="#ababab"
-                secureTextEntry
-                keyboardAppearance="dark"
-                selectionColor={"white"}
-                style={styles.textInputStyle}
-                onChangeText={setPassword}
-                value={password}
-              />
-              <TextInput
-                placeholder="Re-Enter Password"
-                placeholderTextColor="#ababab"
-                secureTextEntry
-                keyboardAppearance="dark"
-                selectionColor={"white"}
-                style={styles.textInputStyle}
-                onChangeText={setConfirmPassword}
-                value={confirmPassword}
-              />
-              {passwordError ? (
-                <Text style={styles.errorText}>{passwordError}</Text>
-              ) : null}
-            </View>
-          </ScrollView>
-          <View style={{ flexGrow: 3, paddingHorizontal: 20 }}>
-            <TouchableOpacity
-              style={styles.createAccountStyle}
-              onPress={handleRegister}
-            >
-              <Text style={styles.createTextStyle}>Create Account</Text>
-            </TouchableOpacity>
+        <ScrollView automaticallyAdjustKeyboardInsets={true}>
+          <View style={{ paddingHorizontal: 20 }}>
+            <TextInput
+              placeholder="Full Name"
+              placeholderTextColor="#ababab"
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
+              keyboardAppearance="dark"
+              selectionColor={"white"}
+              style={inputUserStyle}
+            />
+            <TextInput
+              placeholder="Username"
+              placeholderTextColor="#ababab"
+              onFocus={() => setUserFocus(true)}
+              onBlur={() => setUserFocus(false)}
+              keyboardAppearance="dark"
+              selectionColor={"white"}
+              style={inputnameStyle}
+            />
+            <TextInput
+              placeholder="Email"
+              placeholderTextColor="#ababab"
+              onFocus={() => setemailFocus(true)}
+              onBlur={() => setemailFocus(false)}
+              keyboardAppearance="dark"
+              selectionColor={"white"}
+              style={inputEmailStyle}
+            />
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor="#ababab"
+              onFocus={() => setpassFocus(true)}
+              onBlur={() => setpassFocus(false)}
+              secureTextEntry
+              keyboardAppearance="dark"
+              selectionColor={"white"}
+              style={inputpassStyle}
+              onChangeText={setPassword}
+              value={password}
+            />
+            <TextInput
+              placeholder="Re-Enter Password"
+              placeholderTextColor="#ababab"
+              onFocus={() => setrePassFocus(true)}
+              onBlur={() => setrePassFocus(false)}
+              secureTextEntry
+              keyboardAppearance="dark"
+              selectionColor={"white"}
+              style={inputreStyle}
+              onChangeText={setConfirmPassword}
+              value={confirmPassword}
+            />
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
+          </View>
+        </ScrollView>
+        <View
+          style={{
+            flexGrow: 1,
+            paddingHorizontal: 20,
+          }}
+        >
+          <TouchableOpacity
+            style={styles.createAccountStyle}
+            onPress={handleRegister}
+          >
+            <Text style={styles.createTextStyle}>Create Account</Text>
+          </TouchableOpacity>
 
-            <View>
-              <Text
-                style={styles.haveAccountStyle}
-                onPress={handleAlreadyHaveAccount}
-              >
-                Already have an account?
-              </Text>
-            </View>
+          <View>
+            <Text
+              style={styles.haveAccountStyle}
+              onPress={handleAlreadyHaveAccount}
+            >
+              Already have an account?
+            </Text>
           </View>
         </View>
       </SafeAreaView>
@@ -142,10 +172,21 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "white",
     fontWeight: "600",
-    padding: 20,
+    padding: 15,
     backgroundColor: "#424140",
-    borderRadius: 15,
+    borderRadius: 10,
     marginVertical: "2%",
+  },
+  focusInput: {
+    fontSize: 15,
+    color: "white",
+    fontWeight: "600",
+    padding: 15,
+    backgroundColor: "#424140",
+    borderRadius: 10,
+    marginVertical: "2%",
+    borderWidth: 1,
+    borderColor: "#ababab",
   },
   createTextStyle: {
     color: "#291400",
