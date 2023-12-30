@@ -34,7 +34,7 @@ export const SearchBar = ({ onSearch }) => {
             value={searchQuery}
             placeholderTextColor="#ababab"
             keyboardAppearance="dark"
-            selectionColor={"white"}
+            selectionColor={"#ababab"}
             onChangeText={handleInputChange}
           />
         </View>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#424140",
     borderRadius: 10,
     marginHorizontal: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
   input: {
     flex: 1,
