@@ -74,7 +74,7 @@ export const QuestionScreen = ({ route, navigation }) => {
               />
             </View>
 
-            <View>
+            <View style={{ padding: 5 }}>
               <Button onPress={handleSubmit} disabled={!userInput.trim()}>
                 <Image
                   source={require("../../assets/send.png")}
@@ -106,11 +106,10 @@ const styles = StyleSheet.create({
   },
   textInputStyle: {
     fontSize: 20,
-    marginBottom: 5,
+    marginBottom: 10,
     color: "white",
     fontWeight: "500",
-    paddingTop: 7,
-    padding: 7,
+    paddingTop: 6,
     paddingLeft: 0,
     flexDirection: "row",
     alignItems: "flex-end",

@@ -56,6 +56,7 @@ export const Response = ({ user }) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
+            paddingBottom: 5,
           }}
         >
           <Button onPress={goToFriendProfile}>
@@ -64,7 +65,12 @@ export const Response = ({ user }) => {
               style={styles.profilePic}
             />
           </Button>
-          <View style={{ flexDirection: "column", padding: 10 }}>
+          <View
+            style={{
+              flexDirection: "column",
+              padding: 10,
+            }}
+          >
             <Text style={styles.fullName}>{user.fullName}</Text>
             <Text style={styles.usernameStyle}>{user.username}</Text>
           </View>
@@ -125,13 +131,13 @@ const styles = StyleSheet.create({
     marginVertical: "4%",
   },
   profilePic: {
-    width: 45,
-    height: 45,
+    width: 50,
+    height: 50,
     borderWidth: 1,
     borderRadius: 40,
   },
   fullName: {
-    fontSize: 15,
+    fontSize: 16,
     color: "white",
     fontWeight: "700",
   },

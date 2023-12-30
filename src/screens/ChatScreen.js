@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
 import { MessageBubble } from "../components/MessageBubble";
 import Button from "../components/Button";
 import { MaterialIcons } from "@expo/vector-icons";
-import {useConversations} from "../context/ConversationsContext";
+import { useConversations } from "../context/ConversationsContext";
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;
@@ -83,7 +83,7 @@ export const ChatScreen = ({ route, navigation }) => {
           <Text style={styles.headerText}>{senderName}</Text>
         </View>
         <FlatList
-            ref={flatListRef}
+          ref={flatListRef}
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
@@ -101,25 +101,30 @@ export const ChatScreen = ({ route, navigation }) => {
           )}
         />
         {!isReadOnly && (
-          <View style={styles.inputContainer}>
-            <TextInput
-              selectionColor={"#ababab"}
-              style={styles.input}
-              placeholder="Message"
-              placeholderTextColor="#ababab"
-              value={newMessage}
-              keyboardAppearance="dark"
-              multiline
-              onChangeText={(text) => setNewMessage(text)}
-              onSubmitEditing={handleSend}
-              returnKeyType="send"
-            />
-            <Button onPress={handleSend} style={{ marginTop: 5 }} disabled={!newMessage.trim()}>
-              <Image
-                source={require("../../assets/send.png")}
-                style={{ width: 30, height: 30 }}
+          <View style={styles.textInputStyle}>
+            <View style={{ flex: 1 }}>
+              <TextInput
+                selectionColor={"#ababab"}
+                style={styles.textInputStyle}
+                placeholder="Message"
+                placeholderTextColor="#ababab"
+                value={newMessage}
+                keyboardAppearance="dark"
+                multiline
+                onChangeText={(text) => setNewMessage(text)}
+                onSubmitEditing={handleSend}
+                returnKeyType="send"
               />
-            </Button>
+            </View>
+
+            <View style={{ padding: 3, paddingTop: 0 }}>
+              <Button onPress={handleSend} disabled={!newMessage.trim()}>
+                <Image
+                  source={require("../../assets/send.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </Button>
+            </View>
           </View>
         )}
       </KeyboardAvoidingView>
@@ -155,6 +160,20 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginLeft: 10,
   },
+  textInputStyle: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: "white",
+    fontWeight: "500",
+    paddingTop: 6,
+    paddingLeft: 0,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    backgroundColor: "#424140",
+    borderRadius: 10,
+    marginHorizontal: 10,
+    justifyContent: "center",
+  },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -179,10 +198,10 @@ const styles = StyleSheet.create({
   },
   senderRight: {
     alignSelf: "flex-end",
-    marginHorizontal: 15
+    marginHorizontal: 15,
   },
   senderLeft: {
     alignSelf: "flex-start",
-    marginHorizontal: 15
+    marginHorizontal: 15,
   },
 });

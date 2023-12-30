@@ -30,10 +30,12 @@ const styles = StyleSheet.create({
   },
   senderText: {
     color: "white",
-    fontSize: 18,
+    fontWeight: "500",
+    fontSize: 16,
   },
   receiverText: {
     color: "black",
-    fontSize: 18,
+    fontWeight: "500",
+    fontSize: 16,
   },
 });
