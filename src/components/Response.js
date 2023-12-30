@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Image,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -96,9 +95,9 @@ export const Response = ({ user }) => {
       </View>
       <View style={styles.reactionsContainerStyle}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {reactions.map((item) => (
-            <TouchableOpacity onPress={() => console.log("daddy")}>
-              <ResponseReaction reaction={item} />
+          {reactions.map((reaction) => (
+            <TouchableOpacity onPress={() => handleReactionClick(reaction)}>
+              <ResponseReaction reaction={reaction} />
             </TouchableOpacity>
           ))}
         </ScrollView>

@@ -63,6 +63,7 @@ export const ResponsesScreen = ({ navigation }) => {
       <KeyboardAwareScrollView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        extraScrollHeight={50}
       >
         <MyResponse
           myResponse={myResponse}

@@ -96,7 +96,7 @@ export default function App() {
                   <Stack.Screen
                     name="Friend Requests"
                     component={FriendRequestsScreen}
-                    options={{ animationEnabled: true }}
+                    options={{ animationEnabled: false }}
                   />
                   <Stack.Screen
                     name="Question"
