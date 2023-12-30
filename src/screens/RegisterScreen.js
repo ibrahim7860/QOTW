@@ -79,6 +79,7 @@ export const RegisterScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           keyboardOpeningTime={100}
+          scrollEnabled={false}
         >
           <View style={{ paddingHorizontal: 20 }}>
             <TextInput

@@ -1,10 +1,24 @@
-import React, {useEffect, useState} from "react";
-import {SafeAreaView, ScrollView, StyleSheet, Text, View,} from "react-native";
-import {FriendItem} from "../components/FriendItem";
-import {Button} from "../components/Button";
-import {SearchBar} from "../components/SearchBar";
-import {useFriends} from "../context/FriendsContext";
-import {FriendsHeader} from "../components/FriendsHeader";
+import React, { useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import { FriendItem } from "../components/FriendItem";
+import { Button } from "../components/Button";
+import { SearchBar } from "../components/SearchBar";
+import { useFriends } from "../context/FriendsContext";
+import { FriendsHeader } from "../components/FriendsHeader";
+
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 export const FriendRequestsScreen = ({ navigation }) => {
   const {
@@ -26,24 +40,26 @@ export const FriendRequestsScreen = ({ navigation }) => {
   }, [friendRequests]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
-      <FriendsHeader />
-      <View style={styles.containerStyle}>
-        <Text style={styles.headerStyle}>Friend Requests</Text>
-      </View>
-      <ScrollView>
-        {filteredFriends.map((item) => (
-          <FriendItem
-            key={item.id.toString()}
-            friend={item}
-            onRejectRequest={removeFriendRequest}
-            onAcceptRequest={acceptFriendRequest}
-            isRequest={true}
-          />
-        ))}
-      </ScrollView>
-      <SearchBar onSearch={handleSearchChange} />
-    </SafeAreaView>
+    <DismissKeyboard>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
+        <FriendsHeader />
+        <View style={styles.containerStyle}>
+          <Text style={styles.headerStyle}>Friend Requests</Text>
+        </View>
+        <ScrollView>
+          {filteredFriends.map((item) => (
+            <FriendItem
+              key={item.id.toString()}
+              friend={item}
+              onRejectRequest={removeFriendRequest}
+              onAcceptRequest={acceptFriendRequest}
+              isRequest={true}
+            />
+          ))}
+        </ScrollView>
+        <SearchBar onSearch={handleSearchChange} />
+      </SafeAreaView>
+    </DismissKeyboard>
   );
 };
 

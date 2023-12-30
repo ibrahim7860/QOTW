@@ -6,9 +6,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  ScrollView,
 } from "react-native";
 
 const DismissKeyboard = ({ children }) => (
@@ -35,6 +35,13 @@ export const ForgotPasswordScreen = ({ navigation }) => {
     }
   };
 
+  const [focus, setFocus] = useState(false);
+  const [emailFocus, setemailFocus] = useState(false);
+  const inputEmailStyle = focus ? styles.focusInput : styles.textInputStyle;
+  const inputreEnterStyle = emailFocus
+    ? styles.focusInput
+    : styles.textInputStyle;
+
   return (
     <DismissKeyboard>
       <SafeAreaView style={styles.mainContainerStyle}>
@@ -46,27 +53,32 @@ export const ForgotPasswordScreen = ({ navigation }) => {
             </Text>
           </View>
 
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ marginVertical: 10, marginBottom: 0 }}
+          <ScrollView
+            automaticallyAdjustKeyboardInsets={true}
+            scrollEnabled={false}
           >
-            <View style={{ marginVertical: 15 }}>
+            <View style={{ height: "10%" }} />
+            <View style={{ marginBottom: 10 }}>
               <TextInput
                 placeholder="Email"
                 placeholderTextColor="#ababab"
+                onFocus={() => setFocus(true)}
+                onBlur={() => setFocus(false)}
                 keyboardAppearance="dark"
                 selectionColor={"#ababab"}
-                style={styles.textInputStyle}
+                style={inputEmailStyle}
                 onChangeText={setEmail}
                 value={email}
               />
               <TextInput
                 placeholder="Re-Enter Email"
                 placeholderTextColor="#ababab"
+                onFocus={() => setemailFocus(true)}
+                onBlur={() => setemailFocus(false)}
                 secureTextEntry
                 keyboardAppearance="dark"
                 selectionColor={"#ababab"}
-                style={styles.textInputStyle}
+                style={inputreEnterStyle}
                 onChangeText={setConfirmEmail}
                 value={confirmEmail}
               />
@@ -74,7 +86,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
                 <Text style={styles.errorText}>{emailError}</Text>
               ) : null}
             </View>
-          </KeyboardAvoidingView>
+          </ScrollView>
 
           <TouchableOpacity
             style={styles.resetPasswordButtonStyle}
@@ -121,6 +133,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#424140",
     borderRadius: 10,
     marginVertical: "2%",
+  },
+  focusInput: {
+    fontSize: 15,
+    color: "white",
+    fontWeight: "600",
+    padding: 15,
+    backgroundColor: "#424140",
+    borderRadius: 10,
+    marginVertical: "2%",
+    borderWidth: 1,
+    borderColor: "#ababab",
   },
   resetPasswordTextStyle: {
     color: "#291400",
