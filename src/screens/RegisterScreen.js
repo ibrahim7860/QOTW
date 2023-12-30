@@ -67,13 +67,17 @@ export const RegisterScreen = ({ navigation }) => {
           </Text>
         </View>
         <View style={{ flex: 1 }}>
-          <KeyboardAwareScrollView keyboardShouldPersistTaps='handled' showsVerticalScrollIndicator={false} keyboardOpeningTime={0} >
+          <KeyboardAwareScrollView
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+            keyboardOpeningTime={0}
+          >
             <View style={{ paddingHorizontal: 20 }}>
               <TextInput
                 placeholder="Full Name"
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 style={inputUserStyle}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
@@ -82,7 +86,7 @@ export const RegisterScreen = ({ navigation }) => {
                 placeholder="Username"
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 style={inputnameStyle}
                 onFocus={() => setUserFocus(true)}
                 onBlur={() => setUserFocus(false)}
@@ -91,7 +95,7 @@ export const RegisterScreen = ({ navigation }) => {
                 placeholder="Email"
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 onFocus={() => setemailFocus(true)}
                 onBlur={() => setemailFocus(false)}
                 style={inputEmailStyle}
@@ -101,7 +105,7 @@ export const RegisterScreen = ({ navigation }) => {
                 placeholderTextColor="#ababab"
                 secureTextEntry
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 onFocus={() => setpassFocus(true)}
                 onBlur={() => setpassFocus(false)}
                 style={inputpassStyle}
@@ -113,7 +117,7 @@ export const RegisterScreen = ({ navigation }) => {
                 placeholderTextColor="#ababab"
                 secureTextEntry
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 onFocus={() => setrePassFocus(true)}
                 onBlur={() => setrePassFocus(false)}
                 style={inputreStyle}

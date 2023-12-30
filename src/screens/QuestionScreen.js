@@ -67,7 +67,7 @@ export const QuestionScreen = ({ route, navigation }) => {
                 placeholder="Your response..."
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 style={styles.textInputStyle}
                 onChangeText={setUserInput}
                 value={userInput}

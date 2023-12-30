@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
@@ -78,7 +78,7 @@ export const Response = ({ user }) => {
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
                 multiline
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 style={styles.textInputStyle}
                 onChangeText={setUserInput}
                 value={userInput}
@@ -86,7 +86,10 @@ export const Response = ({ user }) => {
             </View>
 
             <View style={{ justifyContent: "center" }}>
-              <Button onPress={() => console.log("Submit Pressed")} disabled={!userInput.trim()}>
+              <Button
+                onPress={() => console.log("Submit Pressed")}
+                disabled={!userInput.trim()}
+              >
                 <Image
                   source={require("../../assets/send.png")}
                   style={{ width: 25, height: 25 }}

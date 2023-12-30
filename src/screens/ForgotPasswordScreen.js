@@ -55,7 +55,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
                 placeholder="Email"
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 style={styles.textInputStyle}
                 onChangeText={setEmail}
                 value={email}
@@ -65,7 +65,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
                 placeholderTextColor="#ababab"
                 secureTextEntry
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 style={styles.textInputStyle}
                 onChangeText={setConfirmEmail}
                 value={confirmEmail}

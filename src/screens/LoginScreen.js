@@ -62,7 +62,7 @@ export const LoginScreen = ({ navigation }) => {
                 placeholder="Username or Email"
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 style={inputUserStyle}
@@ -72,7 +72,7 @@ export const LoginScreen = ({ navigation }) => {
                 placeholderTextColor="#ababab"
                 secureTextEntry
                 keyboardAppearance="dark"
-                selectionColor={"white"}
+                selectionColor={"#ababab"}
                 onFocus={() => setPasswordFocus(true)}
                 onBlur={() => setPasswordFocus(false)}
                 style={inputPassStyle}
