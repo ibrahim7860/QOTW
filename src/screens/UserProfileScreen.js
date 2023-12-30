@@ -5,13 +5,22 @@ import * as ImagePicker from "expo-image-picker";
 import { Shadow } from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
+import { askAsync, CAMERA } from "expo-permissions";
 
 export const UserProfileScreen = ({ route, navigation }) => {
   const { fullName, username } = route.params;
   const [profilePic, setProfilePic] = useState(null);
 
   const updateProfilePic = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    // Requesting the permission to use the camera
+    const { status } = await askAsync(CAMERA);
+
+    if (status !== "granted") {
+      alert("Sorry, we need camera permissions to make this work!");
+      return;
+    }
+
+    let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
@@ -28,8 +37,8 @@ export const UserProfileScreen = ({ route, navigation }) => {
   };
 
   const handleLogout = () => {
-    navigation.navigate("Welcome Screen")
-  }
+    navigation.navigate("Welcome Screen");
+  };
 
   return (
     <View style={styles.mainContainer}>

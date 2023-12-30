@@ -46,53 +46,51 @@ export const ResponsesScreen = ({ navigation }) => {
   };
 
   return (
-    <DismissKeyboard>
-      <View style={{ flex: 1, backgroundColor: "#291400" }}>
-        <SafeAreaView>
-          <View style={styles.topContainer}>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity onPress={goToFriends}>
-                <Icon name="user-friends" size={27} color="#ababab" />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ marginLeft: 20 }} onPress={goToQOTW}>
-                <Icon name="question" size={24} color="#ababab" />
-              </TouchableOpacity>
-            </View>
-
-            <Text style={styles.headerStyle}>QOTW</Text>
-
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity onPress={goToMessages}>
-                <Icon name="comment" size={28} color="#ababab" solid />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={goToUserProfile}>
-                <Image
-                  source={myResponse.profilePicUri}
-                  style={styles.profilePic}
-                />
-              </TouchableOpacity>
-            </View>
+    <View style={{ flex: 1, backgroundColor: "#291400" }}>
+      <SafeAreaView>
+        <View style={styles.topContainer}>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity onPress={goToFriends}>
+              <Icon name="user-friends" size={27} color="#ababab" />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginLeft: 20 }} onPress={goToQOTW}>
+              <Icon name="question" size={24} color="#ababab" />
+            </TouchableOpacity>
           </View>
-        </SafeAreaView>
-        <KeyboardAwareScrollView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          extraScrollHeight={50}
-          keyboardDismissMode="on-drag"
-          enableResetScrollToCoords={false}
-          showsVerticalScrollIndicator={false}
-        >
-          <MyResponse
-            myResponse={myResponse}
-            reactions={reactions}
-            navigation={navigation}
-          />
-          {responses.map((item) => (
-            <Response user={item} />
-          ))}
-        </KeyboardAwareScrollView>
-      </View>
-    </DismissKeyboard>
+
+          <Text style={styles.headerStyle}>QOTW</Text>
+
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity onPress={goToMessages}>
+              <Icon name="comment" size={28} color="#ababab" solid />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={goToUserProfile}>
+              <Image
+                source={myResponse.profilePicUri}
+                style={styles.profilePic}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
+      <KeyboardAwareScrollView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        extraScrollHeight={50}
+        keyboardDismissMode="on-drag"
+        enableResetScrollToCoords={false}
+        showsVerticalScrollIndicator={false}
+      >
+        <MyResponse
+          myResponse={myResponse}
+          reactions={reactions}
+          navigation={navigation}
+        />
+        {responses.map((item) => (
+          <Response user={item} />
+        ))}
+      </KeyboardAwareScrollView>
+    </View>
   );
 };
 
