@@ -66,69 +66,69 @@ export const RegisterScreen = ({ navigation }) => {
             Just a few quick steps and you'll be all set!
           </Text>
         </View>
-        <View style={{ flex: 1 }}>
-          <KeyboardAwareScrollView
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-            keyboardOpeningTime={0}
-          >
-            <View style={{ paddingHorizontal: 20 }}>
-              <TextInput
-                placeholder="Full Name"
-                placeholderTextColor="#ababab"
-                keyboardAppearance="dark"
-                selectionColor={"#ababab"}
-                style={inputUserStyle}
-                onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
-              />
-              <TextInput
-                placeholder="Username"
-                placeholderTextColor="#ababab"
-                keyboardAppearance="dark"
-                selectionColor={"#ababab"}
-                style={inputnameStyle}
-                onFocus={() => setUserFocus(true)}
-                onBlur={() => setUserFocus(false)}
-              />
-              <TextInput
-                placeholder="Email"
-                placeholderTextColor="#ababab"
-                keyboardAppearance="dark"
-                selectionColor={"#ababab"}
-                onFocus={() => setemailFocus(true)}
-                onBlur={() => setemailFocus(false)}
-                style={inputEmailStyle}
-              />
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="#ababab"
-                secureTextEntry
-                keyboardAppearance="dark"
-                selectionColor={"#ababab"}
-                onFocus={() => setpassFocus(true)}
-                onBlur={() => setpassFocus(false)}
-                style={inputpassStyle}
-                onChangeText={setPassword}
-                value={password}
-              />
-              <TextInput
-                placeholder="Re-Enter Password"
-                placeholderTextColor="#ababab"
-                secureTextEntry
-                keyboardAppearance="dark"
-                selectionColor={"#ababab"}
-                onFocus={() => setrePassFocus(true)}
-                onBlur={() => setrePassFocus(false)}
-                style={inputreStyle}
-                onChangeText={setConfirmPassword}
-                value={confirmPassword}
-              />
-              {passwordError ? (
-                <Text style={styles.errorText}>{passwordError}</Text>
-              ) : null}
-            </View>
-          </KeyboardAwareScrollView>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flex: 1 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          keyboardOpeningTime={100}
+        >
+          <View style={{ paddingHorizontal: 20 }}>
+            <TextInput
+              placeholder="Full Name"
+              placeholderTextColor="#ababab"
+              keyboardAppearance="dark"
+              selectionColor={"#ababab"}
+              style={inputUserStyle}
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
+            />
+            <TextInput
+              placeholder="Username"
+              placeholderTextColor="#ababab"
+              keyboardAppearance="dark"
+              selectionColor={"#ababab"}
+              style={inputnameStyle}
+              onFocus={() => setUserFocus(true)}
+              onBlur={() => setUserFocus(false)}
+            />
+            <TextInput
+              placeholder="Email"
+              placeholderTextColor="#ababab"
+              keyboardAppearance="dark"
+              selectionColor={"#ababab"}
+              onFocus={() => setemailFocus(true)}
+              onBlur={() => setemailFocus(false)}
+              style={inputEmailStyle}
+            />
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor="#ababab"
+              secureTextEntry
+              keyboardAppearance="dark"
+              selectionColor={"#ababab"}
+              onFocus={() => setpassFocus(true)}
+              onBlur={() => setpassFocus(false)}
+              style={inputpassStyle}
+              onChangeText={setPassword}
+              value={password}
+            />
+            <TextInput
+              placeholder="Re-Enter Password"
+              placeholderTextColor="#ababab"
+              secureTextEntry
+              keyboardAppearance="dark"
+              selectionColor={"#ababab"}
+              onFocus={() => setrePassFocus(true)}
+              onBlur={() => setrePassFocus(false)}
+              style={inputreStyle}
+              onChangeText={setConfirmPassword}
+              value={confirmPassword}
+            />
+            <View style={{ height: 60 }} />
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
+          </View>
           <View style={{ flexGrow: 3, paddingHorizontal: 20 }}>
             <TouchableOpacity
               style={styles.createAccountStyle}
@@ -146,7 +146,7 @@ export const RegisterScreen = ({ navigation }) => {
               </Text>
             </View>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
