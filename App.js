@@ -16,27 +16,18 @@ import { ForgotPasswordScreen } from "./src/screens/ForgotPasswordScreen";
 import { ResponsesScreen } from "./src/screens/ResponsesScreen";
 import { ResponsesProvider } from "./src/context/ResponsesContext";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
 import { ReactionsProvider } from "./src/context/ReactionsContext";
 
 const Stack = createStackNavigator();
 
 const leftToRightAnimation = {
-  gestureDirection: "horizontal-inverted",
-  cardStyleInterpolator: ({ current, layouts }) => {
-    return {
-      cardStyle: {
-        transform: [
-          {
-            translateX: current.progress.interpolate({
-              inputRange: [0, 1],
-              outputRange: [-layouts.screen.width, 0],
-            }),
-          },
-        ],
-      },
-    };
+  animationEnabled: true,
+  transitionSpec: {
+    open: { animation: 'timing', config: { duration: 100 } },
+    close: { animation: 'timing', config: { duration: 100 } },
   },
+  cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
 };
 
 const bottomToTopAnimation = ({ current, layouts }) => {
@@ -96,7 +87,7 @@ export default function App() {
                   <Stack.Screen
                     name="Friend Requests"
                     component={FriendRequestsScreen}
-                    options={{ animationEnabled: false }}
+                    options={leftToRightAnimation}
                   />
                   <Stack.Screen
                     name="Question"

@@ -64,6 +64,9 @@ export const ResponsesScreen = ({ navigation }) => {
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         extraScrollHeight={50}
+        keyboardDismissMode='on-drag'
+        enableResetScrollToCoords={false}
+        showsVerticalScrollIndicator={false}
       >
         <MyResponse
           myResponse={myResponse}
