@@ -13,11 +13,13 @@ import {
 import { MessageBubble } from "../components/MessageBubble";
 import Button from "../components/Button";
 import { MaterialIcons } from "@expo/vector-icons";
+import {useConversations} from "../context/ConversationsContext";
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;
   const { conversationName } = route.params;
   const { profilePic } = route.params;
+  const { updateLastMessage } = useConversations();
   const { isReadOnly } = route.params;
   const { senderName } = route.params;
 
@@ -54,6 +56,7 @@ export const ChatScreen = ({ route, navigation }) => {
 
       setMessages([...messages, newMessageObj]);
       setNewMessage("");
+      updateLastMessage(conversationId, newMessage);
     }
   };
 
