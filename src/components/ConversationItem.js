@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   username: {
-    color: 'white',
+    color: "#ababab",
     fontWeight: "500",
     fontSize: 15,
-  }
+  },
 });

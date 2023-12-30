@@ -10,7 +10,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import {useResponses} from "../context/ResponsesContext";
+import { useResponses } from "../context/ResponsesContext";
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -18,7 +18,7 @@ const DismissKeyboard = ({ children }) => (
   </TouchableWithoutFeedback>
 );
 export const LoginScreen = ({ navigation }) => {
-  const {myResponse} = useResponses();
+  const { myResponse } = useResponses();
   const handleForgotPassword = () => {
     navigation.navigate("Forgot Password");
   };
@@ -29,9 +29,8 @@ export const LoginScreen = ({ navigation }) => {
 
   const onSignIn = () => {
     if (!myResponse.userResponse) {
-      navigation.navigate("Question", { alreadyResponded: false})
-    }
-    else {
+      navigation.navigate("Question", { alreadyResponded: false });
+    } else {
       navigation.navigate("Responses");
     }
   };

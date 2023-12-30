@@ -54,28 +54,28 @@ export const RegisterScreen = ({ navigation }) => {
             <View style={{ paddingHorizontal: 20 }}>
               <TextInput
                 placeholder="Full Name"
-                placeholderTextColor="white"
+                placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
                 selectionColor={"white"}
                 style={styles.textInputStyle}
               />
               <TextInput
                 placeholder="Username"
-                placeholderTextColor="white"
+                placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
                 selectionColor={"white"}
                 style={styles.textInputStyle}
               />
               <TextInput
                 placeholder="Email"
-                placeholderTextColor="white"
+                placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
                 selectionColor={"white"}
                 style={styles.textInputStyle}
               />
               <TextInput
                 placeholder="Password"
-                placeholderTextColor="white"
+                placeholderTextColor="#ababab"
                 secureTextEntry
                 keyboardAppearance="dark"
                 selectionColor={"white"}
@@ -85,7 +85,7 @@ export const RegisterScreen = ({ navigation }) => {
               />
               <TextInput
                 placeholder="Re-Enter Password"
-                placeholderTextColor="white"
+                placeholderTextColor="#ababab"
                 secureTextEntry
                 keyboardAppearance="dark"
                 selectionColor={"white"}

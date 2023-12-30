@@ -1,9 +1,18 @@
-import React, {useState} from "react";
-import {Image, KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View,} from "react-native";
+import React, { useState } from "react";
+import {
+  Image,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import Button from "../components/Button";
-import {MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
-import {useResponses} from "../context/ResponsesContext";
+import { useResponses } from "../context/ResponsesContext";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
@@ -11,13 +20,12 @@ export const QuestionScreen = ({ route, navigation }) => {
   const [userInput, setUserInput] = useState("");
 
   const handleSubmit = () => {
-    setMyResponse(prevState => ({
+    setMyResponse((prevState) => ({
       ...prevState,
-      userResponse: userInput
+      userResponse: userInput,
     }));
-    navigation.navigate('Responses');
+    navigation.navigate("Responses");
   };
-
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -50,13 +58,14 @@ export const QuestionScreen = ({ route, navigation }) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ marginVertical: 10 }}
+          extraScrollHeight={50}
         >
           <View style={styles.textInputStyle}>
             <View style={{ flex: 1 }}>
               <TextInput
                 multiline
                 placeholder="Your response..."
-                placeholderTextColor="white"
+                placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
                 selectionColor={"white"}
                 style={styles.textInputStyle}
@@ -101,8 +110,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     paddingTop: 7,
     padding: 7,
+    paddingLeft: 0,
     flexDirection: "row",
     alignItems: "flex-end",
+    backgroundColor: "#424140",
+    borderRadius: 10,
+    marginHorizontal: 10,
     justifyContent: "center",
   },
 });

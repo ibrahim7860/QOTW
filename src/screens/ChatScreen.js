@@ -23,20 +23,21 @@ export const ChatScreen = ({ route, navigation }) => {
 
   // Fetch and display messages based on conversationId
   // Replace this with your logic to fetch real messages
-  const [messages, setMessages] = useState([{
-    id: 1,
-    text: "Hello There",
-    isSender: true
-  },
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      text: "Hello There",
+      isSender: true,
+    },
     {
       id: 2,
       text: "Woah There",
-      isSender: false
+      isSender: false,
     },
     {
       id: 3,
       text: "Wassup There",
-      isSender: true
+      isSender: true,
     },
   ]);
 
@@ -47,7 +48,7 @@ export const ChatScreen = ({ route, navigation }) => {
       const newMessageObj = {
         id: `${messages.length + 1}`,
         text: newMessage,
-        isSender: true, // Assuming the user sending the message is the sender
+        isSender: true,
         senderName: senderName,
       };
 
@@ -73,32 +74,40 @@ export const ChatScreen = ({ route, navigation }) => {
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-              <View>
-                <Text style={[styles.senderName, item.isSender ? styles.senderRight : styles.senderLeft]}>
-                  {item.isSender ? conversationName : senderName}
-                </Text>
-                <MessageBubble message={item.text} isSender={item.isSender} />
-              </View>
+            <View>
+              <Text
+                style={[
+                  styles.senderName,
+                  item.isSender ? styles.senderRight : styles.senderLeft,
+                ]}
+              >
+                {item.isSender ? conversationName : senderName}
+              </Text>
+              <MessageBubble message={item.text} isSender={item.isSender} />
+            </View>
           )}
         />
         {!isReadOnly && (
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Type your message..."
-            placeholderTextColor="white"
-            value={newMessage}
-            onChangeText={(text) => setNewMessage(text)}
-            onSubmitEditing={handleSend}
-            returnKeyType="send"
-          />
-          <Button onPress={handleSend} style={{ marginTop: 5 }}>
-            <Image
-              source={require("../../assets/send.png")}
-              style={{ width: 30, height: 30 }}
+          <View style={styles.inputContainer}>
+            <TextInput
+              selectionColor={"#ababab"}
+              style={styles.input}
+              placeholder="Message"
+              placeholderTextColor="#ababab"
+              value={newMessage}
+              keyboardAppearance="dark"
+              multiline
+              onChangeText={(text) => setNewMessage(text)}
+              onSubmitEditing={handleSend}
+              returnKeyType="send"
             />
-          </Button>
-        </View>
+            <Button onPress={handleSend} style={{ marginTop: 5 }}>
+              <Image
+                source={require("../../assets/send.png")}
+                style={{ width: 30, height: 30 }}
+              />
+            </Button>
+          </View>
         )}
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -142,24 +151,26 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     borderColor: "gray",
-    borderWidth: 1,
     borderRadius: 20,
     paddingHorizontal: 10,
+    paddingTop: 9,
     color: "white",
-    marginRight: 10,
+    backgroundColor: "#424140",
+    borderRadius: 10,
+    marginRight: 5,
     fontSize: 18,
   },
   senderName: {
     fontSize: 14,
-    color: 'gray',
+    color: "gray",
     marginVertical: 3,
   },
   senderRight: {
-    textAlign: 'right',
+    textAlign: "right",
     marginRight: "7%", // Adjust the margin as needed
   },
   senderLeft: {
-    textAlign: 'left',
+    textAlign: "left",
     marginLeft: "7%",
   },
 });

@@ -65,7 +65,7 @@ export const Response = ({ user }) => {
           </Button>
           <View style={{ flexDirection: "column", padding: 10 }}>
             <Text style={styles.fullName}>{user.fullName}</Text>
-            <Text style={styles.responseText}>{user.username}</Text>
+            <Text style={styles.usernameStyle}>{user.username}</Text>
           </View>
         </View>
         <View style={styles.containerStyle}>
@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
   },
-  responseText: {
-    color: "white",
+  usernameStyle: {
+    color: "#ababab",
   },
   containerStyle: {
     backgroundColor: "#1b0a01",
