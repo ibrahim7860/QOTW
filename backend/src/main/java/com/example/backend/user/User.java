@@ -1,4 +1,4 @@
-package com.example.backend.entity;
+package com.example.backend.user;
 
 
 import jakarta.persistence.Entity;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class UserEntity {
+public class User {
 
     @Id
     private String userId;

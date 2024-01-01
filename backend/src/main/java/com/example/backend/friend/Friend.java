@@ -1,5 +1,6 @@
-package com.example.backend.entity;
+package com.example.backend.friend;
 
+import com.example.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "friends")
-public class FriendEntity {
+public class Friend {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +21,11 @@ public class FriendEntity {
 
     @ManyToOne
     @JoinColumn(name = "requesterId", nullable = false)
-    private UserEntity requester;
+    private User requester;
 
     @ManyToOne
     @JoinColumn(name = "receiverId", nullable = false)
-    private UserEntity receiver;
+    private User receiver;
 
     @Column(nullable = false)
     private String status;

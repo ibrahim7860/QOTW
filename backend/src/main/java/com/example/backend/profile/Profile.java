@@ -1,5 +1,6 @@
-package com.example.backend.entity;
+package com.example.backend.profile;
 
+import com.example.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,12 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profiles")
-public class ProfileEntity {
+public class Profile {
 
     @Id
     @OneToOne
     @JoinColumn(name = "userId", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @Column(name = "profile_picture", nullable = false)
     private String profilePicture;

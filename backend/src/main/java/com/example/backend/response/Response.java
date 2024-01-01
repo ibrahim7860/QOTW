@@ -1,5 +1,7 @@
-package com.example.backend.entity;
+package com.example.backend.response;
 
+import com.example.backend.user.User;
+import com.example.backend.question.Question;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "responses")
-public class ResponseEntity {
+public class Response {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +22,11 @@ public class ResponseEntity {
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "questionId", nullable = false)
-    private QuestionEntity question;
+    private Question question;
 
     @Column(name = "response_text", nullable = false)
     private String responseText;

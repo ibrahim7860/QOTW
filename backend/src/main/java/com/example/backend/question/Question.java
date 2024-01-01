@@ -1,4 +1,4 @@
-package com.example.backend.entity;
+package com.example.backend.question;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "questions")
-public class QuestionEntity {
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
-package com.example.backend.entity;
+package com.example.backend.message;
 
+import com.example.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "messages")
-public class MessageEntity {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +21,11 @@ public class MessageEntity {
 
     @ManyToOne
     @JoinColumn(name = "senderUserId", nullable = false)
-    private UserEntity sender;
+    private User sender;
 
     @ManyToOne
     @JoinColumn(name = "receiverUserId", nullable = false)
-    private UserEntity receiver;
+    private User receiver;
 
     @Column(name = "message_text", nullable = false)
     private String messageText;

@@ -1,5 +1,7 @@
-package com.example.backend.entity;
+package com.example.backend.reaction;
 
+import com.example.backend.response.Response;
+import com.example.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reactions")
-public class ReactionEntity {
+public class Reaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +20,10 @@ public class ReactionEntity {
 
     @ManyToOne
     @JoinColumn(name = "responseId", nullable = false)
-    private ResponseEntity response;
+    private Response response;
 
     @ManyToOne
     @JoinColumn(name = "reactorUserId", nullable = false)
-    private UserEntity reactor;
+    private User reactor;
 }
 
