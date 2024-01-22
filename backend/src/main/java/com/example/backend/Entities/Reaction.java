@@ -1,7 +1,5 @@
-package com.example.backend.reaction;
+package com.example.backend.Entities;
 
-import com.example.backend.response.Response;
-import com.example.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

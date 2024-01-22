@@ -1,6 +1,5 @@
-package com.example.backend.profile;
+package com.example.backend.Entities;
 
-import com.example.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
