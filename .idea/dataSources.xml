@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="qotw_db" uuid="f905452f-6776-4769-bd2a-7e8c1e4fcb97">
+    <data-source source="LOCAL" name="qotw-db" uuid="23687f94-e2b4-4aa4-b4a0-d1504754d368">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://qotw-db-instance.cr6u20wsw7wg.us-east-1.rds.amazonaws.com:5432/qotw_db</jdbc-url>
+      <jdbc-url>jdbc:postgresql://qotw-db.c7g48cgyouql.us-east-1.rds.amazonaws.com:5432/qotw_db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
