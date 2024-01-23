@@ -57,7 +57,7 @@ export const LoginScreen = ({ navigation }) => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ marginVertical: 10, marginBottom: 0 }}
           >
-            <View style={{ marginVertical: 30 }}>
+            <View style={{ marginVertical: "5%" }}>
               <TextInput
                 placeholder="Username or Email"
                 placeholderTextColor="#ababab"
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingVertical: 15,
     paddingHorizontal: 20,
-    marginTop: "9%",
+    marginTop: "5%",
     borderRadius: 20,
   },
   createAccountStyle: {

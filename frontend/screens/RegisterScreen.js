@@ -10,33 +10,86 @@ import {
   Keyboard,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import axios from "axios";
 
 export const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [usernameError, setUsernameError] = useState("");
+  const [fullNameError, setFullNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const MIN_USERNAME_LENGTH = 3;
 
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
   };
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(email.toLowerCase());
+  };
+
   const handleRegister = () => {
+    setPasswordError("");
+    setUsernameError("");
+    setFullNameError("");
+    setEmailError("")
+    setErrorMessage("");
+
+    if (!fullName.trim()) {
+      setFullNameError("Full Name is required");
+      return;
+    }
+    if (!username.trim()) {
+      setUsernameError("Username is required");
+      return;
+    }
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      return;
+    }
+    if (!password) {
+      setPasswordError("Password is required");
+      return;
+    }
     if (username.length < MIN_USERNAME_LENGTH) {
       setUsernameError("Username must be at least 3 characters");
       return;
     }
-    if (password === confirmPassword) {
-      // Proceed with the registration process
-      setPasswordError("");
-      setUsernameError("");
-      // ... registration logic
-      navigation.navigate("Question", { alreadyResponded: false });
-    } else {
+    if (password !== confirmPassword) {
       setPasswordError("Passwords do not match.");
+      return;
     }
+    if (!isValidEmail(email)) {
+      setErrorMessage('Invalid email format');
+      return;
+    }
+
+    const names = fullName.trim().split(" ");
+    const firstName = names[0];
+    const lastName = names.length > 1 ? names[names.length - 1] : "";
+
+    const userData = {
+      userId: username,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    };
+
+    axios.post('http://localhost:8080/api/users/register', userData)
+        .then(response => {
+          console.log('User registered:', response.data);
+          navigation.navigate("Question", { alreadyResponded: false });
+        })
+        .catch(error => {
+          setErrorMessage(error.response.data.message);
+        });
   };
 
   const handleDismissKeyboard = () => {
@@ -46,19 +99,19 @@ export const RegisterScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
   const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
 
-  const [userfocus, setUserFocus] = useState(false);
-  const inputnameStyle = userfocus ? styles.focusInput : styles.textInputStyle;
+  const [userFocus, setUserFocus] = useState(false);
+  const inputNameStyle = userFocus ? styles.focusInput : styles.textInputStyle;
 
-  const [emailfocus, setemailFocus] = useState(false);
-  const inputEmailStyle = emailfocus
+  const [emailFocus, setEmailFocus] = useState(false);
+  const inputEmailStyle = emailFocus
     ? styles.focusInput
     : styles.textInputStyle;
 
-  const [passfocus, setpassFocus] = useState(false);
-  const inputpassStyle = passfocus ? styles.focusInput : styles.textInputStyle;
+  const [passFocus, setPassFocus] = useState(false);
+  const inputPassStyle = passFocus ? styles.focusInput : styles.textInputStyle;
 
-  const [rePassfocus, setrePassFocus] = useState(false);
-  const inputreStyle = rePassfocus ? styles.focusInput : styles.textInputStyle;
+  const [rePassFocus, setRePassFocus] = useState(false);
+  const inputReStyle = rePassFocus ? styles.focusInput : styles.textInputStyle;
 
   return (
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
@@ -90,13 +143,18 @@ export const RegisterScreen = ({ navigation }) => {
               style={inputUserStyle}
               onFocus={() => setFocus(true)}
               onBlur={() => setFocus(false)}
+              value={fullName}
+              onChangeText={setFullName}
             />
+            {fullNameError ? (
+                <Text style={{ color: "red" }}>{fullNameError}</Text>
+            ) : null}
             <TextInput
               placeholder="Username"
               placeholderTextColor="#ababab"
               keyboardAppearance="dark"
               selectionColor={"#ababab"}
-              style={inputnameStyle}
+              style={inputNameStyle}
               onFocus={() => setUserFocus(true)}
               onBlur={() => setUserFocus(false)}
               value={username}
@@ -111,19 +169,24 @@ export const RegisterScreen = ({ navigation }) => {
               placeholderTextColor="#ababab"
               keyboardAppearance="dark"
               selectionColor={"#ababab"}
-              onFocus={() => setemailFocus(true)}
-              onBlur={() => setemailFocus(false)}
+              onFocus={() => setEmailFocus(true)}
+              onBlur={() => setEmailFocus(false)}
               style={inputEmailStyle}
+              value={email}
+              onChangeText={setEmail}
             />
+            {emailError ? (
+                <Text style={{ color: "red" }}>{emailError}</Text>
+            ) : null}
             <TextInput
               placeholder="Password"
               placeholderTextColor="#ababab"
               secureTextEntry
               keyboardAppearance="dark"
               selectionColor={"#ababab"}
-              onFocus={() => setpassFocus(true)}
-              onBlur={() => setpassFocus(false)}
-              style={inputpassStyle}
+              onFocus={() => setPassFocus(true)}
+              onBlur={() => setPassFocus(false)}
+              style={inputPassStyle}
               onChangeText={setPassword}
               value={password}
             />
@@ -133,16 +196,19 @@ export const RegisterScreen = ({ navigation }) => {
               secureTextEntry
               keyboardAppearance="dark"
               selectionColor={"#ababab"}
-              onFocus={() => setrePassFocus(true)}
-              onBlur={() => setrePassFocus(false)}
-              style={inputreStyle}
+              onFocus={() => setRePassFocus(true)}
+              onBlur={() => setRePassFocus(false)}
+              style={inputReStyle}
               onChangeText={setConfirmPassword}
               value={confirmPassword}
             />
-            <View style={{ height: "5%" }} />
-            {passwordError ? (
-              <Text style={styles.errorText}>{passwordError}</Text>
-            ) : null}
+            <View style={{ height: "3%" }} />
+              {passwordError ? (
+                  <Text style={styles.errorText}>{passwordError}</Text>
+              ) : null}
+              {errorMessage ? (
+                  <Text style={styles.errorText}>{errorMessage}</Text>
+              ) : null}
           </View>
           <View style={{ flexGrow: 3, paddingHorizontal: 20 }}>
             <TouchableOpacity
@@ -225,5 +291,6 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
+    marginBottom: "3%"
   },
 });
