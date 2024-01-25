@@ -11,14 +11,22 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useResponses } from "../context/ResponsesContext";
+import axios from "axios";
 
-const DismissKeyboard = ({ children }) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
-);
 export const LoginScreen = ({ navigation }) => {
+  const [focus, setFocus] = useState(false);
+  const [passwordfocus, setPasswordFocus] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
+  const inputPassStyle = passwordfocus
+      ? styles.focusInput
+      : styles.textInputStyle;
   const { myResponse } = useResponses();
+
   const handleForgotPassword = () => {
     navigation.navigate("Forgot Password");
   };
@@ -27,23 +35,45 @@ export const LoginScreen = ({ navigation }) => {
     navigation.navigate("Register");
   };
 
-  const onSignIn = () => {
-    if (!myResponse.userResponse) {
-      navigation.navigate("Question", { alreadyResponded: false });
-    } else {
-      navigation.navigate("Responses");
-    }
+  const handleDismissKeyboard = () => {
+    Keyboard.dismiss();
   };
 
-  const [focus, setFocus] = useState(false);
-  const [passwordfocus, setPasswordFocus] = useState(false);
-  const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
-  const inputPassStyle = passwordfocus
-    ? styles.focusInput
-    : styles.textInputStyle;
+  const onSignIn = () => {
+    setUsernameError("");
+    setPasswordError("");
+
+    if (!username.trim()) {
+      setUsernameError("Username is required");
+      return;
+    }
+
+    if (!password) {
+      setPasswordError("Password is required");
+      return;
+    }
+
+    const loginData = {
+      userId: username,
+      password: password,
+    }
+
+    axios.post('http://localhost:8080/users/login', loginData)
+        .then(response => {
+          console.log('Login successful:', response.data);
+          if (!myResponse.userResponse) {
+            navigation.navigate("Question", { alreadyResponded: false });
+          } else {
+            navigation.navigate("Responses");
+          }
+        })
+        .catch(error => {
+          setErrorMessage(error.response.data.message);
+        });
+  };
 
   return (
-    <DismissKeyboard>
+      <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
       <SafeAreaView style={styles.mainContainerStyle}>
         <View style={{ padding: 20 }}>
           <View>
@@ -59,14 +89,19 @@ export const LoginScreen = ({ navigation }) => {
           >
             <View style={{ marginVertical: "5%" }}>
               <TextInput
-                placeholder="Username or Email"
+                placeholder="Username"
                 placeholderTextColor="#ababab"
                 keyboardAppearance="dark"
                 selectionColor={"#ababab"}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
+                value={username}
+                onChangeText={setUsername}
                 style={inputUserStyle}
               />
+              {usernameError ? (
+                  <Text style={{ color: "red" }}>{usernameError}</Text>
+              ) : null}
               <TextInput
                 placeholder="Password"
                 placeholderTextColor="#ababab"
@@ -76,7 +111,15 @@ export const LoginScreen = ({ navigation }) => {
                 onFocus={() => setPasswordFocus(true)}
                 onBlur={() => setPasswordFocus(false)}
                 style={inputPassStyle}
+                onChangeText={setPassword}
+                value={password}
               />
+                {passwordError ? (
+                    <Text style={{ color: "red" }}>{passwordError}</Text>
+                ) : null}
+              {errorMessage ? (
+                  <Text style={{ color: "red" }}>{errorMessage}</Text>
+              ) : null}
             </View>
           </KeyboardAvoidingView>
           <View>
@@ -102,7 +145,7 @@ export const LoginScreen = ({ navigation }) => {
           </View>
         </View>
       </SafeAreaView>
-    </DismissKeyboard>
+      </TouchableWithoutFeedback>
   );
 };
 

@@ -13,6 +13,18 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import axios from "axios";
 
 export const RegisterScreen = ({ navigation }) => {
+  const [focus, setFocus] = useState(false);
+  const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
+  const [userFocus, setUserFocus] = useState(false);
+  const inputNameStyle = userFocus ? styles.focusInput : styles.textInputStyle;
+  const [emailFocus, setEmailFocus] = useState(false);
+  const inputEmailStyle = emailFocus
+      ? styles.focusInput
+      : styles.textInputStyle;
+  const [passFocus, setPassFocus] = useState(false);
+  const inputPassStyle = passFocus ? styles.focusInput : styles.textInputStyle;
+  const [rePassFocus, setRePassFocus] = useState(false);
+  const inputReStyle = rePassFocus ? styles.focusInput : styles.textInputStyle;
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -27,6 +39,10 @@ export const RegisterScreen = ({ navigation }) => {
 
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
+  };
+
+  const handleDismissKeyboard = () => {
+    Keyboard.dismiss();
   };
 
   const isValidEmail = (email) => {
@@ -65,10 +81,10 @@ export const RegisterScreen = ({ navigation }) => {
       setPasswordError("Passwords do not match.");
       return;
     }
-    if (!isValidEmail(email)) {
-      setErrorMessage('Invalid email format');
-      return;
-    }
+    // if (!isValidEmail(email)) {
+    //   setErrorMessage('Invalid email format');
+    //   return;
+    // }
 
     const names = fullName.trim().split(" ");
     const firstName = names[0];
@@ -82,36 +98,27 @@ export const RegisterScreen = ({ navigation }) => {
       password: password,
     };
 
-    axios.post('http://localhost:8080/api/users/register', userData)
+    axios.post('http://localhost:8080/users/register', userData)
         .then(response => {
           console.log('User registered:', response.data);
           navigation.navigate("Question", { alreadyResponded: false });
         })
         .catch(error => {
-          setErrorMessage(error.response.data.message);
+          if (error.response && error.response.data) {
+            if (error.response.data.message) {
+              setErrorMessage(error.response.data.message);
+            }
+            else if (error.response.data.email) {
+              setErrorMessage(error.response.data.email);
+            }
+            else {
+              setErrorMessage("An unknown error occurred");
+            }
+          } else {
+            setErrorMessage("Unable to connect to the server");
+          }
         });
   };
-
-  const handleDismissKeyboard = () => {
-    Keyboard.dismiss(); // Dismiss the keyboard when tapped outside
-  };
-
-  const [focus, setFocus] = useState(false);
-  const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
-
-  const [userFocus, setUserFocus] = useState(false);
-  const inputNameStyle = userFocus ? styles.focusInput : styles.textInputStyle;
-
-  const [emailFocus, setEmailFocus] = useState(false);
-  const inputEmailStyle = emailFocus
-    ? styles.focusInput
-    : styles.textInputStyle;
-
-  const [passFocus, setPassFocus] = useState(false);
-  const inputPassStyle = passFocus ? styles.focusInput : styles.textInputStyle;
-
-  const [rePassFocus, setRePassFocus] = useState(false);
-  const inputReStyle = rePassFocus ? styles.focusInput : styles.textInputStyle;
 
   return (
     <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
