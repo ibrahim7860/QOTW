@@ -42,6 +42,7 @@ export const LoginScreen = ({ navigation }) => {
   const onSignIn = () => {
     setUsernameError("");
     setPasswordError("");
+    setErrorMessage("");
 
     if (!username.trim()) {
       setUsernameError("Username is required");

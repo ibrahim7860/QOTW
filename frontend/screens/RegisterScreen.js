@@ -45,11 +45,6 @@ export const RegisterScreen = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return emailRegex.test(email.toLowerCase());
-  };
-
   const handleRegister = () => {
     setPasswordError("");
     setUsernameError("");
@@ -81,10 +76,6 @@ export const RegisterScreen = ({ navigation }) => {
       setPasswordError("Passwords do not match.");
       return;
     }
-    // if (!isValidEmail(email)) {
-    //   setErrorMessage('Invalid email format');
-    //   return;
-    // }
 
     const names = fullName.trim().split(" ");
     const firstName = names[0];
