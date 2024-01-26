@@ -9,4 +9,6 @@ public interface UserService {
     User registerUser(UserRegistrationDto userRegistrationDto);
     AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequest);
     void verifyUser(String token);
+    void processForgotPassword(String email);
+    void resetPassword(String token, String newPassword);
 }

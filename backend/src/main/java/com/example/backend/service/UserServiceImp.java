@@ -3,9 +3,11 @@ package com.example.backend.service;
 import com.example.backend.dto.AuthenticationRequestDto;
 import com.example.backend.dto.AuthenticationResponseDto;
 import com.example.backend.dto.UserRegistrationDto;
+import com.example.backend.entity.PasswordResetToken;
 import com.example.backend.entity.User;
 import com.example.backend.entity.VerificationToken;
 import com.example.backend.exception.CustomAuthenticationException;
+import com.example.backend.repository.PasswordResetTokenRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,13 @@ public class UserServiceImp implements UserService {
     private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private EmailService emailService;
+    private EmailServiceImpl emailServiceImpl;
 
     @Override
     public User registerUser(UserRegistrationDto userRegistrationDto) {
@@ -52,7 +57,7 @@ public class UserServiceImp implements UserService {
         VerificationToken verificationToken = new VerificationToken(token, user);
         verificationTokenRepository.save(verificationToken);
 
-        emailService.sendVerificationEmail(user, token);
+        emailServiceImpl.sendVerificationEmail(user, token);
 
         return user;
     }
@@ -80,5 +85,30 @@ public class UserServiceImp implements UserService {
         } else {
             throw new CustomAuthenticationException("Incorrect password.", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    public void processForgotPassword(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new CustomAuthenticationException("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(myToken);
+        emailServiceImpl.sendPasswordResetEmail(user, token);
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token);
+        if (resetToken == null || resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new CustomAuthenticationException("Invalid or expired token", HttpStatus.BAD_REQUEST);
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        passwordResetTokenRepository.delete(resetToken);
     }
 }

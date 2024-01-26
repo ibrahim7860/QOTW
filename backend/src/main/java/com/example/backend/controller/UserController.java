@@ -1,6 +1,8 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.*;
+import com.example.backend.dto.AuthenticationRequestDto;
+import com.example.backend.dto.AuthenticationResponseDto;
+import com.example.backend.dto.UserRegistrationDto;
 import com.example.backend.entity.User;
 import com.example.backend.service.UserService;
 import com.example.backend.service.jwt.UserDetailsServiceImp;
@@ -17,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
@@ -72,6 +75,26 @@ public class UserController {
     public ResponseEntity<AuthenticationResponseDto> login(@RequestBody @Valid AuthenticationRequestDto authenticationRequest) {
         AuthenticationResponseDto response = userService.authenticateUser(authenticationRequest);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> processForgotPassword(@RequestParam String email) {
+        userService.processForgotPassword(email);
+        return ResponseEntity.ok("A password reset link has been sent to the user's email if it exists");
+    }
+
+    @GetMapping("/reset-password-form")
+    public ModelAndView resetPassword(@RequestParam("token") String token) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("token", token);
+        modelAndView.setViewName("reset-password");
+        return modelAndView;
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+        userService.resetPassword(token, newPassword);
+        return ResponseEntity.ok("Password reset successfully.");
     }
 }
 
