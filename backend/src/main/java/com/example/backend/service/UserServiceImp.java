@@ -4,24 +4,35 @@ import com.example.backend.dto.AuthenticationRequestDto;
 import com.example.backend.dto.AuthenticationResponseDto;
 import com.example.backend.dto.UserRegistrationDto;
 import com.example.backend.entity.User;
+import com.example.backend.entity.VerificationToken;
 import com.example.backend.exception.CustomAuthenticationException;
 import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Service
-public class AuthServiceImp implements AuthService{
+public class UserServiceImp implements UserService {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
-    public User createUser(UserRegistrationDto userRegistrationDto) {
+    public User registerUser(UserRegistrationDto userRegistrationDto) {
         if (userRepository.existsByUserId(userRegistrationDto.getUserId())) {
             throw new CustomAuthenticationException("Username already in use", HttpStatus.CONFLICT);
         }
@@ -35,7 +46,28 @@ public class AuthServiceImp implements AuthService{
         user.setLastName(userRegistrationDto.getLastName());
         user.setEmail(userRegistrationDto.getEmail());
         user.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
-        return userRepository.save(user);
+        user = userRepository.save(user);
+
+        String token = UUID.randomUUID().toString();
+        VerificationToken verificationToken = new VerificationToken(token, user);
+        verificationTokenRepository.save(verificationToken);
+
+        emailService.sendVerificationEmail(user, token);
+
+        return user;
+    }
+
+    public void verifyUser(String token) {
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
+        if (verificationToken == null || verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new CustomAuthenticationException("Token is invalid or expired", HttpStatus.BAD_REQUEST);
+        }
+
+        User user = verificationToken.getUser();
+        user.setEmailVerified(true);
+        userRepository.save(user);
+
+        verificationTokenRepository.delete(verificationToken);
     }
 
     public AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequest) {

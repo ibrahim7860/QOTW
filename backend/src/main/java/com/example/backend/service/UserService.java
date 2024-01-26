@@ -5,7 +5,8 @@ import com.example.backend.dto.AuthenticationResponseDto;
 import com.example.backend.dto.UserRegistrationDto;
 import com.example.backend.entity.User;
 
-public interface AuthService {
-    User createUser(UserRegistrationDto userRegistrationDto);
+public interface UserService {
+    User registerUser(UserRegistrationDto userRegistrationDto);
     AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequest);
+    void verifyUser(String token);
 }

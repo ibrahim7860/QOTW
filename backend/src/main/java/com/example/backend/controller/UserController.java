@@ -2,7 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.*;
 import com.example.backend.entity.User;
-import com.example.backend.service.AuthService;
+import com.example.backend.service.UserService;
 import com.example.backend.service.jwt.UserDetailsServiceImp;
 import com.example.backend.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +24,7 @@ import java.io.IOException;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private AuthService authService;
+    private UserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -37,11 +37,17 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
-        User createdUser = authService.createUser(userRegistrationDto);
+        User createdUser = userService.registerUser(userRegistrationDto);
         if (createdUser == null) {
             return new ResponseEntity<>("User is not created, try again later.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verifyUser(@RequestParam String token) {
+        userService.verifyUser(token);
+        return ResponseEntity.ok("Email verified successfully.");
     }
 
     @PostMapping("/authentication")
@@ -64,7 +70,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDto> login(@RequestBody @Valid AuthenticationRequestDto authenticationRequest) {
-        AuthenticationResponseDto response = authService.authenticateUser(authenticationRequest);
+        AuthenticationResponseDto response = userService.authenticateUser(authenticationRequest);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }
