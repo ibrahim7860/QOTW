@@ -10,11 +10,20 @@ import com.example.backend.exception.CustomAuthenticationException;
 import com.example.backend.repository.PasswordResetTokenRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.VerificationTokenRepository;
+import com.example.backend.service.jwt.UserDetailsServiceImp;
+import com.example.backend.utils.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -35,6 +44,15 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     private EmailServiceImpl emailServiceImpl;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserDetailsServiceImp userDetailsServiceImp;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     public User registerUser(UserRegistrationDto userRegistrationDto) {
@@ -110,5 +128,20 @@ public class UserServiceImp implements UserService {
         userRepository.save(user);
 
         passwordResetTokenRepository.delete(resetToken);
+    }
+
+    public AuthenticationResponseDto authenticateAndGenerateToken(AuthenticationRequestDto authenticationRequest, HttpServletResponse response) {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUserId(), authenticationRequest.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new CustomAuthenticationException("Incorrect Username or Password.", HttpStatus.UNAUTHORIZED);
+        } catch (DisabledException e) {
+            throw new CustomAuthenticationException("User is not created, Register user first.", HttpStatus.NOT_FOUND);
+        }
+
+        final UserDetails userDetails = userDetailsServiceImp.loadUserByUsername(authenticationRequest.getUserId());
+        final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+
+        return new AuthenticationResponseDto(jwt, "User authenticated");
     }
 }

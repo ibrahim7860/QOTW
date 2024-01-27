@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendPasswordResetEmail(User user, String token) {
         String subject = "Password Reset Request";
-        String resetUrl = "http://localhost:8080/users/reset-password-form?token=" + token;
+        String resetUrl = "http://localhost:8080/reset-password-form?token=" + token;
         String message = "To reset your password, please click the link below:\n" + resetUrl;
 
         SimpleMailMessage email = new SimpleMailMessage();

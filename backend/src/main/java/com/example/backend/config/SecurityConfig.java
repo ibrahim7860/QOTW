@@ -22,7 +22,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/users/register", "/users/authentication",
-                        "/users/login", "/users/verify", "/users/forgot-password", "/users/reset-password-form",
+                        "/users/login", "/users/verify", "/users/forgot-password", "/reset-password-form",
                         "/users/reset-password").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/users/**").authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
