@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -35,6 +35,8 @@ export const RegisterScreen = ({ navigation }) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [verifyEmailMessage, setVerifyEmailMessage] = useState("");
+  const [userId, setUserId] = useState(null);
   const MIN_USERNAME_LENGTH = 3;
 
   const handleAlreadyHaveAccount = () => {
@@ -45,12 +47,38 @@ export const RegisterScreen = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
+  useEffect(() => {
+    let intervalId;
+
+    if (userId) {
+      intervalId = setInterval(() => {
+        axios.get(`http://localhost:8080/users/${userId}/status`)
+            .then(response => {
+              if (response.data.email_verified) {
+                clearInterval(intervalId);
+                navigation.navigate("Question", { alreadyResponded: false });
+              }
+            })
+            .catch(error => {
+              setErrorMessage("Error checking verification status");
+            });
+      }, 3000);
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [userId]);
+
   const handleRegister = () => {
     setPasswordError("");
     setUsernameError("");
     setFullNameError("");
     setEmailError("")
     setErrorMessage("");
+    setVerifyEmailMessage("");
 
     if (!fullName.trim()) {
       setFullNameError("Full Name is required");
@@ -92,7 +120,8 @@ export const RegisterScreen = ({ navigation }) => {
     axios.post('http://localhost:8080/users/register', userData)
         .then(response => {
           console.log('User registered:', response.data);
-          navigation.navigate("Question", { alreadyResponded: false });
+          setUserId(response.data.userId);
+          setVerifyEmailMessage("Registration successful! Please check your email to verify your account.")
         })
         .catch(error => {
           if (error.response && error.response.data) {
@@ -207,6 +236,9 @@ export const RegisterScreen = ({ navigation }) => {
               {errorMessage ? (
                   <Text style={styles.errorText}>{errorMessage}</Text>
               ) : null}
+            {verifyEmailMessage ? (
+                <Text style={styles.successText}>{verifyEmailMessage}</Text>
+            ) : null}
           </View>
           <View style={{ flexGrow: 3, paddingHorizontal: 20 }}>
             <TouchableOpacity
@@ -291,4 +323,8 @@ const styles = StyleSheet.create({
     color: "red",
     marginBottom: "3%"
   },
+  successText: {
+    color: "white",
+    marginBottom: "3%"
+  }
 });

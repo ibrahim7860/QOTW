@@ -6,8 +6,6 @@ import com.example.backend.dto.UserRegistrationDto;
 import com.example.backend.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-
 public interface UserService {
     User registerUser(UserRegistrationDto userRegistrationDto);
     AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequest);

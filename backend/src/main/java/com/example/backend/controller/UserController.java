@@ -4,6 +4,7 @@ import com.example.backend.dto.AuthenticationRequestDto;
 import com.example.backend.dto.AuthenticationResponseDto;
 import com.example.backend.dto.UserRegistrationDto;
 import com.example.backend.entity.User;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -13,15 +14,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
@@ -33,6 +36,12 @@ public class UserController {
     public ResponseEntity<?> verifyUser(@RequestParam String token) {
         userService.verifyUser(token);
         return ResponseEntity.ok("Email verified successfully.");
+    }
+
+    @GetMapping("/{userId}/status")
+    public ResponseEntity<?> checkEmailVerificationStatus(@PathVariable String userId) {
+        User user = userRepository.findFirstByUserId(userId);
+        return ResponseEntity.ok(Map.of("email_verified", user.isEmailVerified()));
     }
 
     @PostMapping("/authentication")
