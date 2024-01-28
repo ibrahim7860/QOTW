@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
+  Keyboard,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
-  View,
   Text,
   TextInput,
   TouchableOpacity,
-  Keyboard,
   TouchableWithoutFeedback,
-  ScrollView,
+  View,
 } from "react-native";
+import axios from "axios";
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -17,30 +18,40 @@ const DismissKeyboard = ({ children }) => (
   </TouchableWithoutFeedback>
 );
 export const ForgotPasswordScreen = ({ navigation }) => {
+  const [focus, setFocus] = useState(false);
+  const [emailFocus, setEmailFocus] = useState(false);
+  const inputEmailStyle = focus ? styles.focusInput : styles.textInputStyle;
+  const inputReEnterStyle = emailFocus
+      ? styles.focusInput
+      : styles.textInputStyle;
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [passwordResetMessage, setPasswordResetMessage] = useState("");
 
   const backToLogin = () => {
     navigation.navigate("Login");
   };
 
   const handleForgotPassword = () => {
+    setEmailError("");
+    setErrorMessage("");
+    setPasswordResetMessage("");
+
     if (email === confirmEmail) {
-      // Proceed with the registration process
-      setEmailError("");
-      // ... registration logic
+      axios.post(`http://localhost:8080/users/forgot-password?email=${encodeURIComponent(email)}`)
+          .then(response => {
+            console.log(response.data);
+            setPasswordResetMessage("A password reset link has been sent to the user's email if it exists");
+          })
+          .catch(error => {
+            setErrorMessage(error.response.data.message);
+          });
     } else {
       setEmailError("Emails do not match.");
     }
   };
-
-  const [focus, setFocus] = useState(false);
-  const [emailFocus, setemailFocus] = useState(false);
-  const inputEmailStyle = focus ? styles.focusInput : styles.textInputStyle;
-  const inputreEnterStyle = emailFocus
-    ? styles.focusInput
-    : styles.textInputStyle;
 
   return (
     <DismissKeyboard>
@@ -73,17 +84,22 @@ export const ForgotPasswordScreen = ({ navigation }) => {
               <TextInput
                 placeholder="Re-Enter Email"
                 placeholderTextColor="#ababab"
-                onFocus={() => setemailFocus(true)}
-                onBlur={() => setemailFocus(false)}
-                secureTextEntry
+                onFocus={() => setEmailFocus(true)}
+                onBlur={() => setEmailFocus(false)}
                 keyboardAppearance="dark"
                 selectionColor={"#ababab"}
-                style={inputreEnterStyle}
+                style={inputReEnterStyle}
                 onChangeText={setConfirmEmail}
                 value={confirmEmail}
               />
               {emailError ? (
                 <Text style={styles.errorText}>{emailError}</Text>
+              ) : null}
+              {errorMessage ? (
+                  <Text style={styles.errorText}>{errorMessage}</Text>
+              ) : null}
+              {passwordResetMessage ? (
+                  <Text style={styles.successText}>{passwordResetMessage}</Text>
               ) : null}
             </View>
           </ScrollView>
@@ -155,7 +171,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingVertical: 15,
     paddingHorizontal: 20,
-    marginTop: "9%",
+    marginTop: "5%",
     borderRadius: 20,
   },
   backToLoginStyle: {
@@ -167,5 +183,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
+    marginVertical: "3%"
+  },
+  successText: {
+    color: "white",
+    marginVertical: "3%"
   },
 });
