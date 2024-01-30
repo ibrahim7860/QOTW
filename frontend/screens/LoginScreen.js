@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useResponses } from "../context/ResponsesContext";
 import axios from "axios";
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const LoginScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -61,7 +62,8 @@ export const LoginScreen = ({ navigation }) => {
 
     axios.post('http://localhost:8080/users/login', loginData)
         .then(response => {
-          console.log('Login successful:', response.data);
+          console.log('Login successful:', response);
+          // AsyncStorage.setItem('jwtToken', response.data.jwt);
           setGlobalUserId(username);
           if (!myResponse.userResponse) {
             navigation.navigate("Question", { alreadyResponded: false });
@@ -70,7 +72,7 @@ export const LoginScreen = ({ navigation }) => {
           }
         })
         .catch(error => {
-          setErrorMessage(error.response.data.message);
+          console.log(error.response);
         });
   };
 

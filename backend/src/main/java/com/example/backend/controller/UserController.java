@@ -44,16 +44,10 @@ public class UserController {
         return ResponseEntity.ok(Map.of("email_verified", user.isEmailVerified()));
     }
 
-    @PostMapping("/authentication")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDto> createAuthenticationToken(@RequestBody @Valid AuthenticationRequestDto authenticationRequest, HttpServletResponse response) throws BadCredentialsException, UsernameNotFoundException {
         AuthenticationResponseDto authenticationResponse = userService.authenticateAndGenerateToken(authenticationRequest, response);
         return new ResponseEntity<>(authenticationResponse, HttpStatus.ACCEPTED);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponseDto> login(@RequestBody @Valid AuthenticationRequestDto authenticationRequest) {
-        AuthenticationResponseDto response = userService.authenticateUser(authenticationRequest);
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/forgot-password")
