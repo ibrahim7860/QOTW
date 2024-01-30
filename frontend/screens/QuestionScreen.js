@@ -17,12 +17,13 @@ import axios from "axios";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
-  const { setMyResponse } = useResponses();
+  const { setResponseSubmitted, globalUserId } = useResponses();
   const [userInput, setUserInput] = useState("");
   const [questionText, setQuestionText] = useState('');
+  const questionId = 1;
 
   useEffect(() => {
-    axios.get('http://localhost:8080/question/1')
+    axios.get(`http://localhost:8080/question/${questionId}`)
         .then(response => {
           setQuestionText(response.data.questionText);
         })
@@ -32,11 +33,22 @@ export const QuestionScreen = ({ route, navigation }) => {
   }, []);
 
   const handleSubmit = () => {
-    setMyResponse((prevState) => ({
-      ...prevState,
-      userResponse: userInput,
-    }));
-    navigation.navigate("Responses");
+    const responseDto = {
+      userId: globalUserId,
+      questionId: questionId,
+      responseText: userInput,
+      dateResponded: new Date().toISOString()
+    };
+
+    axios.post('http://localhost:8080/response', responseDto)
+        .then(response => {
+          console.log('Response created:', response.data);
+          setResponseSubmitted(true);
+          navigation.navigate("Responses");
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
   };
 
   return (

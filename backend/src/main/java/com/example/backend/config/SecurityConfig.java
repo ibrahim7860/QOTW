@@ -31,7 +31,9 @@ public class SecurityConfig {
                         "/users/reset-password",
                         "/users/{userId}/status",
                         "/question/{id}", // to remove after auth
-                        "/create-question" /* to remove */).permitAll())
+                        "/create-question", // to remove after auth
+                        "/response", // to remove after auth
+                        "/{userId}/response"/* to remove */).permitAll())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();

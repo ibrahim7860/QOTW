@@ -1,11 +1,15 @@
-import React, { createContext, useState, useContext } from "react";
+import React, {createContext, useState, useContext, useEffect} from "react";
 import defaultProfilePic from "../../assets/default.jpeg";
+import axios from "axios";
 
 const ResponsesContext = createContext();
 
 export const useResponses = () => useContext(ResponsesContext);
 
 export const ResponsesProvider = ({ children }) => {
+  const [globalUserId, setGlobalUserId] = useState(null);
+  const [responseSubmitted, setResponseSubmitted] = useState(false);
+
   const [responses, setResponses] = useState([
     {
       id: "1",
@@ -96,6 +100,25 @@ export const ResponsesProvider = ({ children }) => {
     userResponse: null
   });
 
+  useEffect(() => {
+
+    if (responseSubmitted) {
+      const fetchUserResponse = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8080/${globalUserId}/response`);
+          setMyResponse((prevState) => ({
+            ...prevState,
+            userResponse: response.data.responseText,
+          }));
+        } catch (error) {
+          console.error('Error fetching user response:', error);
+        }
+      }
+
+      fetchUserResponse();
+    }
+  }, [responseSubmitted]);
+
   const addResponse = (newResponse) => {
     setResponses((currentResponses) => [...currentResponses, newResponse]);
   };
@@ -110,7 +133,8 @@ export const ResponsesProvider = ({ children }) => {
 
   return (
     <ResponsesContext.Provider
-      value={{ responses, myResponse, setMyResponse, addResponse, updateResponse }}
+      value={{ responses, myResponse, setMyResponse, addResponse, updateResponse, globalUserId, setGlobalUserId, responseSubmitted,
+      setResponseSubmitted}}
     >
       {children}
     </ResponsesContext.Provider>

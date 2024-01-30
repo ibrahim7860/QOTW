@@ -1,7 +1,9 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.QuestionDto;
+import com.example.backend.dto.ResponseDto;
 import com.example.backend.entity.Question;
+import com.example.backend.entity.Response;
 import com.example.backend.service.QuestionAndAnswerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,18 @@ public class QuestionAndAnswerController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/response")
+    public ResponseEntity<Response> createResponse(@RequestBody ResponseDto responseDto) {
+        Response response = questionAndAnswerService.createResponse(responseDto);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{userId}/response")
+    public ResponseEntity<ResponseDto> getUserResponse(@PathVariable String userId) {
+        ResponseDto responseDto = questionAndAnswerService.getUserResponse(userId);
+        return ResponseEntity.ok(responseDto);
     }
 
 }

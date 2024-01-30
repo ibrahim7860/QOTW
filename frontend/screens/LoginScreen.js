@@ -25,7 +25,7 @@ export const LoginScreen = ({ navigation }) => {
   const inputPassStyle = passwordfocus
       ? styles.focusInput
       : styles.textInputStyle;
-  const { myResponse } = useResponses();
+  const { myResponse, setGlobalUserId } = useResponses();
 
   const handleForgotPassword = () => {
     navigation.navigate("Forgot Password");
@@ -62,6 +62,7 @@ export const LoginScreen = ({ navigation }) => {
     axios.post('http://localhost:8080/users/login', loginData)
         .then(response => {
           console.log('Login successful:', response.data);
+          setGlobalUserId(username);
           if (!myResponse.userResponse) {
             navigation.navigate("Question", { alreadyResponded: false });
           } else {
