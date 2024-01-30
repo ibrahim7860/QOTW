@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -13,11 +13,23 @@ import Button from "../components/Button";
 import { MaterialIcons } from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
 import { useResponses } from "../context/ResponsesContext";
+import axios from "axios";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
   const { setMyResponse } = useResponses();
   const [userInput, setUserInput] = useState("");
+  const [questionText, setQuestionText] = useState('');
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/question/1')
+        .then(response => {
+          setQuestionText(response.data.questionText);
+        })
+        .catch(error => {
+          console.error('Error fetching question:', error);
+        });
+  }, []);
 
   const handleSubmit = () => {
     setMyResponse((prevState) => ({
@@ -49,8 +61,7 @@ export const QuestionScreen = ({ route, navigation }) => {
         }}
       >
         <Text style={styles.qotwStyle}>
-          In the current war in the middle east, why does either side have a
-          right to defend itself?
+          {questionText}
         </Text>
       </ScrollView>
 

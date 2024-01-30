@@ -29,8 +29,10 @@ public class SecurityConfig {
                         "/users/forgot-password",
                         "/reset-password-form",
                         "/users/reset-password",
-                        "/users/{userId}/status").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/users/**").authenticated())
+                        "/users/{userId}/status",
+                        "/question/{id}", // to remove
+                        "/create-question" /* to remove */).permitAll())
+                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
