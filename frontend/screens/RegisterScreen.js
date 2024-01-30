@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
+import {useResponses} from "../context/ResponsesContext";
 
 export const RegisterScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -36,8 +37,9 @@ export const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyEmailMessage, setVerifyEmailMessage] = useState("");
-  const [userId, setUserId] = useState(null);
+  const [localUserId, setLocalUserId] = useState(null);
   const MIN_USERNAME_LENGTH = 3;
+  const { setGlobalUserId } = useResponses();
 
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
@@ -50,9 +52,9 @@ export const RegisterScreen = ({ navigation }) => {
   useEffect(() => {
     let intervalId;
 
-    if (userId) {
+    if (localUserId) {
       intervalId = setInterval(() => {
-        axios.get(`http://localhost:8080/users/${userId}/status`)
+        axios.get(`http://localhost:8080/users/${localUserId}/status`)
             .then(response => {
               if (response.data.email_verified) {
                 clearInterval(intervalId);
@@ -70,7 +72,7 @@ export const RegisterScreen = ({ navigation }) => {
         clearInterval(intervalId);
       }
     };
-  }, [userId]);
+  }, [localUserId]);
 
   const handleRegister = () => {
     setPasswordError("");
@@ -120,7 +122,8 @@ export const RegisterScreen = ({ navigation }) => {
     axios.post('http://localhost:8080/users/register', userData)
         .then(response => {
           console.log('User registered:', response.data);
-          setUserId(response.data.userId);
+          setLocalUserId(response.data.userId);
+          setGlobalUserId(response.data.userId);
           setVerifyEmailMessage("Registration successful! Please check your email to verify your account.")
         })
         .catch(error => {
