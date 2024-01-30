@@ -37,9 +37,8 @@ export const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyEmailMessage, setVerifyEmailMessage] = useState("");
-  const [localUserId, setLocalUserId] = useState(null);
   const MIN_USERNAME_LENGTH = 3;
-  const { setGlobalUserId } = useResponses();
+  const { globalUserId, setGlobalUserId } = useResponses();
 
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
@@ -52,9 +51,9 @@ export const RegisterScreen = ({ navigation }) => {
   useEffect(() => {
     let intervalId;
 
-    if (localUserId) {
+    if (globalUserId) {
       intervalId = setInterval(() => {
-        axios.get(`http://localhost:8080/users/${localUserId}/status`)
+        axios.get(`http://localhost:8080/users/${globalUserId}/status`)
             .then(response => {
               if (response.data.email_verified) {
                 clearInterval(intervalId);
@@ -72,7 +71,7 @@ export const RegisterScreen = ({ navigation }) => {
         clearInterval(intervalId);
       }
     };
-  }, [localUserId]);
+  }, [globalUserId]);
 
   const handleRegister = () => {
     setPasswordError("");
@@ -122,7 +121,6 @@ export const RegisterScreen = ({ navigation }) => {
     axios.post('http://localhost:8080/users/register', userData)
         .then(response => {
           console.log('User registered:', response.data);
-          setLocalUserId(response.data.userId);
           setGlobalUserId(response.data.userId);
           setVerifyEmailMessage("Registration successful! Please check your email to verify your account.")
         })
