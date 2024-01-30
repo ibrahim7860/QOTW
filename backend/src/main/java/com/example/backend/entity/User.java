@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
     @Column(name = "first_name", nullable = false)
@@ -25,10 +26,10 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "email_verified", nullable = false)

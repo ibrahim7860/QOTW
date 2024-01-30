@@ -10,7 +10,6 @@ import com.example.backend.exception.CustomAuthenticationException;
 import com.example.backend.repository.PasswordResetTokenRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.VerificationTokenRepository;
-import com.example.backend.service.jwt.UserDetailsServiceImp;
 import com.example.backend.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -19,11 +19,11 @@ public class Response {
     private Long responseId;
 
     @OneToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "questionId", nullable = false)
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
     @Column(name = "response_text", nullable = false)

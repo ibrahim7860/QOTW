@@ -17,11 +17,11 @@ public class Reaction {
     private Long reactionId;
 
     @ManyToOne
-    @JoinColumn(name = "responseId", nullable = false)
+    @JoinColumn(name = "response_id", nullable = false)
     private Response response;
 
     @ManyToOne
-    @JoinColumn(name = "reactorUserId", nullable = false)
+    @JoinColumn(name = "reactor_user_id", nullable = false)
     private User reactor;
 }
 

@@ -30,7 +30,7 @@ public class SecurityConfig {
                         "/reset-password-form",
                         "/users/reset-password",
                         "/users/{userId}/status",
-                        "/question/{id}", // to remove
+                        "/question/{id}", // to remove after auth
                         "/create-question" /* to remove */).permitAll())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

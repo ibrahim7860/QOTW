@@ -19,14 +19,14 @@ public class Friend {
     private Long friendshipId;
 
     @ManyToOne
-    @JoinColumn(name = "requesterId", nullable = false)
+    @JoinColumn(name = "requester_id", nullable = false)
     private User requester;
 
     @ManyToOne
-    @JoinColumn(name = "receiverId", nullable = false)
+    @JoinColumn(name = "receiver_id", nullable = false)
     private User receiver;
 
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     private String status;
 
     @Column(name = "date_friended", nullable = false)

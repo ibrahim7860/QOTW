@@ -11,14 +11,17 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "password_reset_token")
 public class PasswordResetToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "token", nullable = false)
     private String token;
 
+    @Column(name = "expiry_date", nullable = false)
     private LocalDateTime expiryDate;
 
     @OneToOne(fetch = FetchType.EAGER)
