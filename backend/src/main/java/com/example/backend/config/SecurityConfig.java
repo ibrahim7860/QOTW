@@ -30,17 +30,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/users/register",
-                                "/users/authentication",
                                 "/users/login",
                                 "/users/verify",
                                 "/users/forgot-password",
                                 "/reset-password-form",
                                 "/users/reset-password",
                                 "/users/{userId}/status",
-                                "/question/{id}", // to remove after auth
-                                "/create-question", /* to remove */
-                                "/response", // to remove after auth
-                                "/{userId}/response"/* to remove */)
+                                "/{userId}/response")
                         .permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated())

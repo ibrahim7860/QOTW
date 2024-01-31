@@ -18,6 +18,7 @@ import { ResponsesProvider } from "./frontend/context/ResponsesContext";
 import { NavigationContainer } from "@react-navigation/native";
 import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
 import { ReactionsProvider } from "./frontend/context/ReactionsContext";
+import {TokenProvider} from "./frontend/context/TokenContext";
 
 const Stack = createStackNavigator();
 
@@ -69,6 +70,7 @@ export default function App() {
       <FriendsProvider>
         <ResponsesProvider>
           <ReactionsProvider>
+            <TokenProvider>
             <View style={styles.container}>
               <NavigationContainer>
                 <Stack.Navigator
@@ -117,6 +119,7 @@ export default function App() {
                 </Stack.Navigator>
               </NavigationContainer>
             </View>
+            </TokenProvider>
           </ReactionsProvider>
         </ResponsesProvider>
       </FriendsProvider>

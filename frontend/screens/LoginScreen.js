@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
+  Keyboard,
+  KeyboardAvoidingView,
   SafeAreaView,
   StyleSheet,
-  View,
   Text,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { useResponses } from "../context/ResponsesContext";
+import {useResponses} from "../context/ResponsesContext";
 import axios from "axios";
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useToken} from "../context/TokenContext";
 
 export const LoginScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -27,6 +27,7 @@ export const LoginScreen = ({ navigation }) => {
       ? styles.focusInput
       : styles.textInputStyle;
   const { myResponse, setGlobalUserId } = useResponses();
+  const { storeToken } = useToken();
 
   const handleForgotPassword = () => {
     navigation.navigate("Forgot Password");
@@ -62,8 +63,9 @@ export const LoginScreen = ({ navigation }) => {
 
     axios.post('http://localhost:8080/users/login', loginData)
         .then(response => {
-          console.log('Login successful:', response);
-          // AsyncStorage.setItem('jwtToken', response.data.jwt);
+          const token = response.data.jwt;
+          console.log('Login successful:', token);
+          storeToken(token)
           setGlobalUserId(username);
           if (!myResponse.userResponse) {
             navigation.navigate("Question", { alreadyResponded: false });

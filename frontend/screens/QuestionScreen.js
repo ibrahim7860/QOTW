@@ -1,19 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {
-  Image,
-  KeyboardAvoidingView,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import {Image, KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View,} from "react-native";
 import Button from "../components/Button";
-import { MaterialIcons } from "@expo/vector-icons";
+import {MaterialIcons} from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
-import { useResponses } from "../context/ResponsesContext";
+import {useResponses} from "../context/ResponsesContext";
 import axios from "axios";
+import {useToken} from "../context/TokenContext";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
@@ -21,18 +13,27 @@ export const QuestionScreen = ({ route, navigation }) => {
   const [userInput, setUserInput] = useState("");
   const [questionText, setQuestionText] = useState('');
   const questionId = 1;
+  const { getToken } = useToken();
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/question/${questionId}`)
-        .then(response => {
-          setQuestionText(response.data.questionText);
-        })
-        .catch(error => {
-          console.error('Error fetching question:', error);
-        });
+    const fetchQuestion = async () => {
+      axios.get(`http://localhost:8080/question/${questionId}`, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`
+        }
+      })
+          .then(response => {
+            setQuestionText(response.data.questionText);
+          })
+          .catch(error => {
+            console.error('Error fetching question:', error);
+          });
+    }
+
+    fetchQuestion()
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const responseDto = {
       userId: globalUserId,
       questionId: questionId,
@@ -40,7 +41,11 @@ export const QuestionScreen = ({ route, navigation }) => {
       dateResponded: new Date().toISOString()
     };
 
-    axios.post('http://localhost:8080/response', responseDto)
+    axios.post('http://localhost:8080/response', responseDto, {
+      headers: {
+        Authorization: `Bearer ${await getToken()}`
+      }
+    })
         .then(response => {
           console.log('Response created:', response.data);
           setResponseSubmitted(true);

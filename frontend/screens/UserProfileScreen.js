@@ -14,6 +14,7 @@ import { Shadow } from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 import { Camera } from "expo-camera";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const UserProfileScreen = ({ route, navigation }) => {
   const { fullName, username } = route.params;
@@ -59,7 +60,8 @@ export const UserProfileScreen = ({ route, navigation }) => {
     navigation.navigate("Responses");
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('jwtToken');
     navigation.navigate("Welcome Screen");
   };
 
