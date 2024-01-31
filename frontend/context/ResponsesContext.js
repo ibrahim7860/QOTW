@@ -1,6 +1,7 @@
 import React, {createContext, useState, useContext, useEffect} from "react";
 import defaultProfilePic from "../../assets/default.jpeg";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ResponsesContext = createContext();
 
@@ -105,7 +106,12 @@ export const ResponsesProvider = ({ children }) => {
     if (responseSubmitted) {
       const fetchUserResponse = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/${globalUserId}/response`);
+          const token = await AsyncStorage.getItem('jwtToken')
+          const response = await axios.get(`http://localhost:8080/${globalUserId}/response`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
           setMyResponse((prevState) => ({
             ...prevState,
             userResponse: response.data.responseText,

@@ -26,8 +26,8 @@ export const LoginScreen = ({ navigation }) => {
   const inputPassStyle = passwordfocus
       ? styles.focusInput
       : styles.textInputStyle;
-  const { myResponse, setGlobalUserId } = useResponses();
-  const { storeToken } = useToken();
+  const { setMyResponse, setGlobalUserId } = useResponses();
+  const { storeToken, getToken } = useToken();
 
   const handleForgotPassword = () => {
     navigation.navigate("Forgot Password");
@@ -62,15 +62,30 @@ export const LoginScreen = ({ navigation }) => {
     }
 
     axios.post('http://localhost:8080/users/login', loginData)
-        .then(response => {
+        .then(async response => {
           const token = response.data.jwt;
           console.log('Login successful:', token);
           storeToken(token)
           setGlobalUserId(username);
-          if (!myResponse.userResponse) {
-            navigation.navigate("Question", { alreadyResponded: false });
-          } else {
-            navigation.navigate("Responses");
+          try {
+            const response = await axios.get(`http://localhost:8080/${username}/response`, {
+              headers: {
+                Authorization: `Bearer ${await getToken()}`
+              }
+            });
+            const userResponse = response.data.responseText;
+
+            if (!userResponse) {
+              navigation.navigate("Question", {alreadyResponded: false});
+            } else {
+              setMyResponse((prevState) => ({
+                ...prevState,
+                userResponse: response.data.responseText,
+              }));
+              navigation.navigate("Responses");
+            }
+          } catch (error) {
+            console.error('Error fetching user response:', error);
           }
         })
         .catch(error => {

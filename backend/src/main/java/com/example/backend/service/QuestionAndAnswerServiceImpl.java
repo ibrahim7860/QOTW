@@ -80,7 +80,7 @@ public class QuestionAndAnswerServiceImpl implements QuestionAndAnswerService {
             responseDto.setDateResponded(r.getDateResponded());
             return responseDto;
         } else {
-            throw new CustomAuthenticationException("Response not found for user ID: " + userId, HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 }
