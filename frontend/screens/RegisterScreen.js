@@ -12,6 +12,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
 import {useResponses} from "../context/ResponsesContext";
+import {useToken} from "../context/TokenContext";
 
 export const RegisterScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -39,6 +40,7 @@ export const RegisterScreen = ({ navigation }) => {
   const [verifyEmailMessage, setVerifyEmailMessage] = useState("");
   const MIN_USERNAME_LENGTH = 3;
   const { globalUserId, setGlobalUserId } = useResponses();
+  const { storeToken } = useToken();
 
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
@@ -122,6 +124,7 @@ export const RegisterScreen = ({ navigation }) => {
         .then(response => {
           console.log('User registered:', response.data);
           setGlobalUserId(response.data.userId);
+          storeToken(response.data.jwt)
           setVerifyEmailMessage("Registration successful! Please check your email to verify your account.")
         })
         .catch(error => {

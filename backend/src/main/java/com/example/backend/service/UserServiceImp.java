@@ -53,7 +53,7 @@ public class UserServiceImp implements UserService {
     private JwtUtil jwtUtil;
 
     @Override
-    public User registerUser(UserRegistrationDto userRegistrationDto) {
+    public UserRegistrationDto registerUser(UserRegistrationDto userRegistrationDto) {
         if (userRepository.existsByUserId(userRegistrationDto.getUserId())) {
             throw new CustomAuthenticationException("Username already in use", HttpStatus.CONFLICT);
         }
@@ -75,7 +75,11 @@ public class UserServiceImp implements UserService {
 
         emailServiceImpl.sendVerificationEmail(user, token);
 
-        return user;
+        final UserDetails userDetails = userDetailsServiceImp.loadUserByUsername(userRegistrationDto.getUserId());
+        final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+        userRegistrationDto.setJwt(jwt);
+
+        return userRegistrationDto;
     }
 
     public void verifyUser(String token) {
@@ -89,18 +93,6 @@ public class UserServiceImp implements UserService {
         userRepository.save(user);
 
         verificationTokenRepository.delete(verificationToken);
-    }
-
-    public AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequest) {
-        User user = userRepository.findFirstByUserId(authenticationRequest.getUserId());
-        if (user == null) {
-            throw new CustomAuthenticationException("Username not found.", HttpStatus.NOT_FOUND);
-        }
-        if (passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
-            return new AuthenticationResponseDto("Login successful.");
-        } else {
-            throw new CustomAuthenticationException("Incorrect password.", HttpStatus.UNAUTHORIZED);
-        }
     }
 
     public void processForgotPassword(String email) {
@@ -135,6 +127,11 @@ public class UserServiceImp implements UserService {
             throw new CustomAuthenticationException("Incorrect Username or Password.", HttpStatus.UNAUTHORIZED);
         } catch (DisabledException e) {
             throw new CustomAuthenticationException("User is not created, Register user first.", HttpStatus.NOT_FOUND);
+        }
+
+        User user = userRepository.findFirstByUserId(authenticationRequest.getUserId());
+        if (!user.isEmailVerified()) {
+            throw new CustomAuthenticationException("Email is not verified, please verify email.", HttpStatus.UNAUTHORIZED);
         }
 
         final UserDetails userDetails = userDetailsServiceImp.loadUserByUsername(authenticationRequest.getUserId());

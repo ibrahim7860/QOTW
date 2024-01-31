@@ -36,7 +36,7 @@ public class SecurityConfig {
                                 "/reset-password-form",
                                 "/users/reset-password",
                                 "/users/{userId}/status",
-                                "/{userId}/response")
+                                "/{userId}/response" /* to remove */)
                         .permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated())

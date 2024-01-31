@@ -3,12 +3,10 @@ package com.example.backend.service;
 import com.example.backend.dto.AuthenticationRequestDto;
 import com.example.backend.dto.AuthenticationResponseDto;
 import com.example.backend.dto.UserRegistrationDto;
-import com.example.backend.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface UserService {
-    User registerUser(UserRegistrationDto userRegistrationDto);
-    AuthenticationResponseDto authenticateUser(AuthenticationRequestDto authenticationRequest);
+    UserRegistrationDto registerUser(UserRegistrationDto userRegistrationDto);
     AuthenticationResponseDto authenticateAndGenerateToken(AuthenticationRequestDto authenticationRequest, HttpServletResponse response);
     void verifyUser(String token);
     void processForgotPassword(String email);

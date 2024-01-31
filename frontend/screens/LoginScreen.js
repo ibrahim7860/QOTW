@@ -1,18 +1,18 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
-  Keyboard,
-  KeyboardAvoidingView,
   SafeAreaView,
   StyleSheet,
+  View,
   Text,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
-import {useResponses} from "../context/ResponsesContext";
+import { useResponses } from "../context/ResponsesContext";
 import axios from "axios";
-import {useToken} from "../context/TokenContext";
+import { useToken } from "../context/TokenContext";
 
 export const LoginScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -74,7 +74,7 @@ export const LoginScreen = ({ navigation }) => {
           }
         })
         .catch(error => {
-          console.log(error.response);
+          setErrorMessage(error.response.data.message);
         });
   };
 

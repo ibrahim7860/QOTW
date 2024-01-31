@@ -35,4 +35,8 @@ public class User {
     @Column(name = "email_verified", nullable = false)
     private boolean emailVerified = false;
 
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
 }
