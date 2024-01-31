@@ -39,7 +39,8 @@ export const RegisterScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyEmailMessage, setVerifyEmailMessage] = useState("");
   const MIN_USERNAME_LENGTH = 3;
-  const { globalUserId, setGlobalUserId } = useResponses();
+  const { setGlobalUserId } = useResponses();
+  const [localUserId, setLocalUserId] = useState("");
   const { storeToken } = useToken();
 
   const handleAlreadyHaveAccount = () => {
@@ -53,9 +54,9 @@ export const RegisterScreen = ({ navigation }) => {
   useEffect(() => {
     let intervalId;
 
-    if (globalUserId) {
+    if (localUserId) {
       intervalId = setInterval(() => {
-        axios.get(`http://localhost:8080/users/${globalUserId}/status`)
+        axios.get(`http://localhost:8080/users/${localUserId}/status`)
             .then(response => {
               if (response.data.email_verified) {
                 clearInterval(intervalId);
@@ -73,7 +74,7 @@ export const RegisterScreen = ({ navigation }) => {
         clearInterval(intervalId);
       }
     };
-  }, [globalUserId]);
+  }, [localUserId]);
 
   const handleRegister = () => {
     setPasswordError("");
@@ -124,6 +125,7 @@ export const RegisterScreen = ({ navigation }) => {
         .then(response => {
           console.log('User registered:', response.data);
           setGlobalUserId(response.data.userId);
+          setLocalUserId(response.data.userId);
           storeToken(response.data.jwt)
           setVerifyEmailMessage("Registration successful! Please check your email to verify your account.")
         })
@@ -266,6 +268,7 @@ export const RegisterScreen = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
+
 const styles = StyleSheet.create({
   mainContainerStyle: {
     flex: 1,
