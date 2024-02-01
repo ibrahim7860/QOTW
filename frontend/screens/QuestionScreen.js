@@ -6,10 +6,11 @@ import Ripple from "react-native-material-ripple";
 import {useResponses} from "../context/ResponsesContext";
 import axios from "axios";
 import {useToken} from "../context/TokenContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
-  const { setResponseSubmitted, globalUserId } = useResponses();
+  const { setResponseSubmitted, globalUserId, responseSubmitted, setMyResponse } = useResponses();
   const [userInput, setUserInput] = useState("");
   const [questionText, setQuestionText] = useState('');
   const questionId = 1;
@@ -32,6 +33,29 @@ export const QuestionScreen = ({ route, navigation }) => {
 
     fetchQuestion()
   }, []);
+
+  useEffect(() => {
+    if (responseSubmitted) {
+      const fetchUserResponse = async () => {
+        try {
+          const token = await AsyncStorage.getItem('jwtToken')
+          const response = await axios.get(`http://localhost:8080/${globalUserId}/response`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          setMyResponse((prevState) => ({
+            ...prevState,
+            userResponse: response.data.responseText,
+          }));
+        } catch (error) {
+          console.error('Error fetching user response:', error);
+        }
+      }
+
+      fetchUserResponse();
+    }
+  }, [responseSubmitted]);
 
   const handleSubmit = async () => {
     const responseDto = {
