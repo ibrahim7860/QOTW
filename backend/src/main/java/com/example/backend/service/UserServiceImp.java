@@ -137,6 +137,12 @@ public class UserServiceImp implements UserService {
         final UserDetails userDetails = userDetailsServiceImp.loadUserByUsername(authenticationRequest.getUserId());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername());
 
-        return new AuthenticationResponseDto(jwt, "User authenticated");
+        AuthenticationResponseDto authenticationResponseDto = new AuthenticationResponseDto();
+        authenticationResponseDto.setUserId(user.getUserId());
+        authenticationResponseDto.setJwt(jwt);
+        authenticationResponseDto.setFullName(user.getFirstName() + " " + user.getLastName());
+        authenticationResponseDto.setMessage("User authenticated");
+
+        return authenticationResponseDto;
     }
 }

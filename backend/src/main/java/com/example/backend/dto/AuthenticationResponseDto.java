@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponseDto {
     private String jwt;
     private String message;
+    private String userId;
+    private String fullName;
     public AuthenticationResponseDto(String message) {
         this.message = message;
     }

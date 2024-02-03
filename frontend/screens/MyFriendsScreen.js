@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { FriendItem } from "../components/FriendItem";
-import { SearchBar } from "../components/SearchBar";
-import { useFriends } from "../context/FriendsContext";
-import { FriendsHeader } from "../components/FriendsHeader";
+import React, {useEffect, useState} from "react";
+import {SafeAreaView, ScrollView, StyleSheet, Text, View,} from "react-native";
+import {FriendItem} from "../components/FriendItem";
+import {SearchBar} from "../components/SearchBar";
+import {useFriends} from "../context/FriendsContext";
+import {FriendsHeader} from "../components/FriendsHeader";
+import {DismissKeyboard} from "../components/DismissKeyboard";
 
-const DismissKeyboard = ({ children }) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
-);
 export const MyFriendsScreen = ({ navigation }) => {
   const { friends, removeFriend, handleSearch } = useFriends();
 

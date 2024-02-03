@@ -15,10 +15,11 @@ import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 import { Camera } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {useResponses} from "../context/ResponsesContext";
 
-export const UserProfileScreen = ({ route, navigation }) => {
-  const { fullName, username } = route.params;
+export const UserProfileScreen = ({ navigation }) => {
   const [profilePic, setProfilePic] = useState(null);
+  const { globalUserId, globalFullName } = useResponses();
 
   const checkAndRequestCameraPermission = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
@@ -103,8 +104,8 @@ export const UserProfileScreen = ({ route, navigation }) => {
             </View>
           </View>
         </TouchableOpacity>
-        <Text style={styles.name}>{fullName}</Text>
-        <Text style={styles.username}>{username}</Text>
+        <Text style={styles.name}>{globalFullName}</Text>
+        <Text style={styles.username}>{globalUserId}</Text>
       </View>
     </View>
   );

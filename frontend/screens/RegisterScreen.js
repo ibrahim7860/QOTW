@@ -1,18 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import {SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
 import {useResponses} from "../context/ResponsesContext";
 import {useToken} from "../context/TokenContext";
+import {DismissKeyboard} from "../components/DismissKeyboard";
 
 export const RegisterScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -39,16 +31,12 @@ export const RegisterScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyEmailMessage, setVerifyEmailMessage] = useState("");
   const MIN_USERNAME_LENGTH = 3;
-  const { setGlobalUserId } = useResponses();
+  const { setGlobalUserId, setGlobalFullName } = useResponses();
   const [localUserId, setLocalUserId] = useState("");
   const { storeToken } = useToken();
 
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
-  };
-
-  const handleDismissKeyboard = () => {
-    Keyboard.dismiss();
   };
 
   useEffect(() => {
@@ -125,6 +113,7 @@ export const RegisterScreen = ({ navigation }) => {
         .then(response => {
           console.log('User registered:', response.data);
           setGlobalUserId(response.data.userId);
+          setGlobalFullName(response.data.firstName + " " + response.data.lastName)
           setLocalUserId(response.data.userId);
           storeToken(response.data.jwt)
           setVerifyEmailMessage("Registration successful! Please check your email to verify your account.")
@@ -147,7 +136,7 @@ export const RegisterScreen = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
+    <DismissKeyboard>
       <SafeAreaView style={styles.mainContainerStyle}>
         <View
           style={{
@@ -265,7 +254,7 @@ export const RegisterScreen = ({ navigation }) => {
           </View>
         </KeyboardAwareScrollView>
       </SafeAreaView>
-    </TouchableWithoutFeedback>
+    </DismissKeyboard>
   );
 };
 

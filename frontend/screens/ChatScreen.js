@@ -1,27 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
-  View,
-  Text,
   FlatList,
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { MessageBubble } from "../components/MessageBubble";
+import {MessageBubble} from "../components/MessageBubble";
 import Button from "../components/Button";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useConversations } from "../context/ConversationsContext";
-
-const DismissKeyboard = ({ children }) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
-);
+import {MaterialIcons} from "@expo/vector-icons";
+import {useConversations} from "../context/ConversationsContext";
+import {DismissKeyboard} from "../components/DismissKeyboard";
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;

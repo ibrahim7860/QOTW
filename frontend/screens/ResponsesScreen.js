@@ -1,26 +1,11 @@
 import React from "react";
-import {
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { Response } from "../components/Response";
+import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Response} from "../components/Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useResponses } from "../context/ResponsesContext";
-import { useReactions } from "../context/ReactionsContext";
-import { MyResponse } from "../components/MyResponse";
-
-const DismissKeyboard = ({ children }) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
-);
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {useResponses} from "../context/ResponsesContext";
+import {useReactions} from "../context/ReactionsContext";
+import {MyResponse} from "../components/MyResponse";
 
 export const ResponsesScreen = ({ navigation }) => {
   const { responses, myResponse } = useResponses();
@@ -31,10 +16,7 @@ export const ResponsesScreen = ({ navigation }) => {
   };
 
   const goToUserProfile = () => {
-    navigation.navigate("User Profile", {
-      fullName: myResponse.fullName,
-      username: myResponse.username,
-    });
+    navigation.navigate("User Profile");
   };
 
   const goToFriends = () => {

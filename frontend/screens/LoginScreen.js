@@ -1,18 +1,9 @@
-import React, { useState } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { useResponses } from "../context/ResponsesContext";
+import React, {useState} from "react";
+import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import {useResponses} from "../context/ResponsesContext";
 import axios from "axios";
-import { useToken } from "../context/TokenContext";
+import {useToken} from "../context/TokenContext";
+import {DismissKeyboard} from "../components/DismissKeyboard";
 
 export const LoginScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -26,7 +17,7 @@ export const LoginScreen = ({ navigation }) => {
   const inputPassStyle = passwordfocus
       ? styles.focusInput
       : styles.textInputStyle;
-  const { setMyResponse, setGlobalUserId } = useResponses();
+  const { setMyResponse, setGlobalUserId, setGlobalFullName } = useResponses();
   const { storeToken, getToken } = useToken();
 
   const handleForgotPassword = () => {
@@ -35,10 +26,6 @@ export const LoginScreen = ({ navigation }) => {
 
   const handleCreateNewAccount = () => {
     navigation.navigate("Register");
-  };
-
-  const handleDismissKeyboard = () => {
-    Keyboard.dismiss();
   };
 
   const onSignIn = () => {
@@ -67,6 +54,7 @@ export const LoginScreen = ({ navigation }) => {
           console.log('Login successful:', token);
           storeToken(token)
           setGlobalUserId(username);
+          setGlobalFullName(response.data.fullName);
           try {
             const response = await axios.get(`http://localhost:8080/${username}/response`, {
               headers: {
@@ -94,7 +82,7 @@ export const LoginScreen = ({ navigation }) => {
   };
 
   return (
-      <TouchableWithoutFeedback onPress={handleDismissKeyboard}>
+      <DismissKeyboard>
       <SafeAreaView style={styles.mainContainerStyle}>
         <View style={{ padding: 20 }}>
           <View>
@@ -166,7 +154,7 @@ export const LoginScreen = ({ navigation }) => {
           </View>
         </View>
       </SafeAreaView>
-      </TouchableWithoutFeedback>
+      </DismissKeyboard>
   );
 };
 

@@ -7,6 +7,7 @@ export const useResponses = () => useContext(ResponsesContext);
 
 export const ResponsesProvider = ({ children }) => {
   const [globalUserId, setGlobalUserId] = useState(null);
+  const [globalFullName, setGlobalFullName] = useState("");
   const [responseSubmitted, setResponseSubmitted] = useState(false);
 
   const [responses, setResponses] = useState([
@@ -110,7 +111,7 @@ export const ResponsesProvider = ({ children }) => {
   return (
     <ResponsesContext.Provider
       value={{ responses, myResponse, setMyResponse, updateResponse, globalUserId, setGlobalUserId, responseSubmitted,
-      setResponseSubmitted}}
+      setResponseSubmitted, globalFullName, setGlobalFullName}}
     >
       {children}
     </ResponsesContext.Provider>

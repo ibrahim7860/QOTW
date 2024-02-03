@@ -1,22 +1,8 @@
 import React, {useState} from "react";
-import {
-  Keyboard,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import {SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
 import axios from "axios";
+import {DismissKeyboard} from "../components/DismissKeyboard";
 
-const DismissKeyboard = ({ children }) => (
-  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    {children}
-  </TouchableWithoutFeedback>
-);
 export const ForgotPasswordScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
