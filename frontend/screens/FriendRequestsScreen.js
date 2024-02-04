@@ -5,7 +5,6 @@ import {Button} from "../components/Button";
 import {SearchBar} from "../components/SearchBar";
 import {useFriends} from "../context/FriendsContext";
 import {FriendsHeader} from "../components/FriendsHeader";
-import {DismissKeyboard} from "../components/DismissKeyboard";
 
 export const FriendRequestsScreen = ({ navigation }) => {
   const {
@@ -27,7 +26,6 @@ export const FriendRequestsScreen = ({ navigation }) => {
   }, [friendRequests]);
 
   return (
-    <DismissKeyboard>
       <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
         <FriendsHeader />
         <View style={styles.containerStyle}>
@@ -46,7 +44,6 @@ export const FriendRequestsScreen = ({ navigation }) => {
         </ScrollView>
         <SearchBar onSearch={handleSearchChange} />
       </SafeAreaView>
-    </DismissKeyboard>
   );
 };
 

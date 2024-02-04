@@ -48,7 +48,7 @@ export const RegisterScreen = ({ navigation }) => {
             .then(response => {
               if (response.data.email_verified) {
                 clearInterval(intervalId);
-                navigation.navigate("Question", { alreadyResponded: false });
+                navigation.navigate("Profile Picture");
               }
             })
             .catch(error => {

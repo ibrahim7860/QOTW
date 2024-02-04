@@ -4,7 +4,6 @@ import {FriendItem} from "../components/FriendItem";
 import {SearchBar} from "../components/SearchBar";
 import {useFriends} from "../context/FriendsContext";
 import {FriendsHeader} from "../components/FriendsHeader";
-import {DismissKeyboard} from "../components/DismissKeyboard";
 
 export const MyFriendsScreen = ({ navigation }) => {
   const { friends, removeFriend, handleSearch } = useFriends();
@@ -21,7 +20,6 @@ export const MyFriendsScreen = ({ navigation }) => {
   }, [friends]);
 
   return (
-    <DismissKeyboard>
       <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
         <FriendsHeader />
         <View style={styles.containerStyle}>
@@ -39,7 +37,6 @@ export const MyFriendsScreen = ({ navigation }) => {
         </ScrollView>
         <SearchBar onSearch={handleSearchChange} />
       </SafeAreaView>
-    </DismissKeyboard>
   );
 };
 

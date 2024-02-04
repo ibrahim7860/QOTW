@@ -14,7 +14,6 @@ import {MessageBubble} from "../components/MessageBubble";
 import Button from "../components/Button";
 import {MaterialIcons} from "@expo/vector-icons";
 import {useConversations} from "../context/ConversationsContext";
-import {DismissKeyboard} from "../components/DismissKeyboard";
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;
@@ -71,7 +70,6 @@ export const ChatScreen = ({ route, navigation }) => {
   };
 
   return (
-    <DismissKeyboard>
       <SafeAreaView style={styles.safeArea}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -131,7 +129,6 @@ export const ChatScreen = ({ route, navigation }) => {
           )}
         </KeyboardAvoidingView>
       </SafeAreaView>
-    </DismissKeyboard>
   );
 };
 

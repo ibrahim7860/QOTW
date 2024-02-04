@@ -19,6 +19,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
 import { ReactionsProvider } from "./frontend/context/ReactionsContext";
 import {TokenProvider} from "./frontend/context/TokenContext";
+import {CreateProfilePictureScreen} from "./frontend/screens/CreateProfilePictureScreen";
 
 const Stack = createStackNavigator();
 
@@ -80,6 +81,7 @@ export default function App() {
                   <Stack.Screen name="Loading" component={LoadingScreen} />
                   <Stack.Screen name="Login" component={LoginScreen} />
                   <Stack.Screen name="Register" component={RegisterScreen} />
+                  <Stack.Screen name={"Profile Picture"} component={CreateProfilePictureScreen} />
                   <Stack.Screen
                     name="Forgot Password"
                     component={ForgotPasswordScreen}
