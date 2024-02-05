@@ -21,27 +21,37 @@ export const UserProfileScreen = ({ navigation }) => {
   const [profilePic, setProfilePic] = useState(null);
   const { globalUserId, globalFullName } = useResponses();
 
-  const checkAndRequestCameraPermission = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    return status;
-  };
   const openSettings = () => {
     Linking.openSettings();
   };
 
-  const updateProfilePic = async () => {
-    const status = await checkAndRequestCameraPermission();
-
-    if (status !== "granted") {
-      Alert.alert(
-        "Camera Permission",
-        "Camera permission is required to take pictures. Please enable it in the app settings.",
+  const showImagePickerOptions = () => {
+    Alert.alert(
+        "Select Photo",
+        "Choose where to pick your photo from",
         [
-          { text: "Cancel", style: "cancel" },
-          { text: "OK", onPress: openSettings },
+          {
+            text: "Camera",
+            onPress: updateProfilePic,
+          },
+          {
+            text: "Gallery",
+            onPress: updateProfilePicFromGallery,
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
         ],
-        { cancelable: false }
-      );
+        { cancelable: true }
+    );
+  };
+
+  const updateProfilePic = async () => {
+    const status = await Camera.requestCameraPermissionsAsync();
+
+    if (status.status !== "granted") {
+      alertPermissionIssue("Camera");
       return;
     }
 
@@ -52,9 +62,43 @@ export const UserProfileScreen = ({ navigation }) => {
       quality: 1,
     });
 
+    processImageResult(result);
+  };
+
+  const updateProfilePicFromGallery = async () => {
+    const status = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status.status !== "granted") {
+      alertPermissionIssue("Gallery");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    processImageResult(result);
+  };
+
+  const processImageResult = (result) => {
     if (!result.canceled) {
       setProfilePic(result.assets[0].uri);
     }
+  };
+
+  const alertPermissionIssue = (source) => {
+    Alert.alert(
+        `${source} Permission`,
+        `${source} permission is required to access your ${source.toLowerCase()}. Please enable it in the app settings.`,
+        [
+          { text: "Cancel", style: "cancel" },
+          { text: "OK", onPress: openSettings },
+        ],
+        { cancelable: false }
+    );
   };
 
   const handleArrowClick = () => {
@@ -91,7 +135,7 @@ export const UserProfileScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       <View style={styles.container}>
-        <TouchableOpacity onPress={updateProfilePic}>
+        <TouchableOpacity onPress={showImagePickerOptions}>
           <View style={styles.imageContainer}>
             <Shadow distance="10" radius="5" size="10">
               <Image
