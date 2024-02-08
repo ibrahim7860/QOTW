@@ -32,11 +32,13 @@ public class SecurityConfig {
                                 "/actuator/**",
                                 "/users/register",
                                 "/users/login",
+                                "/actuator/**",
                                 "/users/verify",
                                 "/users/forgot-password",
                                 "/reset-password-form",
                                 "/users/reset-password",
-                                "/users/{userId}/status")
+                                "/users/{userId}/status",
+                                "/friends/**")
                         .permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated())

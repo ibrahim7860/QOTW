@@ -13,18 +13,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "friends")
 public class Friend {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long friendshipId;
+    @Column(name = "friendship_id", nullable = false)
+    private Long frienshipId;
 
-    @ManyToOne
-    @JoinColumn(name = "requester_id", nullable = false)
-    private User requester;
+    @Column(name = "requester_id", nullable = false)
+    private String requesterId;
 
-    @ManyToOne
-    @JoinColumn(name = "receiver_id", nullable = false)
-    private User receiver;
+    @Column(name = "receiver_id", nullable = false)
+    private String receiverId;
 
     @Column(name = "status", nullable = false)
     private String status;
