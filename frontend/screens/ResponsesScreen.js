@@ -6,6 +6,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {useResponses} from "../context/ResponsesContext";
 import {useReactions} from "../context/ReactionsContext";
 import {MyResponse} from "../components/MyResponse";
+import defaultProfilePic from "../../assets/default.jpeg";
 
 export const ResponsesScreen = ({ navigation }) => {
   const { responses, myResponse } = useResponses();
@@ -48,7 +49,7 @@ export const ResponsesScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity onPress={goToUserProfile}>
               <Image
-                source={myResponse.profilePicUri}
+                source={myResponse.profilePicUri ? { uri: myResponse.profilePicUri } : defaultProfilePic}
                 style={styles.profilePic}
               />
             </TouchableOpacity>

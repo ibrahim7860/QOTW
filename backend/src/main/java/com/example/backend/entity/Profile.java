@@ -13,9 +13,15 @@ import lombok.NoArgsConstructor;
 public class Profile {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long profileId;
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "profile_picture", nullable = false)
     private String profilePicture;

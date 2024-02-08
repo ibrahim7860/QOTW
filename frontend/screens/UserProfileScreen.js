@@ -1,25 +1,19 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Linking,
-  Alert,
-} from "react-native";
+import React from "react";
+import {Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
-import { Shadow } from "react-native-shadow-2";
+import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
-import { Camera } from "expo-camera";
+import {Camera} from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useResponses} from "../context/ResponsesContext";
+import axios from "axios";
+import {useToken} from "../context/TokenContext";
 
 export const UserProfileScreen = ({ navigation }) => {
-  const [profilePic, setProfilePic] = useState(null);
-  const { globalUserId, globalFullName } = useResponses();
+  const { globalUserId, globalFullName, myResponse, setMyResponse } = useResponses();
+  const { getToken } = useToken();
 
   const openSettings = () => {
     Linking.openSettings();
@@ -62,7 +56,7 @@ export const UserProfileScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    processImageResult(result);
+    await processImageResult(result);
   };
 
   const updateProfilePicFromGallery = async () => {
@@ -80,14 +74,38 @@ export const UserProfileScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    processImageResult(result);
+    await processImageResult(result);
   };
 
-  const processImageResult = (result) => {
+  const processImageResult = async (result) => {
     if (!result.canceled) {
-      setProfilePic(result.assets[0].uri);
+      const photoUri = result.assets[0].uri;
+      const type = result.assets[0].type;
+      const name = photoUri.split('/').pop();
+
+      let formData = new FormData();
+      formData.append('file', {
+        uri: photoUri,
+        name: name,
+        type: type
+      });
+
+      try {
+        const response = await axios.post(`http://localhost:8080/profiles/${globalUserId}/update-picture`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${await getToken()}`
+          },
+        });
+        setMyResponse((prevState) => ({
+          ...prevState,
+          profilePicUri: photoUri,
+        }));
+      } catch (error) {
+        console.error('Could not update profile picture:', error);
+      }
     }
-  };
+  }
 
   const alertPermissionIssue = (source) => {
     Alert.alert(
@@ -139,7 +157,7 @@ export const UserProfileScreen = ({ navigation }) => {
           <View style={styles.imageContainer}>
             <Shadow distance="10" radius="5" size="10">
               <Image
-                source={profilePic ? { uri: profilePic } : defaultProfilePic}
+                source={myResponse.profilePicUri ? { uri: myResponse.profilePicUri } : defaultProfilePic}
                 style={styles.profilePic}
               />
             </Shadow>

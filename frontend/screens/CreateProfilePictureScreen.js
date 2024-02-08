@@ -1,13 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Camera} from "expo-camera";
 import {Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
+import axios from "axios";
+import {useToken} from "../context/TokenContext";
+import {useResponses} from "../context/ResponsesContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
-    const [profilePic, setProfilePic] = useState(null);
+    const { getToken } = useToken();
+    const { globalUserId, setMyResponse } = useResponses();
 
     const openSettings = () => {
         Linking.openSettings();
@@ -50,7 +54,8 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
             quality: 1,
         });
 
-        processImageResult(result);
+
+        await processImageResult(result);
     };
 
     const updateProfilePicFromGallery = async () => {
@@ -68,15 +73,39 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
             quality: 1,
         });
 
-        processImageResult(result);
+        await processImageResult(result);
     };
 
-    const processImageResult = (result) => {
+    const processImageResult = async (result) => {
         if (!result.canceled) {
-            setProfilePic(result.assets[0].uri);
-            navigation.navigate("Question", { alreadyResponded: false });
+            const photoUri = result.assets[0].uri;
+            const type = result.assets[0].type;
+            const name = photoUri.split('/').pop();
+
+            let formData = new FormData();
+            formData.append('file', {
+                uri: photoUri,
+                name: name,
+                type: type
+            });
+
+            try {
+                const response = await axios.post(`http://localhost:8080/profiles/${globalUserId}/picture`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${await getToken()}`
+                    },
+                });
+                setMyResponse((prevState) => ({
+                    ...prevState,
+                    profilePicUri: photoUri,
+                }));
+                navigation.navigate("Question", { alreadyResponded: false });
+            } catch (error) {
+                console.error('Could not update profile picture:', error);
+            }
         }
-    };
+    }
 
     const alertPermissionIssue = (source) => {
         Alert.alert(
@@ -98,7 +127,7 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
                     <View style={styles.imageContainer}>
                         <Shadow distance="10" radius="5" size="10">
                             <Image
-                                source={profilePic ? { uri: profilePic } : defaultProfilePic}
+                                source={defaultProfilePic}
                                 style={styles.profilePic}
                             />
                         </Shadow>
