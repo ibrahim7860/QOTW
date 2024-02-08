@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
-  const { setResponseSubmitted, globalUserId, responseSubmitted, setMyResponse } = useResponses();
+  const { setResponseSubmitted, globalUserId, responseSubmitted, updateResponse } = useResponses();
   const [userInput, setUserInput] = useState("");
   const [questionText, setQuestionText] = useState('');
   const questionId = 1;
@@ -44,10 +44,7 @@ export const QuestionScreen = ({ route, navigation }) => {
               Authorization: `Bearer ${token}`
             }
           });
-          setMyResponse((prevState) => ({
-            ...prevState,
-            userResponse: response.data.responseText,
-          }));
+          updateResponse(response);
         } catch (error) {
           console.error('Error fetching user response:', error);
         }

@@ -12,7 +12,7 @@ import axios from "axios";
 import {useToken} from "../context/TokenContext";
 
 export const UserProfileScreen = ({ navigation }) => {
-  const { globalUserId, globalFullName, myResponse, setMyResponse } = useResponses();
+  const { globalUserId, globalFullName, myResponse, updateProfilePicUri } = useResponses();
   const { getToken } = useToken();
 
   const openSettings = () => {
@@ -97,10 +97,7 @@ export const UserProfileScreen = ({ navigation }) => {
             Authorization: `Bearer ${await getToken()}`
           },
         });
-        setMyResponse((prevState) => ({
-          ...prevState,
-          profilePicUri: photoUri,
-        }));
+        updateProfilePicUri(photoUri);
       } catch (error) {
         console.error('Could not update profile picture:', error);
       }

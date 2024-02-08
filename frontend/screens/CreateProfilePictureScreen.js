@@ -11,7 +11,7 @@ import {useResponses} from "../context/ResponsesContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
     const { getToken } = useToken();
-    const { globalUserId, setMyResponse } = useResponses();
+    const { globalUserId, globalFullName, updateProfilePicUri, updateFullName } = useResponses();
 
     const openSettings = () => {
         Linking.openSettings();
@@ -96,10 +96,8 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
                         Authorization: `Bearer ${await getToken()}`
                     },
                 });
-                setMyResponse((prevState) => ({
-                    ...prevState,
-                    profilePicUri: photoUri,
-                }));
+                updateProfilePicUri(photoUri);
+                updateFullName(globalFullName);
                 navigation.navigate("Question", { alreadyResponded: false });
             } catch (error) {
                 console.error('Could not update profile picture:', error);

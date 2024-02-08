@@ -17,7 +17,7 @@ export const LoginScreen = ({ navigation }) => {
   const inputPassStyle = passwordfocus
       ? styles.focusInput
       : styles.textInputStyle;
-  const { setMyResponse, setGlobalUserId, setGlobalFullName } = useResponses();
+  const { updateResponse, setGlobalUserId, setGlobalFullName, updateFullName, globalFullName } = useResponses();
   const { storeToken, getToken } = useToken();
 
   const handleForgotPassword = () => {
@@ -66,10 +66,8 @@ export const LoginScreen = ({ navigation }) => {
             if (!userResponse) {
               navigation.navigate("Question", {alreadyResponded: false});
             } else {
-              setMyResponse((prevState) => ({
-                ...prevState,
-                userResponse: response.data.responseText,
-              }));
+              updateResponse(response);
+              updateFullName(globalFullName);
               navigation.navigate("Responses");
             }
           } catch (error) {

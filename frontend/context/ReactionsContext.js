@@ -10,7 +10,7 @@ export const ReactionsProvider = ({ children }) => {
     {
       id: "1",
       name: "Nayeem Belal",
-      username: "ibbytoolittyiiiiii",
+      username: "namanamis",
       profilePic: defaultProfilePic,
       responseId: "1",
     },

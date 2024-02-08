@@ -100,17 +100,30 @@ export const ResponsesProvider = ({ children }) => {
     userResponse: null
   });
 
-  const updateResponse = (id, updatedResponse) => {
-    setResponses((currentResponses) =>
-      currentResponses.map((response) =>
-        response.id === id ? { ...response, ...updatedResponse } : response
-      )
-    );
+  const updateResponse = (response) => {
+    setMyResponse((prevState) => ({
+      ...prevState,
+      userResponse: response.data.responseText,
+    }));
   };
+
+  const updateProfilePicUri = (photoUri) => {
+    setMyResponse((prevState) => ({
+      ...prevState,
+      profilePicUri: photoUri,
+    }));
+  }
+
+  const updateFullName = (fullName) => {
+    setMyResponse((prevState) => ({
+      ...prevState,
+      profilePicUri: fullName,
+    }));
+  }
 
   return (
     <ResponsesContext.Provider
-      value={{ responses, myResponse, setMyResponse, updateResponse, globalUserId, setGlobalUserId, responseSubmitted,
+      value={{ responses, myResponse, updateResponse, updateProfilePicUri, updateFullName, globalUserId, setGlobalUserId, responseSubmitted,
       setResponseSubmitted, globalFullName, setGlobalFullName}}
     >
       {children}
