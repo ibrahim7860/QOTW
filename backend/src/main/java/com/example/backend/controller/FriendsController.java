@@ -37,9 +37,12 @@ public class FriendsController {
         return new ResponseEntity<>(Map.of("request", request), HttpStatus.CREATED);
     }
 
-    @PutMapping("/requests/acceptRequest/{requester_id}/{receiver_id}")
-    public ResponseEntity<?> acceptFriendRequest(@PathVariable String requester_id, @PathVariable String receiver_id) {
-        friendService.acceptFriendRequest(requester_id, receiver_id);
+    @PutMapping("/requests/acceptRequest/{requester_id}/{receiver_id}/{status}")
+    public ResponseEntity<?> acceptFriendRequest(@PathVariable String requester_id, @PathVariable String receiver_id, @PathVariable String status) {
+        friendService.manageFriendRequest(requester_id, receiver_id, status);
+        if (status.equals("declined")) {
+            return new ResponseEntity<>("Friend request declined", HttpStatus.CREATED);
+        }
         return new ResponseEntity<>("Friend request accepted", HttpStatus.CREATED);
     }
 }

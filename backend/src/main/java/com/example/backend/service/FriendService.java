@@ -9,5 +9,5 @@ public interface FriendService {
     List<Friend> getFriends(String requester_id);
     List<Friend> getFriendRequests(String receiver_id);
     FriendRequestDto sendFriendRequest(FriendRequestDto friendRequestDto);
-    void acceptFriendRequest(String requester_id, String receiver_id);
+    void manageFriendRequest(String requester_id, String receiver_id, String status);
 }
