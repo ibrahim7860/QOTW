@@ -10,4 +10,5 @@ public interface FriendService {
     List<Friend> getFriendRequests(String receiver_id);
     FriendRequestDto sendFriendRequest(FriendRequestDto friendRequestDto);
     void manageFriendRequest(String requester_id, String receiver_id, String status);
+    void removeFriend(String requester_id, String receiver_id);
 }

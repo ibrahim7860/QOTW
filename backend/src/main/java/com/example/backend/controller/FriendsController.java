@@ -45,4 +45,10 @@ public class FriendsController {
         }
         return new ResponseEntity<>("Friend request accepted", HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/delete/{requester_id}/{receiver_id}")
+    public ResponseEntity<?> removeFriend(@PathVariable String requester_id, @PathVariable String receiver_id) {
+        friendService.removeFriend(requester_id, receiver_id);
+        return new ResponseEntity<>("Friend removed successfully", HttpStatus.OK);
+    }
 }

@@ -51,6 +51,17 @@ public class FriendServiceImp implements FriendService {
         }
     }
 
+    @Override
+    public void removeFriend(String requester_id, String receiver_id) {
+        Friend friendToRemove = friendRepository.findByRequesterIdAndReceiverId(requester_id, receiver_id);
+
+        if (friendToRemove != null) {
+            friendRepository.deleteById(friendToRemove.getFrienshipId());
+        } else {
+            throw new CustomAuthenticationException("The request to remove failed", HttpStatus.NOT_FOUND);
+        }
+    }
+
     public FriendRequestDto sendFriendRequest(FriendRequestDto friendRequestDto) {
         boolean requesterPresent = userRepository.existsById(friendRequestDto.getRequester_id());
         boolean receiverPresent = userRepository.existsById(friendRequestDto.getReceiver_id());
