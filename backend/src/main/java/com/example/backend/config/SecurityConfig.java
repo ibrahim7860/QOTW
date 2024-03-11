@@ -32,7 +32,6 @@ public class SecurityConfig {
                                 "/actuator/**",
                                 "/users/register",
                                 "/users/login",
-                                "/actuator/**",
                                 "/users/verify",
                                 "/users/forgot-password",
                                 "/reset-password-form",
