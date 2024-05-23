@@ -1,23 +1,23 @@
-import { StyleSheet, View } from "react-native";
-import { UserProfileScreen } from "./frontend/screens/UserProfileScreen";
-import { FriendProfileScreen } from "./frontend/screens/FriendProfileScreen";
-import { WelcomeScreen } from "./frontend/screens/WelcomeScreen";
-import { RegisterScreen } from "./frontend/screens/RegisterScreen";
-import { LoginScreen } from "./frontend/screens/LoginScreen";
-import { MyFriendsScreen } from "./frontend/screens/MyFriendsScreen";
-import { QuestionScreen } from "./frontend/screens/QuestionScreen";
-import { FriendRequestsScreen } from "./frontend/screens/FriendRequestsScreen";
-import { MessagesScreen } from "./frontend/screens/MessagesScreen";
-import { ChatScreen } from "./frontend/screens/ChatScreen";
-import { ConversationsProvider } from "./frontend/context/ConversationsContext";
-import { LoadingScreen } from "./frontend/screens/LoadingScreen";
-import { FriendsProvider } from "./frontend/context/FriendsContext";
-import { ForgotPasswordScreen } from "./frontend/screens/ForgotPasswordScreen";
-import { ResponsesScreen } from "./frontend/screens/ResponsesScreen";
-import { ResponsesProvider } from "./frontend/context/ResponsesContext";
-import { NavigationContainer } from "@react-navigation/native";
-import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
-import { ReactionsProvider } from "./frontend/context/ReactionsContext";
+import {StyleSheet, View} from "react-native";
+import {UserProfileScreen} from "./frontend/screens/UserProfileScreen";
+import {FriendProfileScreen} from "./frontend/screens/FriendProfileScreen";
+import {WelcomeScreen} from "./frontend/screens/WelcomeScreen";
+import {RegisterScreen} from "./frontend/screens/RegisterScreen";
+import {LoginScreen} from "./frontend/screens/LoginScreen";
+import {MyFriendsScreen} from "./frontend/screens/MyFriendsScreen";
+import {QuestionScreen} from "./frontend/screens/QuestionScreen";
+import {FriendRequestsScreen} from "./frontend/screens/FriendRequestsScreen";
+import {MessagesScreen} from "./frontend/screens/MessagesScreen";
+import {ChatScreen} from "./frontend/screens/ChatScreen";
+import {ConversationsProvider} from "./frontend/context/ConversationsContext";
+import {LoadingScreen} from "./frontend/screens/LoadingScreen";
+import {FriendsProvider} from "./frontend/context/FriendsContext";
+import {ForgotPasswordScreen} from "./frontend/screens/ForgotPasswordScreen";
+import {ResponsesScreen} from "./frontend/screens/ResponsesScreen";
+import {ResponsesProvider} from "./frontend/context/ResponsesContext";
+import {NavigationContainer} from "@react-navigation/native";
+import {createStackNavigator} from "@react-navigation/stack";
+import {ReactionsProvider} from "./frontend/context/ReactionsContext";
 import {TokenProvider} from "./frontend/context/TokenContext";
 import {CreateProfilePictureScreen} from "./frontend/screens/CreateProfilePictureScreen";
 
@@ -25,11 +25,20 @@ const Stack = createStackNavigator();
 
 const slightAnimation = {
   animationEnabled: true,
-  transitionSpec: {
-    open: { animation: 'timing', config: { duration: 100 } },
-    close: { animation: 'timing', config: { duration: 100 } },
-  },
-  cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
+  cardStyleInterpolator: ({ current, layouts }) => {
+    return {
+      cardStyle: {
+        transform: [
+          {
+            translateX: current.progress.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-layouts.screen.width, 0],
+            }),
+          },
+        ],
+      },
+    };
+  }
 };
 
 const leftToRightAnimation = {
