@@ -14,6 +14,7 @@ import {MessageBubble} from "../components/MessageBubble";
 import Button from "../components/Button";
 import {MaterialIcons} from "@expo/vector-icons";
 import {useConversations} from "../context/ConversationsContext";
+import * as Animatable from 'react-native-animatable';
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;
@@ -61,6 +62,7 @@ export const ChatScreen = ({ route, navigation }) => {
         text: newMessage,
         isSender: true,
         senderName: senderName,
+        animation: 'slideInLeft',
       };
 
       setMessages([...messages, newMessageObj]);
@@ -96,7 +98,9 @@ export const ChatScreen = ({ route, navigation }) => {
                 >
                   {item.isSender ? conversationName : senderName}
                 </Text>
-                <MessageBubble message={item.text} isSender={item.isSender} />
+                <Animatable.View animation={item.animation} duration={450}>
+                    <MessageBubble message={item.text} isSender={item.isSender} />
+                </Animatable.View>
               </View>
             )}
           />
