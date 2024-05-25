@@ -23,6 +23,10 @@ public class SecurityConfig {
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    private TokenBlacklistFilter tokenBlacklistFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -36,13 +40,13 @@ public class SecurityConfig {
                                 "/users/forgot-password",
                                 "/reset-password-form",
                                 "/users/reset-password",
-                                "/users/{userId}/status",
                                 "/friends/**")
                         .permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(tokenBlacklistFilter, UsernamePasswordAuthenticationFilter.class) // Add blacklist filter
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT filter
                 .build();
     }

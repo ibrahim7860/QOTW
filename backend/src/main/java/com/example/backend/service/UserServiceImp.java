@@ -88,10 +88,6 @@ public class UserServiceImp implements UserService {
     }
 
     public void verifyUser(String token) {
-        if (blacklistedTokenRepository.existsByToken(token)) {
-            throw new CustomAuthenticationException("Token has been invalidated", HttpStatus.UNAUTHORIZED);
-        }
-
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
         if (verificationToken == null || verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new CustomAuthenticationException("Token is invalid or expired", HttpStatus.BAD_REQUEST);
