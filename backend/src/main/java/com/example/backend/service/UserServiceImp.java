@@ -3,10 +3,12 @@ package com.example.backend.service;
 import com.example.backend.dto.AuthenticationRequestDto;
 import com.example.backend.dto.AuthenticationResponseDto;
 import com.example.backend.dto.UserRegistrationDto;
+import com.example.backend.entity.BlacklistedToken;
 import com.example.backend.entity.PasswordResetToken;
 import com.example.backend.entity.User;
 import com.example.backend.entity.VerificationToken;
 import com.example.backend.exception.CustomAuthenticationException;
+import com.example.backend.repository.BlacklistedTokenRepository;
 import com.example.backend.repository.PasswordResetTokenRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.VerificationTokenRepository;
@@ -36,6 +38,9 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    private BlacklistedTokenRepository blacklistedTokenRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -83,6 +88,10 @@ public class UserServiceImp implements UserService {
     }
 
     public void verifyUser(String token) {
+        if (blacklistedTokenRepository.existsByToken(token)) {
+            throw new CustomAuthenticationException("Token has been invalidated", HttpStatus.UNAUTHORIZED);
+        }
+
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
         if (verificationToken == null || verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new CustomAuthenticationException("Token is invalid or expired", HttpStatus.BAD_REQUEST);
@@ -93,6 +102,12 @@ public class UserServiceImp implements UserService {
         userRepository.save(user);
 
         verificationTokenRepository.delete(verificationToken);
+    }
+
+    public void blacklistToken(String authHeader) {
+        String token = authHeader.substring(7);
+        BlacklistedToken blacklistedToken = new BlacklistedToken(token, LocalDateTime.now().plusDays(1)); // Token expires in 1 day
+        blacklistedTokenRepository.save(blacklistedToken);
     }
 
     public void processForgotPassword(String email) {

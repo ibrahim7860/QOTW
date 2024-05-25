@@ -121,6 +121,19 @@ export const UserProfileScreen = ({ navigation }) => {
   };
 
   const handleLogout = async () => {
+    const token = await AsyncStorage.getItem('jwtToken');
+    if (token) {
+      axios.post('http://localhost:8080/users/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(() => {
+        console.log('Logged out successfully');
+      }).catch(error => {
+        console.error('Failed to logout:', error);
+      });
+    }
+
     await AsyncStorage.removeItem('jwtToken');
     navigation.navigate("Welcome Screen");
   };

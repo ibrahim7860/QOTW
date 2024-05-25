@@ -11,4 +11,5 @@ public interface UserService {
     void verifyUser(String token);
     void processForgotPassword(String email);
     void resetPassword(String token, String newPassword);
+    void blacklistToken(String authHeader);
 }

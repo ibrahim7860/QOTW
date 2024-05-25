@@ -50,6 +50,12 @@ public class UserController {
         return new ResponseEntity<>(authenticationResponse, HttpStatus.ACCEPTED);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
+        userService.blacklistToken(authHeader);
+        return ResponseEntity.ok().body("User logged out successfully");
+    }
+
     @PostMapping("/forgot-password")
     public ResponseEntity<?> processForgotPassword(@RequestParam String email) {
         userService.processForgotPassword(email);
