@@ -1,10 +1,17 @@
-import React, {useEffect, useState} from "react";
-import {SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import React, { useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
-import {useResponses} from "../context/ResponsesContext";
-import {useToken} from "../context/TokenContext";
-import {DismissKeyboard} from "../components/DismissKeyboard";
+import { useResponses } from "../context/ResponsesContext";
+import { useToken } from "../context/TokenContext";
+import { DismissKeyboard } from "../components/DismissKeyboard";
 
 export const RegisterScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -13,8 +20,8 @@ export const RegisterScreen = ({ navigation }) => {
   const inputNameStyle = userFocus ? styles.focusInput : styles.textInputStyle;
   const [emailFocus, setEmailFocus] = useState(false);
   const inputEmailStyle = emailFocus
-      ? styles.focusInput
-      : styles.textInputStyle;
+    ? styles.focusInput
+    : styles.textInputStyle;
   const [passFocus, setPassFocus] = useState(false);
   const inputPassStyle = passFocus ? styles.focusInput : styles.textInputStyle;
   const [rePassFocus, setRePassFocus] = useState(false);
@@ -45,20 +52,22 @@ export const RegisterScreen = ({ navigation }) => {
 
     if (localUserId) {
       intervalId = setInterval(async () => {
-        axios.get(`http://localhost:8080/users/${localUserId}/status`, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${await getToken()}`
-          },
-        }).then(response => {
-          if (response.data.email_verified) {
-            clearInterval(intervalId);
-            navigation.navigate("Profile Picture");
-          }
-        })
-            .catch(error => {
-              setErrorMessage("Error checking verification status");
-            });
+        axios
+          .get(`http://localhost:8080/users/${localUserId}/status`, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${await getToken()}`,
+            },
+          })
+          .then((response) => {
+            if (response.data.email_verified) {
+              clearInterval(intervalId);
+              navigation.navigate("Profile Picture");
+            }
+          })
+          .catch((error) => {
+            setErrorMessage("Error checking verification status");
+          });
       }, 3000);
     }
 
@@ -73,7 +82,7 @@ export const RegisterScreen = ({ navigation }) => {
     setPasswordError("");
     setUsernameError("");
     setFullNameError("");
-    setEmailError("")
+    setEmailError("");
     setErrorMessage("");
     setVerifyEmailMessage("");
 
@@ -107,37 +116,40 @@ export const RegisterScreen = ({ navigation }) => {
     const lastName = names.length > 1 ? names[names.length - 1] : "";
 
     const userData = {
-      userId: username,
+      userId: username.toLowerCase(),
       firstName: firstName,
       lastName: lastName,
       email: email,
       password: password,
     };
 
-    axios.post('http://192.168.200.128:8080/users/register', userData)
-        .then(response => {
-          console.log('User registered:', response.data);
-          setGlobalUserId(response.data.userId);
-          setGlobalFullName(response.data.firstName + " " + response.data.lastName)
-          setLocalUserId(response.data.userId);
-          storeToken(response.data.jwt)
-          setVerifyEmailMessage("Registration successful! Please check your email to verify your account.")
-        })
-        .catch(error => {
-          if (error.response && error.response.data) {
-            if (error.response.data.message) {
-              setErrorMessage(error.response.data.message);
-            }
-            else if (error.response.data.email) {
-              setErrorMessage(error.response.data.email);
-            }
-            else {
-              setErrorMessage("An unknown error occurred");
-            }
+    axios
+      .post("http://192.168.200.128:8080/users/register", userData)
+      .then((response) => {
+        console.log("User registered:", response.data);
+        setGlobalUserId(response.data.userId);
+        setGlobalFullName(
+          response.data.firstName + " " + response.data.lastName
+        );
+        setLocalUserId(response.data.userId);
+        storeToken(response.data.jwt);
+        setVerifyEmailMessage(
+          "Registration successful! Please check your email to verify your account."
+        );
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          if (error.response.data.message) {
+            setErrorMessage(error.response.data.message);
+          } else if (error.response.data.email) {
+            setErrorMessage(error.response.data.email);
           } else {
-            setErrorMessage("Unable to connect to the server");
+            setErrorMessage("An unknown error occurred");
           }
-        });
+        } else {
+          setErrorMessage("Unable to connect to the server");
+        }
+      });
   };
 
   return (
@@ -174,7 +186,7 @@ export const RegisterScreen = ({ navigation }) => {
               onChangeText={setFullName}
             />
             {fullNameError ? (
-                <Text style={{ color: "red" }}>{fullNameError}</Text>
+              <Text style={{ color: "red" }}>{fullNameError}</Text>
             ) : null}
             <TextInput
               placeholder="Username"
@@ -203,7 +215,7 @@ export const RegisterScreen = ({ navigation }) => {
               onChangeText={setEmail}
             />
             {emailError ? (
-                <Text style={{ color: "red" }}>{emailError}</Text>
+              <Text style={{ color: "red" }}>{emailError}</Text>
             ) : null}
             <TextInput
               placeholder="Password"
@@ -230,14 +242,14 @@ export const RegisterScreen = ({ navigation }) => {
               value={confirmPassword}
             />
             <View style={{ height: "3%" }} />
-              {passwordError ? (
-                  <Text style={styles.errorText}>{passwordError}</Text>
-              ) : null}
-              {errorMessage ? (
-                  <Text style={styles.errorText}>{errorMessage}</Text>
-              ) : null}
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
+            {errorMessage ? (
+              <Text style={styles.errorText}>{errorMessage}</Text>
+            ) : null}
             {verifyEmailMessage ? (
-                <Text style={styles.successText}>{verifyEmailMessage}</Text>
+              <Text style={styles.successText}>{verifyEmailMessage}</Text>
             ) : null}
           </View>
           <View style={{ flexGrow: 3, paddingHorizontal: 20 }}>
@@ -322,10 +334,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    marginBottom: "3%"
+    marginBottom: "3%",
   },
   successText: {
     color: "white",
-    marginBottom: "3%"
-  }
+    marginBottom: "3%",
+  },
 });
