@@ -18,7 +18,7 @@ export const FriendsProvider = ({ children }) => {
       if (globalUserId) {
         console.log("Global User ID:", globalUserId);
         const response = await axios.get(
-          `http://192.168.200.128:8080/friends/${globalUserId}`
+          `http://localhost:8080/friends/${globalUserId}`
         );
         setFriends(response.data);
       }
@@ -32,7 +32,7 @@ export const FriendsProvider = ({ children }) => {
       if (globalUserId) {
         console.log("Global User ID:", globalUserId);
         const response = await axios.get(
-          `http://192.168.200.128:8080/friends/requests/${globalUserId}`
+          `http://localhost:8080/friends/requests/${globalUserId}`
         );
         setFriendRequests(response.data);
       }
@@ -53,7 +53,7 @@ export const FriendsProvider = ({ children }) => {
       if (globalUserId) {
         console.log("Global User ID:", globalUserId);
         const response = await axios.put(
-          `http://192.168.200.128:8080/friends/requests/sendFriendRequest`,
+          `http://localhost:8080/friends/requests/sendFriendRequest`,
           newFriend
         );
         fetchFriendRequests();
@@ -69,7 +69,7 @@ export const FriendsProvider = ({ children }) => {
       if (globalUserId) {
         console.log("Global User ID:", globalUserId);
         const response = await axios.delete(
-          `http://192.168.200.128:8080/friends/delete/${friendship_id}`
+          `http://localhost:8080/friends/delete/${friendship_id}`
         );
         fetchFriends();
       }
@@ -83,7 +83,7 @@ export const FriendsProvider = ({ children }) => {
       if (globalUserId) {
         console.log("Global User ID:", globalUserId);
         const response = await axios.put(
-          `http://192.168.200.128:8080/friends/requests/acceptRequest/${friendship_id}`
+          `http://localhost:8080/friends/requests/acceptRequest/${friendship_id}`
         );
         fetchFriends();
         fetchFriendRequests();
@@ -98,7 +98,7 @@ export const FriendsProvider = ({ children }) => {
       if (globalUserId) {
         console.log("Global User ID:", globalUserId);
         const response = await axios.delete(
-          `http://192.168.200.128:8080/friends/requests/reject/${friendship_id}`
+          `http://localhost:8080/friends/requests/reject/${friendship_id}`
         );
         fetchFriends();
       }
@@ -112,7 +112,7 @@ export const FriendsProvider = ({ children }) => {
       if (globalUserId) {
         console.log("Global User ID:", globalUserId);
         const response = await axios.delete(
-          `http://192.168.200.128:8080/friends/requests/cancel/${friendship_id}`
+          `http://localhost:8080/friends/requests/cancel/${friendship_id}`
         );
         fetchFriendRequests();
       }

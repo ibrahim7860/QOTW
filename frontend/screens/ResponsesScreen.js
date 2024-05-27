@@ -16,9 +16,11 @@ import { useReactions } from "../context/ReactionsContext";
 import { MyResponse } from "../components/MyResponse";
 import defaultProfilePic from "../../assets/default.jpeg";
 import axios from "axios";
+import { userContext } from "../context/UserContext";
 
 export const ResponsesScreen = ({ navigation }) => {
-  const { responses, myResponse, globalUserId } = useResponses();
+  const { responses, myResponse } = useResponses();
+  const { globalUserId } = userContext();
   const { reactions } = useReactions();
   const [imageUrl, setImageUrl] = useState("");
 
@@ -50,7 +52,7 @@ export const ResponsesScreen = ({ navigation }) => {
   const getProfilePicture = async (userId) => {
     try {
       const response = await axios.get(
-        `http://192.168.200.128:8080/profiles/${userId}/get-picture`
+        `http://localhost:8080/profiles/${userId}/get-picture`
       );
       if (response.data) {
         return decodeURIComponent(response.data.profilePicture);

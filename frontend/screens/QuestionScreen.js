@@ -17,24 +17,23 @@ import { useResponses } from "../context/ResponsesContext";
 import axios from "axios";
 import { useToken } from "../context/TokenContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { userContext } from "../context/UserContext";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
-  const {
-    setResponseSubmitted,
-    globalUserId,
-    responseSubmitted,
-    setMyResponse,
-  } = useResponses();
+  const { setResponseSubmitted, responseSubmitted, setMyResponse } =
+    useResponses();
   const [userInput, setUserInput] = useState("");
   const [questionText, setQuestionText] = useState("");
   const questionId = 1;
   const { getToken } = useToken();
 
+  const { globalUserId } = userContext();
+
   useEffect(() => {
     const fetchQuestion = async () => {
       axios
-        .get(`http://192.168.200.128:8080/question/${questionId}`, {
+        .get(`http://localhost:8080/question/${questionId}`, {
           headers: {
             Authorization: `Bearer ${await getToken()}`,
           },
@@ -56,7 +55,7 @@ export const QuestionScreen = ({ route, navigation }) => {
         try {
           const token = await AsyncStorage.getItem("jwtToken");
           const response = await axios.get(
-            `http://192.168.200.128:8080/${globalUserId}/response`,
+            `http://localhost:8080/${globalUserId}/response`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -85,7 +84,7 @@ export const QuestionScreen = ({ route, navigation }) => {
     };
 
     axios
-      .post("http://192.168.200.128:8080/response", responseDto, {
+      .post("http://localhost:8080/response", responseDto, {
         headers: {
           Authorization: `Bearer ${await getToken()}`,
         },

@@ -1,15 +1,23 @@
-import React, {useState} from "react";
-import {SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import axios from "axios";
-import {DismissKeyboard} from "../components/DismissKeyboard";
+import { DismissKeyboard } from "../components/DismissKeyboard";
 
 export const ForgotPasswordScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
   const inputEmailStyle = focus ? styles.focusInput : styles.textInputStyle;
   const inputReEnterStyle = emailFocus
-      ? styles.focusInput
-      : styles.textInputStyle;
+    ? styles.focusInput
+    : styles.textInputStyle;
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -26,14 +34,21 @@ export const ForgotPasswordScreen = ({ navigation }) => {
     setPasswordResetMessage("");
 
     if (email === confirmEmail) {
-      axios.post(`http://192.168.200.128:8080/users/forgot-password?email=${encodeURIComponent(email)}`)
-          .then(response => {
-            console.log(response.data);
-            setPasswordResetMessage("A password reset link has been sent to the user's email if it exists");
-          })
-          .catch(error => {
-            setErrorMessage(error.response.data.message);
-          });
+      axios
+        .post(
+          `http://localhost:8080/users/forgot-password?email=${encodeURIComponent(
+            email
+          )}`
+        )
+        .then((response) => {
+          console.log(response.data);
+          setPasswordResetMessage(
+            "A password reset link has been sent to the user's email if it exists"
+          );
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data.message);
+        });
     } else {
       setEmailError("Emails do not match.");
     }
@@ -82,10 +97,10 @@ export const ForgotPasswordScreen = ({ navigation }) => {
                 <Text style={styles.errorText}>{emailError}</Text>
               ) : null}
               {errorMessage ? (
-                  <Text style={styles.errorText}>{errorMessage}</Text>
+                <Text style={styles.errorText}>{errorMessage}</Text>
               ) : null}
               {passwordResetMessage ? (
-                  <Text style={styles.successText}>{passwordResetMessage}</Text>
+                <Text style={styles.successText}>{passwordResetMessage}</Text>
               ) : null}
             </View>
           </ScrollView>
@@ -169,10 +184,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    marginVertical: "3%"
+    marginVertical: "3%",
   },
   successText: {
     color: "white",
-    marginVertical: "3%"
+    marginVertical: "3%",
   },
 });

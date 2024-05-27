@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
 
   const fetchAllUsers = () => {
     axios
-      .get(`http://192.168.200.128:8080/users/`)
+      .get(`http://localhost:8080/users/`)
       .then((response) => setAllUsers(response.data))
       .catch((error) => console.error("Error fetching users:", error));
   };

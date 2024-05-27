@@ -61,7 +61,7 @@ export const LoginScreen = ({ navigation }) => {
     };
 
     axios
-      .post("http://192.168.200.128:8080/users/login", loginData)
+      .post("http://localhost:8080/users/login", loginData)
       .then(async (response) => {
         const token = response.data.jwt;
         console.log("Login successful:", token);
@@ -70,7 +70,7 @@ export const LoginScreen = ({ navigation }) => {
         setGlobalFullName(response.data.fullName);
         try {
           const response = await axios.get(
-            `http://192.168.200.128:8080/${username}/response`,
+            `http://localhost:8080/${username}/response`,
             {
               headers: {
                 Authorization: `Bearer ${await getToken()}`,

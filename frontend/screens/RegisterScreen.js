@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
-import { useResponses } from "../context/ResponsesContext";
 import { useToken } from "../context/TokenContext";
 import { DismissKeyboard } from "../components/DismissKeyboard";
+import { userContext } from "../context/UserContext";
 
 export const RegisterScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -38,7 +38,7 @@ export const RegisterScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyEmailMessage, setVerifyEmailMessage] = useState("");
   const MIN_USERNAME_LENGTH = 3;
-  const { setGlobalUserId, setGlobalFullName } = useResponses();
+  const { setGlobalUserId, setGlobalFullName } = userContext();
   const [localUserId, setLocalUserId] = useState("");
   const { storeToken } = useToken();
   const { getToken } = useToken();
@@ -124,7 +124,7 @@ export const RegisterScreen = ({ navigation }) => {
     };
 
     axios
-      .post("http://192.168.200.128:8080/users/register", userData)
+      .post("http://localhost:8080/users/register", userData)
       .then((response) => {
         console.log("User registered:", response.data);
         setGlobalUserId(response.data.userId);
