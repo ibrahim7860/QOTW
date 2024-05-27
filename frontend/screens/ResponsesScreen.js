@@ -17,11 +17,13 @@ import { MyResponse } from "../components/MyResponse";
 import defaultProfilePic from "../../assets/default.jpeg";
 import axios from "axios";
 import { userContext } from "../context/UserContext";
+import {useToken} from "../context/TokenContext";
 
 export const ResponsesScreen = ({ navigation }) => {
   const { responses, myResponse } = useResponses();
   const { globalUserId } = userContext();
   const { reactions } = useReactions();
+  const { getToken } = useToken();
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
@@ -52,7 +54,11 @@ export const ResponsesScreen = ({ navigation }) => {
   const getProfilePicture = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/profiles/${userId}/get-picture`
+        `http://localhost:8080/profiles/${userId}/get-picture`, {
+            headers: {
+              Authorization: `Bearer ${await getToken()}`,
+            },
+        }
       );
       if (response.data) {
         return decodeURIComponent(response.data.profilePicture);

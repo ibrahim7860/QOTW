@@ -56,7 +56,7 @@ export const LoginScreen = ({ navigation }) => {
     }
 
     const loginData = {
-      userId: username,
+      userId: username.toLowerCase(),
       password: password,
     };
 

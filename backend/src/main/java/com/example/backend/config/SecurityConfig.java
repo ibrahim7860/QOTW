@@ -22,45 +22,45 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-        @Autowired
-        private JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
-        @Autowired
-        private TokenBlacklistFilter tokenBlacklistFilter;
+    @Autowired
+    private TokenBlacklistFilter tokenBlacklistFilter;
 
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                return http
-                                .csrf(AbstractHttpConfigurer::disable)
-                                .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers(
-                                                                "/actuator/**",
-                                                                "/users/**",
-                                                                "/reset-password-form",
-                                                                "/friends/**",
-                                                                "/chats/**")
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/actuator/**",
+                                "/users/**",
+                                "/reset-password-form",
+                                "/friends/**",
+                                "/chats/**")
 
-                                                .permitAll())
-                                .authorizeHttpRequests(auth -> auth
-                                                .anyRequest().authenticated())
-                                .sessionManagement(session -> session
-                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                                .addFilterBefore(tokenBlacklistFilter, UsernamePasswordAuthenticationFilter.class) // Add
-                                                                                                                   // blacklist
-                                                                                                                   // filter
-                                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // Add
-                                                                                                               // JWT
-                                                                                                               // filter
-                                .build();
-        }
+                        .permitAll())
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(tokenBlacklistFilter, UsernamePasswordAuthenticationFilter.class) // Add
+                // blacklist
+                // filter
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // Add
+                // JWT
+                // filter
+                .build();
+    }
 
-        @Bean
-        public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-                return config.getAuthenticationManager();
-        }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 
-        @Bean
-        public PasswordEncoder passwordEncoder() {
-                return new BCryptPasswordEncoder();
-        }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
