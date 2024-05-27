@@ -28,8 +28,7 @@ export const LoginScreen = ({ navigation }) => {
     ? styles.focusInput
     : styles.textInputStyle;
   const { updateResponse } = useResponses();
-  const { globalFullName, setGlobalFullName, setGlobalUserId, refreshUsers } =
-    userContext();
+  const { setGlobalFullName, setGlobalUserId, refreshUsers } = userContext();
   const { storeToken, getToken } = useToken();
 
   const handleForgotPassword = () => {
@@ -56,7 +55,7 @@ export const LoginScreen = ({ navigation }) => {
     }
 
     const loginData = {
-      userId: username.toLowerCase(),
+      userId: username,
       password: password,
     };
 
@@ -83,7 +82,6 @@ export const LoginScreen = ({ navigation }) => {
             navigation.navigate("Question", { alreadyResponded: false });
           } else {
             updateResponse(response);
-            setGlobalFullName(globalFullName);
             navigation.navigate("Responses");
           }
         } catch (error) {
@@ -121,7 +119,7 @@ export const LoginScreen = ({ navigation }) => {
                 selectionColor={"#ababab"}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
-                value={username}
+                value={username.toLowerCase()}
                 onChangeText={setUsername}
                 style={inputUserStyle}
               />

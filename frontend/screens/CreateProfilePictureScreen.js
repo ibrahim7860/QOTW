@@ -20,7 +20,7 @@ import { useToken } from "../context/TokenContext";
 import { userContext } from "../context/UserContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
-  const { globalUserId, globalFullName, setGlobalFullName } = userContext();
+  const { globalUserId } = userContext();
   const { getToken } = useToken();
   const [image, setImage] = useState(null);
 
@@ -114,7 +114,6 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
         )
         .then((response) => {
           setImage(uploadUrl);
-          setGlobalFullName(globalFullName);
           navigation.navigate("Question", { alreadyResponded: false });
         })
         .catch((error) => {
