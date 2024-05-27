@@ -3,10 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
+import { useFriends } from "../context/FriendsContext";
 
 export const FriendsHeader = () => {
   const navigation = useNavigation();
   const state = useNavigationState((state) => state);
+  const { fetchFriendsAndRequests } = useFriends();
 
   const isActive = (routeName) => {
     const currentRoute = state.routes[state.index].name;
@@ -15,6 +17,9 @@ export const FriendsHeader = () => {
 
   return (
     <View style={styles.headerContainer}>
+      <TouchableOpacity onPress={fetchFriendsAndRequests} style={styles.button}>
+        <MaterialIcons name="refresh" size={24} color="white" />
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("My Friends")}
         style={isActive("My Friends") ? styles.activeButton : styles.button}

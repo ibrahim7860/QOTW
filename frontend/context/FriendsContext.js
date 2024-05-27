@@ -48,6 +48,13 @@ export const FriendsProvider = ({ children }) => {
     }
   }, [globalUserId]);
 
+  const fetchFriendsAndRequests = () => {
+    if (globalUserId) {
+      fetchFriends();
+      fetchFriendRequests();
+    }
+  };
+
   const sendFriendRequest = async (newFriend) => {
     try {
       if (globalUserId) {
