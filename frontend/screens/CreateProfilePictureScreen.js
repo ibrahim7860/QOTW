@@ -14,11 +14,11 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Shadow } from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { useResponses } from "../context/ResponsesContext";
 import { storage } from "../../firebase";
 import axios from "axios";
 import { useToken } from "../context/TokenContext";
 import { userContext } from "../context/UserContext";
+import { useResponses } from "../context/ResponsesContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
   const { globalUserId, globalFullName, setGlobalFullName } = userContext();
@@ -105,8 +105,13 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
       const encodedUrl = encodeURIComponent(uploadUrl);
       axios
         .post(
-          `http://192.168.200.128:8080/profiles/${globalUserId}/update-picture`,
-          encodedUrl
+          `http://localhost:8080/profiles/${globalUserId}/update-picture`,
+          encodedUrl,
+          {
+            headers: {
+              Authorization: `Bearer ${await getToken()}`,
+            },
+          }
         )
         .then((response) => {
           setImage(uploadUrl);

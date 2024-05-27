@@ -15,7 +15,6 @@ import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 import { Camera } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useResponses } from "../context/ResponsesContext";
 import axios from "axios";
 import { useToken } from "../context/TokenContext";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -117,7 +116,12 @@ export const UserProfileScreen = ({ navigation }) => {
       axios
         .post(
           `http://localhost:8080/profiles/${globalUserId}/update-picture`,
-          encodedUrl
+          encodedUrl,
+     {
+              headers: {
+                Authorization: `Bearer ${await getToken()}`,
+              },
+            }
         )
         .then((response) => {
           setImage(uploadUrl);
@@ -159,7 +163,11 @@ export const UserProfileScreen = ({ navigation }) => {
   const getProfilePicture = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/profiles/${userId}/get-picture`
+        `http://localhost:8080/profiles/${userId}/get-picture`, {
+            headers: {
+              Authorization: `Bearer ${await getToken()}`,
+            },
+          }
       );
       if (response.data) {
         return decodeURIComponent(response.data.profilePicture);

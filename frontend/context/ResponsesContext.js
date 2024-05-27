@@ -110,6 +110,7 @@ export const ResponsesProvider = ({ children }) => {
       value={{
         responses,
         myResponse,
+        setMyResponse,
         updateResponse,
         responseSubmitted,
         setResponseSubmitted,
