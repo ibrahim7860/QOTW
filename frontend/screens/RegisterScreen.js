@@ -44,7 +44,7 @@ export const RegisterScreen = ({ navigation }) => {
 
     if (localUserId) {
       intervalId = setInterval(() => {
-        axios.get(`http://localhost:8080/users/${localUserId}/status`)
+        axios.get(`http://192.168.200.128:8080/users/${localUserId}/status`)
             .then(response => {
               if (response.data.email_verified) {
                 clearInterval(intervalId);
@@ -109,7 +109,7 @@ export const RegisterScreen = ({ navigation }) => {
       password: password,
     };
 
-    axios.post('http://localhost:8080/users/register', userData)
+    axios.post('http://192.168.200.128:8080/users/register', userData)
         .then(response => {
           console.log('User registered:', response.data);
           setGlobalUserId(response.data.userId);

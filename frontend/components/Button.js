@@ -16,15 +16,15 @@ class Button extends Component {
     }
 
     return (
-        <TouchableOpacity
-            onPress={this.handlePress.bind(this)}
-            style={combinedStyles}
-            disabled={disabled}
-        >
-          <Text>{children}</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        onPress={this.handlePress.bind(this)}
+        style={combinedStyles}
+        disabled={disabled}
+      >
+        <Text>{children}</Text>
+      </TouchableOpacity>
     );
-  };
+  }
 }
 
 export default Button;

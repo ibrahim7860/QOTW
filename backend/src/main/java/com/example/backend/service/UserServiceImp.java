@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -48,7 +49,8 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     private UserDetailsServiceImp userDetailsServiceImp;
-
+    
+    
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -144,5 +146,10 @@ public class UserServiceImp implements UserService {
         authenticationResponseDto.setMessage("User authenticated");
 
         return authenticationResponseDto;
+    }
+
+    @Override
+    public List<String> getAllUsers() {
+         return userRepository.getAllUserIDs();
     }
 }

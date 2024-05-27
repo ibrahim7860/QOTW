@@ -26,7 +26,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
     setPasswordResetMessage("");
 
     if (email === confirmEmail) {
-      axios.post(`http://localhost:8080/users/forgot-password?email=${encodeURIComponent(email)}`)
+      axios.post(`http://192.168.200.128:8080/users/forgot-password?email=${encodeURIComponent(email)}`)
           .then(response => {
             console.log(response.data);
             setPasswordResetMessage("A password reset link has been sent to the user's email if it exists");

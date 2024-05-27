@@ -14,19 +14,18 @@ import java.time.LocalDateTime;
 @Table(name = "friends")
 public class Friend {
     @Id
-    @Column(name = "friendship_id", nullable = false)
-    private Long frienshipId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long friendship_id;
 
-    @Column(name = "requester_id", nullable = false)
-    private String requesterId;
+    //User 1 is the person who requests (requester) 
+    @Column(name = "user_1_id", nullable = false)
+    private String user_1_id;
 
-    @Column(name = "receiver_id", nullable = false)
-    private String receiverId;
+    //User 2 is the receiver of the request (receiver)
+    @Column(name = "user_2_id", nullable = false)
+    private String user_2_id;
 
     @Column(name = "status", nullable = false)
     private String status;
-
-    @Column(name = "date_friended", nullable = false)
-    private LocalDateTime dateFriended;
 }
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FlatList,
   Image,
@@ -9,11 +9,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Platform,
 } from "react-native";
-import {MessageBubble} from "../components/MessageBubble";
+import { MessageBubble } from "../components/MessageBubble";
 import Button from "../components/Button";
-import {MaterialIcons} from "@expo/vector-icons";
-import {useConversations} from "../context/ConversationsContext";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useConversations } from "../context/ConversationsContext";
 
 export const ChatScreen = ({ route, navigation }) => {
   const { conversationId } = route.params;
@@ -70,65 +71,65 @@ export const ChatScreen = ({ route, navigation }) => {
   };
 
   return (
-      <SafeAreaView style={styles.safeArea}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
-        >
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <MaterialIcons name="arrow-back" size={24} color="white" />
-            </TouchableOpacity>
-            <Image source={profilePic} style={styles.profilePic} />
-            <Text style={styles.headerText}>{senderName}</Text>
-          </View>
-          <FlatList
-            ref={flatListRef}
-            data={messages}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View>
-                <Text
-                  style={[
-                    styles.senderName,
-                    item.isSender ? styles.senderRight : styles.senderLeft,
-                  ]}
-                >
-                  {item.isSender ? conversationName : senderName}
-                </Text>
-                <MessageBubble message={item.text} isSender={item.isSender} />
-              </View>
-            )}
-          />
-          {!isReadOnly && (
-            <View style={styles.textInputStyle}>
-              <View style={{ flex: 1 }}>
-                <TextInput
-                  selectionColor={"#ababab"}
-                  style={styles.textInputStyle}
-                  placeholder="Message"
-                  placeholderTextColor="#ababab"
-                  value={newMessage}
-                  keyboardAppearance="dark"
-                  multiline
-                  onChangeText={(text) => setNewMessage(text)}
-                  onSubmitEditing={handleSend}
-                  returnKeyType="send"
-                />
-              </View>
-
-              <View style={{ padding: 3, paddingTop: 0 }}>
-                <Button onPress={handleSend} disabled={!newMessage.trim()}>
-                  <Image
-                    source={require("../../assets/send.png")}
-                    style={{ width: 30, height: 30 }}
-                  />
-                </Button>
-              </View>
+    <SafeAreaView style={styles.safeArea}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <MaterialIcons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+          <Image source={profilePic} style={styles.profilePic} />
+          <Text style={styles.headerText}>{senderName}</Text>
+        </View>
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View>
+              <Text
+                style={[
+                  styles.senderName,
+                  item.isSender ? styles.senderRight : styles.senderLeft,
+                ]}
+              >
+                {item.isSender ? conversationName : senderName}
+              </Text>
+              <MessageBubble message={item.text} isSender={item.isSender} />
             </View>
           )}
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+        />
+        {!isReadOnly && (
+          <View style={styles.textInputStyle}>
+            <View style={{ flex: 1 }}>
+              <TextInput
+                selectionColor={"#ababab"}
+                style={styles.textInputStyle}
+                placeholder="Message"
+                placeholderTextColor="#ababab"
+                value={newMessage}
+                keyboardAppearance="dark"
+                multiline
+                onChangeText={(text) => setNewMessage(text)}
+                onSubmitEditing={handleSend}
+                returnKeyType="send"
+              />
+            </View>
+
+            <View style={{ padding: 3, paddingTop: 0 }}>
+              <Button onPress={handleSend} disabled={!newMessage.trim()}>
+                <Image
+                  source={require("../../assets/send.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </Button>
+            </View>
+          </View>
+        )}
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

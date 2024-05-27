@@ -1,119 +1,134 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import defaultProfilePic from "../../assets/default.jpeg";
+import axios from "axios";
+import { userContext } from "./UserContext";
 
 const FriendsContext = createContext();
 
 export const useFriends = () => useContext(FriendsContext);
 
 export const FriendsProvider = ({ children }) => {
-  const [friends, setFriends] = useState([
-    // Your initial friends data
-  ]);
+  const [friends, setFriends] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
 
-  const [friendRequests, setFriendRequests] = useState([
-    {
-      id: "1",
-      fullName: "Uzair Qureshi",
-      username: "fat_guy",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "2",
-      fullName: "Ibrahim Ahmed",
-      username: "yourdad",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "3",
-      fullName: "Nayeem Belal",
-      username: "dababy1212",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "4",
-      fullName: "John Doe",
-      username: "john_doe",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "5",
-      fullName: "Jane Doe",
-      username: "jane_doe",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "6",
-      fullName: "Big Man",
-      username: "big_man",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "7",
-      fullName: "Gangatron Rex",
-      username: "gang_rex",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "8",
-      fullName: "Saad Syed",
-      username: "saad_syed",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "9",
-      fullName: "Silly Sully",
-      username: "silly_sully",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-    {
-      id: "10",
-      fullName: "Zubi Goat",
-      username: "zubi_goat",
-      profilePicUri: defaultProfilePic,
-      isFriend: false,
-    },
-  ]);
+  const { globalUserId, refreshUsers } = userContext();
 
-  const addFriend = (newFriend) => {
-    setFriends((currentFriends) => [...currentFriends, newFriend]);
-  };
-
-  const removeFriend = (id) => {
-    setFriends((currentFriends) =>
-      currentFriends.filter((friend) => friend.id !== id)
-    );
-  };
-
-  const acceptFriendRequest = (id) => {
-    const friendToAdd = friendRequests.find((friend) => friend.id === id);
-    if (friendToAdd) {
-      friendToAdd.isFriend = true;
-      addFriend(friendToAdd);
-      removeFriendRequest(id);
+  const fetchFriends = async () => {
+    try {
+      if (globalUserId) {
+        console.log("Global User ID:", globalUserId);
+        const response = await axios.get(
+          `http://192.168.200.128:8080/friends/${globalUserId}`
+        );
+        setFriends(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching friends:", error);
     }
   };
 
-  const removeFriendRequest = (id) => {
-    setFriendRequests((currentRequests) =>
-      currentRequests.filter((request) => request.id !== id)
-    );
+  const fetchFriendRequests = async () => {
+    try {
+      if (globalUserId) {
+        console.log("Global User ID:", globalUserId);
+        const response = await axios.get(
+          `http://192.168.200.128:8080/friends/requests/${globalUserId}`
+        );
+        setFriendRequests(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching friend requests:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (globalUserId) {
+      fetchFriends();
+      fetchFriendRequests();
+    }
+  }, [globalUserId]);
+
+  const sendFriendRequest = async (newFriend) => {
+    try {
+      if (globalUserId) {
+        console.log("Global User ID:", globalUserId);
+        const response = await axios.put(
+          `http://192.168.200.128:8080/friends/requests/sendFriendRequest`,
+          newFriend
+        );
+        fetchFriendRequests();
+        refreshUsers();
+      }
+    } catch (error) {
+      console.error("Error sending friend request:", error);
+    }
+  };
+
+  const removeFriend = async (friendship_id) => {
+    try {
+      if (globalUserId) {
+        console.log("Global User ID:", globalUserId);
+        const response = await axios.delete(
+          `http://192.168.200.128:8080/friends/delete/${friendship_id}`
+        );
+        fetchFriends();
+      }
+    } catch (error) {
+      console.error("Error removing friend:", error);
+    }
+  };
+
+  const acceptFriendRequest = async (friendship_id) => {
+    try {
+      if (globalUserId) {
+        console.log("Global User ID:", globalUserId);
+        const response = await axios.put(
+          `http://192.168.200.128:8080/friends/requests/acceptRequest/${friendship_id}`
+        );
+        fetchFriends();
+        fetchFriendRequests();
+      }
+    } catch (error) {
+      console.error("Error accepting friend request:", error);
+    }
+  };
+
+  const rejectFriendRequest = async (friendship_id) => {
+    try {
+      if (globalUserId) {
+        console.log("Global User ID:", globalUserId);
+        const response = await axios.delete(
+          `http://192.168.200.128:8080/friends/requests/reject/${friendship_id}`
+        );
+        fetchFriends();
+      }
+    } catch (error) {
+      console.error("Error removing friend request:", error);
+    }
+  };
+
+  const cancelFriendRequest = async (friendship_id) => {
+    try {
+      if (globalUserId) {
+        console.log("Global User ID:", globalUserId);
+        const response = await axios.delete(
+          `http://192.168.200.128:8080/friends/requests/cancel/${friendship_id}`
+        );
+        fetchFriendRequests();
+      }
+    } catch (error) {
+      console.error("Error cancelling friend request:", error);
+    }
   };
 
   const handleSearch = (array, query) => {
     if (query.trim() === "") {
       return array;
     } else {
-      return array.filter((friend) =>
-        friend.fullName.toLowerCase().includes(query.toLowerCase())
+      return array.filter(
+        (friend) =>
+          friend.user_1_id.toLowerCase().includes(query.toLowerCase()) ||
+          friend.user_2_id.toLowerCase().includes(query.toLowerCase())
       );
     }
   };
@@ -122,9 +137,11 @@ export const FriendsProvider = ({ children }) => {
     <FriendsContext.Provider
       value={{
         friends,
+        sendFriendRequest,
         removeFriend,
         friendRequests,
-        removeFriendRequest,
+        rejectFriendRequest,
+        cancelFriendRequest,
         acceptFriendRequest,
         handleSearch,
       }}

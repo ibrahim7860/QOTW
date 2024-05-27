@@ -4,11 +4,16 @@ import com.example.backend.dto.FriendRequestDto;
 import com.example.backend.entity.Friend;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FriendService {
     List<Friend> getFriends(String requester_id);
-    List<Friend> getFriendRequests(String receiver_id);
-    FriendRequestDto sendFriendRequest(FriendRequestDto friendRequestDto);
+    Map<String, List<Friend>> getFriendRequests(String receiver_id);
+    void sendFriendRequest(FriendRequestDto friendRequestDto);
     void manageFriendRequest(String requester_id, String receiver_id, String status);
-    void removeFriend(String requester_id, String receiver_id);
+    
+    void acceptFriendRequest(Long friendship_id);
+    
+    void removeFriend(Long friendship_id);
+    boolean areFriends(String requested_id, String receiver_id);
 }

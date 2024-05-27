@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {SafeAreaView, ScrollView, StyleSheet, Text, View,} from "react-native";
-import {FriendItem} from "../components/FriendItem";
-import {SearchBar} from "../components/SearchBar";
-import {useFriends} from "../context/FriendsContext";
-import {FriendsHeader} from "../components/FriendsHeader";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import { FriendItem } from "../components/FriendItem";
+import { SearchBar } from "../components/SearchBar";
+import { FriendsHeader } from "../components/FriendsHeader";
+import { useFriends } from "../context/FriendsContext";
+import { userContext } from "../context/UserContext";
 
 export const MyFriendsScreen = ({ navigation }) => {
   const { friends, removeFriend, handleSearch } = useFriends();
-
+  const { globalUserId } = userContext();
   const [filteredFriends, setFilteredFriends] = useState(friends);
 
   const handleSearchChange = (query) => {
@@ -20,23 +21,30 @@ export const MyFriendsScreen = ({ navigation }) => {
   }, [friends]);
 
   return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
-        <FriendsHeader />
-        <View style={styles.containerStyle}>
-          <Text style={styles.headerStyle}>My Friends</Text>
-        </View>
-        <ScrollView>
-          {filteredFriends.map((item) => (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#291400" }}>
+      <FriendsHeader />
+      <View style={styles.containerStyle}>
+        <Text style={styles.headerStyle}>My Friends</Text>
+      </View>
+      <ScrollView>
+        {filteredFriends.length > 0 ? (
+          filteredFriends.map((item) => (
             <FriendItem
-              key={item.id.toString()}
+              key={item.friendship_id}
               friend={item}
-              onRemove={removeFriend}
-              isRequest={false}
+              onRemove={() => removeFriend(item.friendship_id)}
+              isIncomingRequest={false}
+              isSentRequest={false}
+              isFriend={true}
+              currentUserId={globalUserId}
             />
-          ))}
-        </ScrollView>
-        <SearchBar onSearch={handleSearchChange} />
-      </SafeAreaView>
+          ))
+        ) : (
+          <Text>No friends available</Text>
+        )}
+      </ScrollView>
+      <SearchBar onSearch={handleSearchChange} />
+    </SafeAreaView>
   );
 };
 

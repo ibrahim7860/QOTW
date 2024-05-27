@@ -15,6 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -61,5 +62,11 @@ public class UserController {
         userService.resetPassword(token, newPassword);
         return ResponseEntity.ok("Password reset successfully.");
     }
+    
+    @GetMapping("/")
+    public ResponseEntity<?> getAllUsers() {
+        List<String> allUsers = userService.getAllUsers();
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
+    } 
 }
 

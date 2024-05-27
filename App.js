@@ -7,7 +7,7 @@ import { LoginScreen } from "./frontend/screens/LoginScreen";
 import { MyFriendsScreen } from "./frontend/screens/MyFriendsScreen";
 import { QuestionScreen } from "./frontend/screens/QuestionScreen";
 import { FriendRequestsScreen } from "./frontend/screens/FriendRequestsScreen";
-import { MessagesScreen } from "./frontend/screens/MessagesScreen";
+import { ChatsScreen } from "./frontend/screens/ChatsScreen";
 import { ChatScreen } from "./frontend/screens/ChatScreen";
 import { ConversationsProvider } from "./frontend/context/ConversationsContext";
 import { LoadingScreen } from "./frontend/screens/LoadingScreen";
@@ -16,20 +16,26 @@ import { ForgotPasswordScreen } from "./frontend/screens/ForgotPasswordScreen";
 import { ResponsesScreen } from "./frontend/screens/ResponsesScreen";
 import { ResponsesProvider } from "./frontend/context/ResponsesContext";
 import { NavigationContainer } from "@react-navigation/native";
-import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from "@react-navigation/stack";
 import { ReactionsProvider } from "./frontend/context/ReactionsContext";
-import {TokenProvider} from "./frontend/context/TokenContext";
-import {CreateProfilePictureScreen} from "./frontend/screens/CreateProfilePictureScreen";
+import { TokenProvider } from "./frontend/context/TokenContext";
+import { CreateProfilePictureScreen } from "./frontend/screens/CreateProfilePictureScreen";
+import { CreateChatScreen } from "./frontend/screens/CreateChatScreen";
+import { UserProvider } from "./frontend/context/UserContext";
+import { AddFriendsScreen } from "./frontend/screens/AddFriendsScreen";
 
 const Stack = createStackNavigator();
 
 const slightAnimation = {
   animationEnabled: true,
   transitionSpec: {
-    open: { animation: 'timing', config: { duration: 100 } },
-    close: { animation: 'timing', config: { duration: 100 } },
+    open: { animation: "timing", config: { duration: 100 } },
+    close: { animation: "timing", config: { duration: 100 } },
   },
-  cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
+  cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
 };
 
 const leftToRightAnimation = {
@@ -42,6 +48,24 @@ const leftToRightAnimation = {
             translateX: current.progress.interpolate({
               inputRange: [0, 1],
               outputRange: [-layouts.screen.width, 0],
+            }),
+          },
+        ],
+      },
+    };
+  },
+};
+
+const rightToLeftAnimation = {
+  gestureDirection: "horizontal",
+  cardStyleInterpolator: ({ current, layouts }) => {
+    return {
+      cardStyle: {
+        transform: [
+          {
+            translateX: current.progress.interpolate({
+              inputRange: [0, 1],
+              outputRange: [layouts.screen.width, 0],
             }),
           },
         ],
@@ -67,65 +91,85 @@ const bottomToTopAnimation = ({ current, layouts }) => {
 
 export default function App() {
   return (
-    <ConversationsProvider>
-      <FriendsProvider>
-        <ResponsesProvider>
-          <ReactionsProvider>
-            <TokenProvider>
-            <View style={styles.container}>
-              <NavigationContainer>
-                <Stack.Navigator
-                  screenOptions={{ headerShown: false }}
-                  initialRouteName="Loading"
-                >
-                  <Stack.Screen name="Loading" component={LoadingScreen} />
-                  <Stack.Screen name="Login" component={LoginScreen} />
-                  <Stack.Screen name="Register" component={RegisterScreen} />
-                  <Stack.Screen name={"Profile Picture"} component={CreateProfilePictureScreen} />
-                  <Stack.Screen
-                    name="Forgot Password"
-                    component={ForgotPasswordScreen}
-                  />
-                  <Stack.Screen name="Messages" component={MessagesScreen} />
-                  <Stack.Screen name="Chat" component={ChatScreen} />
-                  <Stack.Screen
-                    name="Welcome Screen"
-                    component={WelcomeScreen}
-                  />
-                  <Stack.Screen name="Responses" component={ResponsesScreen} />
-                  <Stack.Screen
-                    name="User Profile"
-                    component={UserProfileScreen}
-                  />
-                  <Stack.Screen
-                    name="Friend Profile"
-                    component={FriendProfileScreen}
-                  />
-                  <Stack.Screen
-                    name="My Friends"
-                    component={MyFriendsScreen}
-                    options={leftToRightAnimation}
-                  />
-                  <Stack.Screen
-                    name="Friend Requests"
-                    component={FriendRequestsScreen}
-                    options={slightAnimation}
-                  />
-                  <Stack.Screen
-                    name="Question"
-                    component={QuestionScreen}
-                    options={{
-                      cardStyleInterpolator: bottomToTopAnimation,
-                    }}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </View>
-            </TokenProvider>
-          </ReactionsProvider>
-        </ResponsesProvider>
-      </FriendsProvider>
-    </ConversationsProvider>
+    <UserProvider>
+      <ResponsesProvider>
+        <ConversationsProvider>
+          <FriendsProvider>
+            <ReactionsProvider>
+              <TokenProvider>
+                <View style={styles.container}>
+                  <NavigationContainer>
+                    <Stack.Navigator
+                      screenOptions={{ headerShown: false }}
+                      initialRouteName="Loading"
+                    >
+                      <Stack.Screen name="Loading" component={LoadingScreen} />
+                      <Stack.Screen name="Login" component={LoginScreen} />
+                      <Stack.Screen
+                        name="Register"
+                        component={RegisterScreen}
+                      />
+                      <Stack.Screen
+                        name={"Profile Picture"}
+                        component={CreateProfilePictureScreen}
+                      />
+                      <Stack.Screen
+                        name="Forgot Password"
+                        component={ForgotPasswordScreen}
+                      />
+                      <Stack.Screen name="Chats" component={ChatsScreen} />
+                      <Stack.Screen name="Chat" component={ChatScreen} />
+                      <Stack.Screen
+                        name="Welcome Screen"
+                        component={WelcomeScreen}
+                      />
+                      <Stack.Screen
+                        name="Responses"
+                        component={ResponsesScreen}
+                      />
+                      <Stack.Screen
+                        name="User Profile"
+                        component={UserProfileScreen}
+                      />
+                      <Stack.Screen
+                        name="Friend Profile"
+                        component={FriendProfileScreen}
+                      />
+                      <Stack.Screen
+                        name="My Friends"
+                        component={MyFriendsScreen}
+                        options={leftToRightAnimation}
+                      />
+                      <Stack.Screen
+                        name="Friend Requests"
+                        component={FriendRequestsScreen}
+                        options={slightAnimation}
+                      />
+                      <Stack.Screen
+                        name="Add Friends"
+                        component={AddFriendsScreen}
+                        options={slightAnimation}
+                      />
+                      <Stack.Screen
+                        name="Question"
+                        component={QuestionScreen}
+                        options={{
+                          cardStyleInterpolator: bottomToTopAnimation,
+                        }}
+                      />
+                      <Stack.Screen
+                        name="Create Chat"
+                        component={CreateChatScreen}
+                      />
+                    </Stack.Navigator>
+                  </NavigationContainer>
+                </View>
+              </TokenProvider>
+            </ReactionsProvider>
+          </FriendsProvider>
+        </ConversationsProvider>
+      </ResponsesProvider>
+    </UserProvider>
   );
 }
 

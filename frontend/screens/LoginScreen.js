@@ -1,9 +1,19 @@
-import React, {useState} from "react";
-import {KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
-import {useResponses} from "../context/ResponsesContext";
+import React, { useState } from "react";
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Platform,
+} from "react-native";
+import { useResponses } from "../context/ResponsesContext";
 import axios from "axios";
-import {useToken} from "../context/TokenContext";
-import {DismissKeyboard} from "../components/DismissKeyboard";
+import { useToken } from "../context/TokenContext";
+import { DismissKeyboard } from "../components/DismissKeyboard";
+import { userContext } from "../context/UserContext";
 
 export const LoginScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(false);
@@ -15,9 +25,11 @@ export const LoginScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
   const inputPassStyle = passwordfocus
-      ? styles.focusInput
-      : styles.textInputStyle;
-  const { updateResponse, setGlobalUserId, setGlobalFullName, updateFullName, globalFullName } = useResponses();
+    ? styles.focusInput
+    : styles.textInputStyle;
+  const { updateResponse, updateFullName } = useResponses();
+  const { globalFullName, setGlobalFullName, setGlobalUserId, refreshUsers } =
+    userContext();
   const { storeToken, getToken } = useToken();
 
   const handleForgotPassword = () => {
@@ -46,41 +58,48 @@ export const LoginScreen = ({ navigation }) => {
     const loginData = {
       userId: username,
       password: password,
-    }
+    };
 
-    axios.post('http://localhost:8080/users/login', loginData)
-        .then(async response => {
-          const token = response.data.jwt;
-          console.log('Login successful:', token);
-          storeToken(token)
-          setGlobalUserId(username);
-          setGlobalFullName(response.data.fullName);
-          try {
-            const response = await axios.get(`http://localhost:8080/${username}/response`, {
+    axios
+      .post("http://192.168.200.128:8080/users/login", loginData)
+      .then(async (response) => {
+        const token = response.data.jwt;
+        console.log("Login successful:", token);
+        storeToken(token);
+        setGlobalUserId(username);
+        setGlobalFullName(response.data.fullName);
+        try {
+          const response = await axios.get(
+            `http://192.168.200.128:8080/${username}/response`,
+            {
               headers: {
-                Authorization: `Bearer ${await getToken()}`
-              }
-            });
-            const userResponse = response.data.responseText;
-
-            if (!userResponse) {
-              navigation.navigate("Question", {alreadyResponded: false});
-            } else {
-              updateResponse(response);
-              updateFullName(globalFullName);
-              navigation.navigate("Responses");
+                Authorization: `Bearer ${await getToken()}`,
+              },
             }
-          } catch (error) {
-            console.error('Error fetching user response:', error);
+          );
+          const userResponse = response.data.responseText;
+
+          if (!userResponse) {
+            navigation.navigate("Question", { alreadyResponded: false });
+          } else {
+            updateResponse(response);
+            updateFullName(globalFullName);
+            navigation.navigate("Responses");
           }
-        })
-        .catch(error => {
-          setErrorMessage(error.response.data.message);
-        });
+        } catch (error) {
+          console.error("Error fetching user response:", error);
+        }
+
+        //Fetch all current users (faster than querying database each time -- updates reflected when user logs in)
+        refreshUsers();
+      })
+      .catch((error) => {
+        setErrorMessage(error.response.data.message);
+      });
   };
 
   return (
-      <DismissKeyboard>
+    <DismissKeyboard>
       <SafeAreaView style={styles.mainContainerStyle}>
         <View style={{ padding: 20 }}>
           <View>
@@ -107,7 +126,7 @@ export const LoginScreen = ({ navigation }) => {
                 style={inputUserStyle}
               />
               {usernameError ? (
-                  <Text style={{ color: "red" }}>{usernameError}</Text>
+                <Text style={{ color: "red" }}>{usernameError}</Text>
               ) : null}
               <TextInput
                 placeholder="Password"
@@ -121,11 +140,11 @@ export const LoginScreen = ({ navigation }) => {
                 onChangeText={setPassword}
                 value={password}
               />
-                {passwordError ? (
-                    <Text style={{ color: "red" }}>{passwordError}</Text>
-                ) : null}
+              {passwordError ? (
+                <Text style={{ color: "red" }}>{passwordError}</Text>
+              ) : null}
               {errorMessage ? (
-                  <Text style={{ color: "red" }}>{errorMessage}</Text>
+                <Text style={{ color: "red" }}>{errorMessage}</Text>
               ) : null}
             </View>
           </KeyboardAvoidingView>
@@ -152,7 +171,7 @@ export const LoginScreen = ({ navigation }) => {
           </View>
         </View>
       </SafeAreaView>
-      </DismissKeyboard>
+    </DismissKeyboard>
   );
 };
 

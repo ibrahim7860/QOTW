@@ -1,14 +1,15 @@
 import React from "react";
-import {FlatList, SafeAreaView, StyleSheet, Text, View,} from "react-native";
-import {useNavigation} from "@react-navigation/native";
-import {ConversationItem} from "../components/ConversationItem";
-import {useConversations} from "../context/ConversationsContext";
-import {MaterialIcons} from "@expo/vector-icons";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { ConversationItem } from "../components/ConversationItem";
+import { useConversations } from "../context/ConversationsContext";
+import { MaterialIcons } from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
-import {useResponses} from "../context/ResponsesContext";
+import { useResponses } from "../context/ResponsesContext";
+import { useFriends } from "../context/FriendsContext";
+import { FriendItem } from "../components/FriendItem";
 
-export const MessagesScreen = () => {
-  const navigation = useNavigation();
+export const ChatsScreen = ({ navigation }) => {
   const { conversations } = useConversations();
   const { responses, myResponse } = useResponses();
 
@@ -19,6 +20,10 @@ export const MessagesScreen = () => {
       profilePic: conversation.profilePicUri,
       senderName: conversation.name,
     });
+  };
+
+  const handleNewChatPress = () => {
+    navigation.navigate("Create Chat");
   };
 
   return (
@@ -33,7 +38,16 @@ export const MessagesScreen = () => {
         >
           <MaterialIcons name="arrow-back" size={24} color="white" />
         </Ripple>
-        <Text style={styles.headerStyle}>My Messages</Text>
+        <Text style={styles.headerStyle}>My Chats</Text>
+        <Ripple
+          rippleColor="#fff"
+          rippleOpacity={0.9}
+          rippleSize={100}
+          onPress={handleNewChatPress}
+          style={styles.newChat}
+        >
+          <MaterialIcons name="edit" size={24} color="white" />
+        </Ripple>
       </View>
       <FlatList
         data={conversations}
@@ -56,10 +70,14 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   backArrow: {
-    marginLeft: 10,
+    marginLeft: 15,
+  },
+  newChat: {
+    marginRight: 15,
   },
   headerStyle: {
     fontSize: 30,

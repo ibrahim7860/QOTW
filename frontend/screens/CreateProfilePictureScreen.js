@@ -90,7 +90,7 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
             });
 
             try {
-                const response = await axios.post(`http://localhost:8080/profiles/${globalUserId}/picture`, formData, {
+                const response = await axios.post(`http://192.168.200.128:8080/profiles/${globalUserId}/picture`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${await getToken()}`

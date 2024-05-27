@@ -19,36 +19,48 @@ public class FriendsController {
     @Autowired
     private FriendService friendService;
 
-    @GetMapping("/{requester_id}")
-    public ResponseEntity<?> getFriends(@PathVariable String requester_id) {
-        List<Friend> friends = friendService.getFriends(requester_id);
-        return new ResponseEntity<>(Map.of("friends:", friends), HttpStatus.CREATED);
+    //Gets all of current users friends
+    @GetMapping("/{user_id}")
+    public ResponseEntity<?> getFriends(@PathVariable String user_id) {
+        List<Friend> friends = friendService.getFriends(user_id);
+        return new ResponseEntity<>(friends, HttpStatus.OK);
     }
 
-    @GetMapping("/requests/{receiver_id}")
-    public ResponseEntity<?> getFriendRequests(@PathVariable String receiver_id) {
-        List<Friend> requests = friendService.getFriendRequests(receiver_id);
-        return new ResponseEntity<>(Map.of("requests", requests), HttpStatus.CREATED);
+    //Gets all friend requests that have been sent TO the current user
+    @GetMapping("/requests/{user_id}")
+    public ResponseEntity<Map<String, List<Friend>>> getFriendRequests(@PathVariable String user_id) {
+        Map<String, List<Friend>> requests = friendService.getFriendRequests(user_id);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
-    @PostMapping("/addFriend")
+    @PutMapping("/requests/sendFriendRequest")
     public ResponseEntity<?> sendFriendRequest(@RequestBody FriendRequestDto friendRequestDto) {
-        FriendRequestDto request = friendService.sendFriendRequest(friendRequestDto);
-        return new ResponseEntity<>(Map.of("request", request), HttpStatus.CREATED);
+        friendService.sendFriendRequest(friendRequestDto);
+        return ResponseEntity.ok().build();
     }
-
-    @PutMapping("/requests/acceptRequest/{requester_id}/{receiver_id}/{status}")
-    public ResponseEntity<?> acceptFriendRequest(@PathVariable String requester_id, @PathVariable String receiver_id, @PathVariable String status) {
-        friendService.manageFriendRequest(requester_id, receiver_id, status);
-        if (status.equals("declined")) {
-            return new ResponseEntity<>("Friend request declined", HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>("Friend request accepted", HttpStatus.CREATED);
+    
+    @PutMapping("/requests/acceptRequest/{friendship_id}")
+    public ResponseEntity<?> acceptFriendRequest(@PathVariable Long friendship_id)
+    {
+        friendService.acceptFriendRequest(friendship_id);
+        return ResponseEntity.ok().build();
     }
-
-    @DeleteMapping("/delete/{requester_id}/{receiver_id}")
-    public ResponseEntity<?> removeFriend(@PathVariable String requester_id, @PathVariable String receiver_id) {
-        friendService.removeFriend(requester_id, receiver_id);
+    
+    @DeleteMapping("/delete/{friendship_id}")
+    public ResponseEntity<?> removeFriend(@PathVariable Long friendship_id) {
+        friendService.removeFriend(friendship_id);
         return new ResponseEntity<>("Friend removed successfully", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/requests/delete/{friendship_id}")
+    public ResponseEntity<?> rejectFriendRequest(@PathVariable Long friendship_id) {
+        friendService.removeFriend(friendship_id);
+        return new ResponseEntity<>("Friend request rejected successfully successfully", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/requests/cancel/{friendship_id}")
+    public ResponseEntity<?> cancelFriendRequest(@PathVariable Long friendship_id) {
+        friendService.removeFriend(friendship_id);
+        return new ResponseEntity<>("Friend request cancelled successfully", HttpStatus.OK);
     }
 }

@@ -1,25 +1,40 @@
 import React from "react";
-import {Alert, Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export const FriendItem = ({
   friend,
   onRemove,
+  onSendRequest,
   onAcceptRequest,
   onRejectRequest,
-  isRequest,
+  onCancelRequest,
+  isIncomingRequest,
+  isSentRequest,
+  isFriend,
+  currentUserId,
 }) => {
+  const friendUserID =
+    friend.user_2_id !== currentUserId ? friend.user_2_id : friend.user_1_id;
+
   const handleRemovePress = () => {
     Alert.alert(
       "Remove Friend",
-      `Do you really want to remove ${friend.username} as a friend?`,
+      `Do you really want to remove ${friendUserID} as a friend?`,
       [{ text: "No" }, { text: "Yes", onPress: () => onRemove(friend.id) }]
     );
   };
-  const handleAddPress = () => {
+  const handleAcceptPress = () => {
     Alert.alert(
       "Accept Request",
-      `Do you really want to accept ${friend.username}'s friend request?`,
+      `Do you really want to accept ${friendUserID}'s friend request?`,
       [
         { text: "No" },
         { text: "Yes", onPress: () => onAcceptRequest(friend.id) },
@@ -29,11 +44,30 @@ export const FriendItem = ({
   const handleRejectPress = () => {
     Alert.alert(
       "Remove Request",
-      `Do you really want to reject ${friend.username}'s friend request?`,
+      `Do you really want to reject ${friendUserID}'s friend request?`,
       [
         { text: "No" },
         { text: "Yes", onPress: () => onRejectRequest(friend.id) },
       ]
+    );
+  };
+
+  const handleCancelPress = () => {
+    Alert.alert(
+      "Cancel Request",
+      `Do you really want to cancel the friend request to: ${friendUserID}?`,
+      [
+        { text: "No" },
+        { text: "Yes", onPress: () => onCancelRequest(friend.id) },
+      ]
+    );
+  };
+
+  const handleSendRequestPress = () => {
+    Alert.alert(
+      "Send Request",
+      `Do you really want to send a friend request to: ${friendUserID}?`,
+      [{ text: "No" }, { text: "Yes", onPress: () => onSendRequest(friend.id) }]
     );
   };
 
@@ -43,37 +77,51 @@ export const FriendItem = ({
         <Image source={friend.profilePicUri} style={styles.profilePic} />
       </View>
       <View style={styles.friendInfo}>
-        <Text style={styles.fullName}>{friend.fullName}</Text>
-        <Text style={styles.username}>{friend.username}</Text>
+        <Text style={styles.username}>{friendUserID}</Text>
       </View>
-      {!friend.isFriend && (
-        <TouchableOpacity onPress={handleAddPress}>
-          <Icon
-            name="check"
-            size={24}
-            color="white"
-            style={{ marginRight: 10 }}
-          />
-        </TouchableOpacity>
-      )}
-      {isRequest ? (
-        <TouchableOpacity onPress={handleRejectPress}>
-          <Icon
-            name="close"
-            size={24}
-            color="white"
-            style={{ marginRight: 10 }}
-          />
-        </TouchableOpacity>
+      {isIncomingRequest ? (
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity onPress={handleAcceptPress}>
+            <Icon
+              name="check"
+              size={24}
+              color="white"
+              style={{ marginRight: 10 }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleRejectPress}>
+            <Icon
+              name="close"
+              size={24}
+              color="white"
+              style={{ marginRight: 10 }}
+            />
+          </TouchableOpacity>
+        </View>
       ) : (
-        <TouchableOpacity onPress={handleRemovePress}>
-          <Icon
-            name="close"
-            size={24}
-            color="white"
-            style={{ marginRight: 10 }}
-          />
-        </TouchableOpacity>
+        <>
+          {isSentRequest && (
+            <TouchableOpacity onPress={handleCancelPress}>
+              <Icon
+                name="cancel"
+                size={24}
+                color="white"
+                style={{ marginRight: 10 }}
+              />
+            </TouchableOpacity>
+          )}
+
+          {isFriend && (
+            <TouchableOpacity onPress={handleRemovePress}>
+              <Icon
+                name="delete"
+                size={24}
+                color="white"
+                style={{ marginRight: 10 }}
+              />
+            </TouchableOpacity>
+          )}
+        </>
       )}
     </View>
   );

@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from "react";
+import React, { createContext, useContext, useState } from "react";
 import defaultProfilePic from "../../assets/default.jpeg";
 
 const ResponsesContext = createContext();
@@ -6,8 +6,6 @@ const ResponsesContext = createContext();
 export const useResponses = () => useContext(ResponsesContext);
 
 export const ResponsesProvider = ({ children }) => {
-  const [globalUserId, setGlobalUserId] = useState(null);
-  const [globalFullName, setGlobalFullName] = useState("");
   const [responseSubmitted, setResponseSubmitted] = useState(false);
 
   const [responses, setResponses] = useState([
@@ -97,7 +95,7 @@ export const ResponsesProvider = ({ children }) => {
     fullName: "Nayeem Belal",
     username: "nabansnd",
     profilePicUri: defaultProfilePic,
-    userResponse: null
+    userResponse: null,
   });
 
   const updateResponse = (response) => {
@@ -112,19 +110,26 @@ export const ResponsesProvider = ({ children }) => {
       ...prevState,
       profilePicUri: photoUri,
     }));
-  }
+  };
 
   const updateFullName = (fullName) => {
     setMyResponse((prevState) => ({
       ...prevState,
       profilePicUri: fullName,
     }));
-  }
+  };
 
   return (
     <ResponsesContext.Provider
-      value={{ responses, myResponse, updateResponse, updateProfilePicUri, updateFullName, globalUserId, setGlobalUserId, responseSubmitted,
-      setResponseSubmitted, globalFullName, setGlobalFullName}}
+      value={{
+        responses,
+        myResponse,
+        updateResponse,
+        updateProfilePicUri,
+        updateFullName,
+        responseSubmitted,
+        setResponseSubmitted,
+      }}
     >
       {children}
     </ResponsesContext.Provider>

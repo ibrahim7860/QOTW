@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
-  const { setResponseSubmitted, globalUserId, responseSubmitted, updateResponse } = useResponses();
+  const { setResponseSubmitted, globalUserId, responseSubmitted, setMyResponse } = useResponses();
   const [userInput, setUserInput] = useState("");
   const [questionText, setQuestionText] = useState('');
   const questionId = 1;
@@ -18,7 +18,7 @@ export const QuestionScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     const fetchQuestion = async () => {
-      axios.get(`http://localhost:8080/question/${questionId}`, {
+      axios.get(`http://192.168.200.128:8080/question/${questionId}`, {
         headers: {
           Authorization: `Bearer ${await getToken()}`
         }
@@ -39,12 +39,15 @@ export const QuestionScreen = ({ route, navigation }) => {
       const fetchUserResponse = async () => {
         try {
           const token = await AsyncStorage.getItem('jwtToken')
-          const response = await axios.get(`http://localhost:8080/${globalUserId}/response`, {
+          const response = await axios.get(`http://192.168.200.128:8080/${globalUserId}/response`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
           });
-          updateResponse(response);
+          setMyResponse((prevState) => ({
+            ...prevState,
+            userResponse: response.data.responseText,
+          }));
         } catch (error) {
           console.error('Error fetching user response:', error);
         }
@@ -62,7 +65,7 @@ export const QuestionScreen = ({ route, navigation }) => {
       dateResponded: new Date().toISOString()
     };
 
-    axios.post('http://localhost:8080/response', responseDto, {
+    axios.post('http://192.168.200.128:8080/response', responseDto, {
       headers: {
         Authorization: `Bearer ${await getToken()}`
       }

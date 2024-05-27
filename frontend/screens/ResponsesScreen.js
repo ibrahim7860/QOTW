@@ -1,11 +1,19 @@
 import React from "react";
-import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
-import {Response} from "../components/Response";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+} from "react-native";
+import { Response } from "../components/Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
-import {useResponses} from "../context/ResponsesContext";
-import {useReactions} from "../context/ReactionsContext";
-import {MyResponse} from "../components/MyResponse";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useResponses } from "../context/ResponsesContext";
+import { useReactions } from "../context/ReactionsContext";
+import { MyResponse } from "../components/MyResponse";
 import defaultProfilePic from "../../assets/default.jpeg";
 
 export const ResponsesScreen = ({ navigation }) => {
@@ -13,7 +21,7 @@ export const ResponsesScreen = ({ navigation }) => {
   const { reactions } = useReactions();
 
   const goToMessages = () => {
-    navigation.navigate("Messages");
+    navigation.navigate("Chats");
   };
 
   const goToUserProfile = () => {
@@ -49,7 +57,11 @@ export const ResponsesScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity onPress={goToUserProfile}>
               <Image
-                source={myResponse.profilePicUri ? { uri: myResponse.profilePicUri } : defaultProfilePic}
+                source={
+                  myResponse.profilePicUri
+                    ? { uri: myResponse.profilePicUri }
+                    : defaultProfilePic
+                }
                 style={styles.profilePic}
               />
             </TouchableOpacity>

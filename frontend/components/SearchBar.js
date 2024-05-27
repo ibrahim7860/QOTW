@@ -4,6 +4,7 @@ import {
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Button from "./Button";

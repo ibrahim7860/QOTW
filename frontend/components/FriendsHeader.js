@@ -29,6 +29,12 @@ export const FriendsHeader = () => {
       >
         <Text style={styles.buttonText}>Friend Requests</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Add Friends")}
+        style={isActive("Add Friends") ? styles.activeButton : styles.button}
+      >
+        <Text style={styles.buttonText}>Add Friends</Text>
+      </TouchableOpacity>
       <View style={styles.topRightButton}>
         <Ripple
           rippleColor="#fff"
@@ -47,7 +53,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    padding: 10,
+    padding: 20,
     position: "relative",
   },
   button: {
@@ -64,7 +70,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "semibold",
   },
   topRightButton: {
     position: "absolute",
