@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
 
   const fetchAllUsers = () => {
     axios
-      .get(`http://localhost:8080/users/`)
+      .get(`http://192.168.200.128:8080/users/`)
       .then((response) => setAllUsers(response.data))
       .catch((error) => console.error("Error fetching users:", error));
   };
@@ -25,6 +25,13 @@ export const UserProvider = ({ children }) => {
     fetchAllUsers();
   };
 
+  const updateProfilePicUri = (photoUri) => {
+    setMyResponse((prevState) => ({
+      ...prevState,
+      profilePicUri: photoUri,
+    }));
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -35,6 +42,7 @@ export const UserProvider = ({ children }) => {
         globalFullName,
         setGlobalFullName,
         refreshUsers,
+        updateProfilePicUri,
       }}
     >
       {children}

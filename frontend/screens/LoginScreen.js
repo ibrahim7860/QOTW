@@ -27,7 +27,7 @@ export const LoginScreen = ({ navigation }) => {
   const inputPassStyle = passwordfocus
     ? styles.focusInput
     : styles.textInputStyle;
-  const { updateResponse, updateFullName } = useResponses();
+  const { updateResponse } = useResponses();
   const { globalFullName, setGlobalFullName, setGlobalUserId, refreshUsers } =
     userContext();
   const { storeToken, getToken } = useToken();
@@ -61,7 +61,7 @@ export const LoginScreen = ({ navigation }) => {
     };
 
     axios
-      .post("http://localhost:8080/users/login", loginData)
+      .post("http://192.168.200.128:8080/users/login", loginData)
       .then(async (response) => {
         const token = response.data.jwt;
         console.log("Login successful:", token);
@@ -70,7 +70,7 @@ export const LoginScreen = ({ navigation }) => {
         setGlobalFullName(response.data.fullName);
         try {
           const response = await axios.get(
-            `http://localhost:8080/${username}/response`,
+            `http://192.168.200.128:8080/${username}/response`,
             {
               headers: {
                 Authorization: `Bearer ${await getToken()}`,
@@ -83,7 +83,7 @@ export const LoginScreen = ({ navigation }) => {
             navigation.navigate("Question", { alreadyResponded: false });
           } else {
             updateResponse(response);
-            updateFullName(globalFullName);
+            setGlobalFullName(globalFullName);
             navigation.navigate("Responses");
           }
         } catch (error) {

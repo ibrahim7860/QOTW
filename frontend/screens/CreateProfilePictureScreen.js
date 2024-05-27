@@ -21,7 +21,7 @@ import { useToken } from "../context/TokenContext";
 import { userContext } from "../context/UserContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
-  const { globalUserId, globalFullName, updateFullName } = userContext();
+  const { globalUserId, globalFullName, setGlobalFullName } = userContext();
   const { getToken } = useToken();
   const [image, setImage] = useState(null);
 
@@ -105,12 +105,12 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
       const encodedUrl = encodeURIComponent(uploadUrl);
       axios
         .post(
-          `http://localhost:8080/profiles/${globalUserId}/update-picture`,
+          `http://192.168.200.128:8080/profiles/${globalUserId}/update-picture`,
           encodedUrl
         )
         .then((response) => {
           setImage(uploadUrl);
-          updateFullName(globalFullName);
+          setGloval(globalFullName);
           navigation.navigate("Question", { alreadyResponded: false });
         })
         .catch((error) => {

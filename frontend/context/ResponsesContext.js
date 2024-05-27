@@ -105,28 +105,12 @@ export const ResponsesProvider = ({ children }) => {
     }));
   };
 
-  const updateProfilePicUri = (photoUri) => {
-    setMyResponse((prevState) => ({
-      ...prevState,
-      profilePicUri: photoUri,
-    }));
-  };
-
-  const updateFullName = (fullName) => {
-    setMyResponse((prevState) => ({
-      ...prevState,
-      profilePicUri: fullName,
-    }));
-  };
-
   return (
     <ResponsesContext.Provider
       value={{
         responses,
         myResponse,
         updateResponse,
-        updateProfilePicUri,
-        updateFullName,
         responseSubmitted,
         setResponseSubmitted,
       }}
