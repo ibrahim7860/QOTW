@@ -18,7 +18,6 @@ import { storage } from "../../firebase";
 import axios from "axios";
 import { useToken } from "../context/TokenContext";
 import { userContext } from "../context/UserContext";
-import { useResponses } from "../context/ResponsesContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
   const { globalUserId, globalFullName, setGlobalFullName } = userContext();
@@ -115,7 +114,7 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
         )
         .then((response) => {
           setImage(uploadUrl);
-          setGloval(globalFullName);
+          setGlobalFullName(globalFullName);
           navigation.navigate("Question", { alreadyResponded: false });
         })
         .catch((error) => {
