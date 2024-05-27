@@ -1,12 +1,12 @@
 import React from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import {Shadow} from "react-native-shadow-2";
+import { Shadow } from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
 export const FriendProfileScreen = ({ route, navigation }) => {
-  const { fullName, username, isAdding } = route.params;
+  const { fullName, username } = route.params;
 
   return (
     <View style={styles.mainContainer}>
@@ -29,15 +29,6 @@ export const FriendProfileScreen = ({ route, navigation }) => {
         </View>
         <Text style={styles.name}>{fullName}</Text>
         <Text style={styles.username}>{username}</Text>
-        {isAdding && (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => console.log("Add friend clicked")}
-          >
-            <Icon name="person-add" size={20} color="black" />
-            <Text style={styles.buttonText}>Add Friend</Text>
-          </TouchableOpacity>
-        )}
       </View>
     </View>
   );

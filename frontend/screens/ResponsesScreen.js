@@ -50,7 +50,7 @@ export const ResponsesScreen = ({ navigation }) => {
   const getProfilePicture = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/profiles/${userId}/get-picture`
+        `http://192.168.200.128:8080/profiles/${userId}/get-picture`
       );
       if (response.data) {
         return decodeURIComponent(response.data.profilePicture);
