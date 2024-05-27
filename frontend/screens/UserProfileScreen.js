@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
@@ -10,10 +10,22 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useResponses} from "../context/ResponsesContext";
 import axios from "axios";
 import {useToken} from "../context/TokenContext";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
+import {storage} from "../../firebase";
 
 export const UserProfileScreen = ({ navigation }) => {
-  const { globalUserId, globalFullName, myResponse, updateProfilePicUri } = useResponses();
+  const { globalUserId, globalFullName } = useResponses();
+  const [image, setImage] = useState(null);
   const { getToken } = useToken();
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const url = await getProfilePicture(globalUserId);
+      setImage(url);
+    };
+
+    fetchImage();
+  }, []);
 
   const openSettings = () => {
     Linking.openSettings();
@@ -77,33 +89,6 @@ export const UserProfileScreen = ({ navigation }) => {
     await processImageResult(result);
   };
 
-  const processImageResult = async (result) => {
-    if (!result.canceled) {
-      const photoUri = result.assets[0].uri;
-      const type = result.assets[0].type;
-      const name = photoUri.split('/').pop();
-
-      let formData = new FormData();
-      formData.append('file', {
-        uri: photoUri,
-        name: name,
-        type: type
-      });
-
-      try {
-        const response = await axios.post(`http://192.168.200.128:8080/profiles/${globalUserId}/update-picture`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${await getToken()}`
-          },
-        });
-        updateProfilePicUri(photoUri);
-      } catch (error) {
-        console.error('Could not update profile picture:', error);
-      }
-    }
-  }
-
   const alertPermissionIssue = (source) => {
     Alert.alert(
         `${source} Permission`,
@@ -116,11 +101,76 @@ export const UserProfileScreen = ({ navigation }) => {
     );
   };
 
+  const processImageResult = async (result) => {
+    if (!result.canceled) {
+      const uploadUrl = await uploadImageAsync(result.assets[0].uri);
+      const encodedUrl = encodeURIComponent(uploadUrl);
+      axios.post(`http://localhost:8080/profiles/${globalUserId}/update-picture`, encodedUrl).then(response => {
+        setImage(uploadUrl);
+      }).catch(error => {
+        console.error('Error updating profile picture:', error);
+      });
+    }
+  }
+
+  const uploadImageAsync = async (uri) => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", uri, true);
+      xhr.send(null);
+    });
+    try {
+      const storageRef = ref(storage, `profile_pictures/${globalUserId}/profile.jpg`);
+      const result = await uploadBytesResumable(storageRef, blob);
+
+      blob.close();
+      return await getDownloadURL(storageRef);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const getProfilePicture = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/profiles/${userId}/get-picture`);
+      if (response.data) {
+        return decodeURIComponent(response.data.profilePicture);
+      } else {
+        console.error("No profile found for this user.");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching profile picture:", error);
+      return null;
+    }
+  };
+
   const handleArrowClick = () => {
     navigation.navigate("Responses");
   };
 
   const handleLogout = async () => {
+    const token = await AsyncStorage.getItem('jwtToken');
+    if (token) {
+      axios.post('http://localhost:8080/users/logout', {}, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(() => {
+        console.log('Logged out successfully');
+      }).catch(error => {
+        console.error('Failed to logout:', error);
+      });
+    }
+
     await AsyncStorage.removeItem('jwtToken');
     navigation.navigate("Welcome Screen");
   };
@@ -154,7 +204,7 @@ export const UserProfileScreen = ({ navigation }) => {
           <View style={styles.imageContainer}>
             <Shadow distance="10" radius="5" size="10">
               <Image
-                source={myResponse.profilePicUri ? { uri: myResponse.profilePicUri } : defaultProfilePic}
+                source={image ? { uri: image } : defaultProfilePic}
                 style={styles.profilePic}
               />
             </Shadow>

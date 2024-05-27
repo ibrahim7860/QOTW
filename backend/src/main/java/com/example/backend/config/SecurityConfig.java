@@ -1,6 +1,7 @@
 package com.example.backend.config;
 
-import com.example.backend.utils.JwtRequestFilter;
+import com.example.backend.filters.JwtRequestFilter;
+import com.example.backend.filters.TokenBlacklistFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,37 +22,45 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/actuator/**",
-                                "/users/**",
-                                "/reset-password-form",
-                                "/friends/**",
-                                "/chats/**")
-                                    
-                        
-                        .permitAll())
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT filter
-                .build();
-    }
+        @Autowired
+        private JwtRequestFilter jwtRequestFilter;
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+        @Autowired
+        private TokenBlacklistFilter tokenBlacklistFilter;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                return http
+                                .csrf(AbstractHttpConfigurer::disable)
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(
+                                                                "/actuator/**",
+                                                                "/users/**",
+                                                                "/reset-password-form",
+                                                                "/friends/**",
+                                                                "/chats/**")
+
+                                                .permitAll())
+                                .authorizeHttpRequests(auth -> auth
+                                                .anyRequest().authenticated())
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .addFilterBefore(tokenBlacklistFilter, UsernamePasswordAuthenticationFilter.class) // Add
+                                                                                                                   // blacklist
+                                                                                                                   // filter
+                                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // Add
+                                                                                                               // JWT
+                                                                                                               // filter
+                                .build();
+        }
+
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+                return config.getAuthenticationManager();
+        }
+
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 }

@@ -34,6 +34,7 @@ export const RegisterScreen = ({ navigation }) => {
   const { setGlobalUserId, setGlobalFullName } = useResponses();
   const [localUserId, setLocalUserId] = useState("");
   const { storeToken } = useToken();
+  const { getToken } = useToken();
 
   const handleAlreadyHaveAccount = () => {
     navigation.navigate("Login");
@@ -43,14 +44,18 @@ export const RegisterScreen = ({ navigation }) => {
     let intervalId;
 
     if (localUserId) {
-      intervalId = setInterval(() => {
-        axios.get(`http://192.168.200.128:8080/users/${localUserId}/status`)
-            .then(response => {
-              if (response.data.email_verified) {
-                clearInterval(intervalId);
-                navigation.navigate("Profile Picture");
-              }
-            })
+      intervalId = setInterval(async () => {
+        axios.get(`http://localhost:8080/users/${localUserId}/status`, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${await getToken()}`
+          },
+        }).then(response => {
+          if (response.data.email_verified) {
+            clearInterval(intervalId);
+            navigation.navigate("Profile Picture");
+          }
+        })
             .catch(error => {
               setErrorMessage("Error checking verification status");
             });

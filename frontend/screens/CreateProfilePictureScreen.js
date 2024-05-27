@@ -1,17 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Camera} from "expo-camera";
 import {Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
+import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
+import {useResponses} from "../context/ResponsesContext";
+import {storage} from "../../firebase";
 import axios from "axios";
 import {useToken} from "../context/TokenContext";
-import {useResponses} from "../context/ResponsesContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
+    const { globalUserId, globalFullName, updateFullName } = useResponses();
     const { getToken } = useToken();
-    const { globalUserId, globalFullName, updateProfilePicUri, updateFullName } = useResponses();
+    const [image, setImage] = useState(null);
 
     const openSettings = () => {
         Linking.openSettings();
@@ -76,35 +79,6 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
         await processImageResult(result);
     };
 
-    const processImageResult = async (result) => {
-        if (!result.canceled) {
-            const photoUri = result.assets[0].uri;
-            const type = result.assets[0].type;
-            const name = photoUri.split('/').pop();
-
-            let formData = new FormData();
-            formData.append('file', {
-                uri: photoUri,
-                name: name,
-                type: type
-            });
-
-            try {
-                const response = await axios.post(`http://192.168.200.128:8080/profiles/${globalUserId}/picture`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        Authorization: `Bearer ${await getToken()}`
-                    },
-                });
-                updateProfilePicUri(photoUri);
-                updateFullName(globalFullName);
-                navigation.navigate("Question", { alreadyResponded: false });
-            } catch (error) {
-                console.error('Could not update profile picture:', error);
-            }
-        }
-    }
-
     const alertPermissionIssue = (source) => {
         Alert.alert(
             `${source} Permission`,
@@ -117,6 +91,45 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
         );
     };
 
+    const processImageResult = async (result) => {
+        if (!result.canceled) {
+            const uploadUrl = await uploadImageAsync(result.assets[0].uri);
+            const encodedUrl = encodeURIComponent(uploadUrl);
+            axios.post(`http://localhost:8080/profiles/${globalUserId}/update-picture`, encodedUrl).then(response => {
+                setImage(uploadUrl);
+                updateFullName(globalFullName);
+                navigation.navigate("Question", { alreadyResponded: false });
+            }).catch(error => {
+                console.error('Error updating profile picture:', error);
+            });
+        }
+    }
+
+    const uploadImageAsync = async (uri) => {
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+                console.log(e);
+                reject(new TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
+            xhr.send(null);
+        });
+        try {
+            const storageRef = ref(storage, `profile_pictures/${globalUserId}/profile.jpg`);
+            const result = await uploadBytesResumable(storageRef, blob);
+
+            blob.close();
+            return await getDownloadURL(storageRef);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     return (
         <View style={styles.mainContainer}>
             <Text style={styles.uploadPictureText}>Please upload your profile picture</Text>
@@ -125,7 +138,7 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
                     <View style={styles.imageContainer}>
                         <Shadow distance="10" radius="5" size="10">
                             <Image
-                                source={defaultProfilePic}
+                                source={image ? {uri: image} : defaultProfilePic}
                                 style={styles.profilePic}
                             />
                         </Shadow>

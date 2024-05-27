@@ -1,4 +1,7 @@
-{
+{    "@expo/config": "^8.1.1",
+    "@expo/metro-config": "^0.10.0",
+    "@expo/webpack-config": "~19.0.1",
+
   "name": "qotw",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
@@ -9,7 +12,6 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/webpack-config": "~19.0.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "^6.1.9",
@@ -23,8 +25,10 @@
     "expo-image-picker": "~15.0.4",
     "expo-permissions": "~14.2.1",
     "expo-status-bar": "~1.12.1",
+    "firebase": "^10.12.1",
     "react": "18.2.0",
     "react-native": "0.74.1",
+    "react-native-animatable": "^1.4.0",
     "react-native-image-picker": "^7.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-keyboard-aware-view": "^0.0.14",

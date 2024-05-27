@@ -9,10 +9,17 @@ import java.util.List;
 
 public interface UserService {
     UserRegistrationDto registerUser(UserRegistrationDto userRegistrationDto);
-    AuthenticationResponseDto authenticateAndGenerateToken(AuthenticationRequestDto authenticationRequest, HttpServletResponse response);
+
+    AuthenticationResponseDto authenticateAndGenerateToken(AuthenticationRequestDto authenticationRequest,
+            HttpServletResponse response);
+
     void verifyUser(String token);
+
     void processForgotPassword(String email);
+
     void resetPassword(String token, String newPassword);
-    
+
+    void blacklistToken(String authHeader);
+
     List<String> getAllUsers();
 }
