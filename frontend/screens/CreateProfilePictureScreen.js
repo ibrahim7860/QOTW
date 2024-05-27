@@ -5,12 +5,15 @@ import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
-import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 import {useResponses} from "../context/ResponsesContext";
 import {storage} from "../../firebase";
+import axios from "axios";
+import {useToken} from "../context/TokenContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
     const { globalUserId, globalFullName, updateFullName } = useResponses();
+    const { getToken } = useToken();
     const [image, setImage] = useState(null);
 
     const openSettings = () => {
@@ -91,10 +94,14 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
     const processImageResult = async (result) => {
         if (!result.canceled) {
             const uploadUrl = await uploadImageAsync(result.assets[0].uri);
-            console.log(uploadUrl);
-            setImage(uploadUrl);
-            updateFullName(globalFullName);
-            navigation.navigate("Question", { alreadyResponded: false });
+            const encodedUrl = encodeURIComponent(uploadUrl);
+            axios.post(`http://localhost:8080/profiles/${globalUserId}/update-picture`, encodedUrl).then(response => {
+                setImage(uploadUrl);
+                updateFullName(globalFullName);
+                navigation.navigate("Question", { alreadyResponded: false });
+            }).catch(error => {
+                console.error('Error updating profile picture:', error);
+            });
         }
     }
 
@@ -114,7 +121,7 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
         });
         try {
             const storageRef = ref(storage, `profile_pictures/${globalUserId}/profile.jpg`);
-            const result = await uploadBytes(storageRef, blob);
+            const result = await uploadBytesResumable(storageRef, blob);
 
             blob.close();
             return await getDownloadURL(storageRef);

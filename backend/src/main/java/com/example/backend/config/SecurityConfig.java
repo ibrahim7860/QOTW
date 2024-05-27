@@ -41,7 +41,8 @@ public class SecurityConfig {
                                 "/users/forgot-password",
                                 "/reset-password-form",
                                 "/users/reset-password",
-                                "/friends/**")
+                                "/friends/**",
+                                "/profiles/**")
                         .permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated())

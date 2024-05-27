@@ -16,13 +16,14 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profileId;
 
-    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @Column(name = "name", nullable = false)
-    private String name;
+    private String userId;
 
     @Column(name = "profile_picture", nullable = false)
     private String profilePicture;
+
+    public Profile(String userId, String imageUrl) {
+        this.userId = userId;
+        this.profilePicture = imageUrl;
+    }
 }
