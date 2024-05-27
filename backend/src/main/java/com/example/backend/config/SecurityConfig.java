@@ -45,12 +45,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(tokenBlacklistFilter, UsernamePasswordAuthenticationFilter.class) // Add
-                // blacklist
-                // filter
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // Add
-                // JWT
-                // filter
+                .addFilterBefore(tokenBlacklistFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
