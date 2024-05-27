@@ -1,6 +1,7 @@
 package com.example.backend.config;
 
-import com.example.backend.utils.JwtRequestFilter;
+import com.example.backend.filters.JwtRequestFilter;
+import com.example.backend.filters.TokenBlacklistFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

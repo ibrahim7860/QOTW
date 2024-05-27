@@ -1,4 +1,4 @@
-package com.example.backend.config;
+package com.example.backend.filters;
 
 import com.example.backend.repository.BlacklistedTokenRepository;
 import jakarta.servlet.FilterChain;
