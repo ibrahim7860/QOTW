@@ -1,57 +1,76 @@
-import React, {useEffect, useState} from "react";
-import {Image, KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View,} from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Platform,
+} from "react-native";
 import Button from "../components/Button";
-import {MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
-import {useResponses} from "../context/ResponsesContext";
+import { useResponses } from "../context/ResponsesContext";
 import axios from "axios";
-import {useToken} from "../context/TokenContext";
+import { useToken } from "../context/TokenContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
-  const { setResponseSubmitted, globalUserId, responseSubmitted, setMyResponse } = useResponses();
+  const {
+    setResponseSubmitted,
+    globalUserId,
+    responseSubmitted,
+    setMyResponse,
+  } = useResponses();
   const [userInput, setUserInput] = useState("");
-  const [questionText, setQuestionText] = useState('');
+  const [questionText, setQuestionText] = useState("");
   const questionId = 1;
   const { getToken } = useToken();
 
   useEffect(() => {
     const fetchQuestion = async () => {
-      axios.get(`http://192.168.200.128:8080/question/${questionId}`, {
-        headers: {
-          Authorization: `Bearer ${await getToken()}`
-        }
-      })
-          .then(response => {
-            setQuestionText(response.data.questionText);
-          })
-          .catch(error => {
-            console.error('Error fetching question:', error);
-          });
-    }
+      axios
+        .get(`http://192.168.200.128:8080/question/${questionId}`, {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`,
+          },
+        })
+        .then((response) => {
+          setQuestionText(response.data.questionText);
+        })
+        .catch((error) => {
+          console.error("Error fetching question:", error);
+        });
+    };
 
-    fetchQuestion()
+    fetchQuestion();
   }, []);
 
   useEffect(() => {
     if (responseSubmitted) {
       const fetchUserResponse = async () => {
         try {
-          const token = await AsyncStorage.getItem('jwtToken')
-          const response = await axios.get(`http://192.168.200.128:8080/${globalUserId}/response`, {
-            headers: {
-              Authorization: `Bearer ${token}`
+          const token = await AsyncStorage.getItem("jwtToken");
+          const response = await axios.get(
+            `http://192.168.200.128:8080/${globalUserId}/response`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
-          });
+          );
           setMyResponse((prevState) => ({
             ...prevState,
             userResponse: response.data.responseText,
           }));
         } catch (error) {
-          console.error('Error fetching user response:', error);
+          console.error("Error fetching user response:", error);
         }
-      }
+      };
 
       fetchUserResponse();
     }
@@ -62,22 +81,23 @@ export const QuestionScreen = ({ route, navigation }) => {
       userId: globalUserId,
       questionId: questionId,
       responseText: userInput,
-      dateResponded: new Date().toISOString()
+      dateResponded: new Date().toISOString(),
     };
 
-    axios.post('http://192.168.200.128:8080/response', responseDto, {
-      headers: {
-        Authorization: `Bearer ${await getToken()}`
-      }
-    })
-        .then(response => {
-          console.log('Response created:', response.data);
-          setResponseSubmitted(true);
-          navigation.navigate("Responses");
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
+    axios
+      .post("http://192.168.200.128:8080/response", responseDto, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      })
+      .then((response) => {
+        console.log("Response created:", response.data);
+        setResponseSubmitted(true);
+        navigation.navigate("Responses");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -101,9 +121,7 @@ export const QuestionScreen = ({ route, navigation }) => {
           paddingVertical: 20,
         }}
       >
-        <Text style={styles.qotwStyle}>
-          {questionText}
-        </Text>
+        <Text style={styles.qotwStyle}>{questionText}</Text>
       </ScrollView>
 
       {!alreadyResponded && (

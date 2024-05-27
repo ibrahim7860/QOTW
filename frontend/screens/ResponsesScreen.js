@@ -1,6 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
-import {Response} from "../components/Response";
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+} from "react-native";
+import { Response } from "../components/Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useResponses } from "../context/ResponsesContext";
@@ -12,7 +20,7 @@ import axios from "axios";
 export const ResponsesScreen = ({ navigation }) => {
   const { responses, myResponse, globalUserId } = useResponses();
   const { reactions } = useReactions();
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -41,7 +49,9 @@ export const ResponsesScreen = ({ navigation }) => {
 
   const getProfilePicture = async (userId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/profiles/${userId}/get-picture`);
+      const response = await axios.get(
+        `http://localhost:8080/profiles/${userId}/get-picture`
+      );
       if (response.data) {
         return decodeURIComponent(response.data.profilePicture);
       } else {
