@@ -25,13 +25,6 @@ export const UserProvider = ({ children }) => {
     fetchAllUsers();
   };
 
-  const updateProfilePicUri = (photoUri) => {
-    setMyResponse((prevState) => ({
-      ...prevState,
-      profilePicUri: photoUri,
-    }));
-  };
-
   return (
     <UserContext.Provider
       value={{
@@ -42,7 +35,6 @@ export const UserProvider = ({ children }) => {
         globalFullName,
         setGlobalFullName,
         refreshUsers,
-        updateProfilePicUri,
       }}
     >
       {children}
