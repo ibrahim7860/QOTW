@@ -1,39 +1,18 @@
-import React, { useEffect, useState } from "react";
-import {
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Platform,
-} from "react-native";
-import { Response } from "../components/Response";
+import React from "react";
+import {Image, Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Response} from "../components/Response";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useResponses } from "../context/ResponsesContext";
-import { useReactions } from "../context/ReactionsContext";
-import { MyResponse } from "../components/MyResponse";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {useResponses} from "../context/ResponsesContext";
+import {useReactions} from "../context/ReactionsContext";
+import {MyResponse} from "../components/MyResponse";
 import defaultProfilePic from "../../assets/default.jpeg";
-import axios from "axios";
-import { userContext } from "../context/UserContext";
-import {useToken} from "../context/TokenContext";
+import {userContext} from "../context/UserContext";
 
 export const ResponsesScreen = ({ navigation }) => {
   const { responses, myResponse } = useResponses();
-  const { globalUserId } = userContext();
+  const { globalProfilePic } = userContext();
   const { reactions } = useReactions();
-  const { getToken } = useToken();
-  const [imageUrl, setImageUrl] = useState("");
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      const url = await getProfilePicture(globalUserId);
-      setImageUrl(url);
-    };
-
-    fetchImage();
-  }, []);
 
   const goToMessages = () => {
     navigation.navigate("Chats");
@@ -49,27 +28,6 @@ export const ResponsesScreen = ({ navigation }) => {
 
   const goToQOTW = () => {
     navigation.push("Question", { alreadyResponded: true });
-  };
-
-  const getProfilePicture = async (userId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/profiles/${userId}/get-picture`, {
-            headers: {
-              Authorization: `Bearer ${await getToken()}`,
-            },
-        }
-      );
-      if (response.data) {
-        return decodeURIComponent(response.data.profilePicture);
-      } else {
-        console.error("No profile found for this user.");
-        return null;
-      }
-    } catch (error) {
-      console.error("Error fetching profile picture:", error);
-      return null;
-    }
   };
 
   return (
@@ -93,7 +51,7 @@ export const ResponsesScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity onPress={goToUserProfile}>
               <Image
-                source={imageUrl ? { uri: imageUrl } : defaultProfilePic}
+                source={globalProfilePic ? { uri: globalProfilePic } : defaultProfilePic}
                 style={styles.profilePic}
               />
             </TouchableOpacity>

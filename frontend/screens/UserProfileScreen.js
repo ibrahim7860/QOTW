@@ -1,39 +1,22 @@
-import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Image,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, {useState} from "react";
+import {ActivityIndicator, Alert, Image, Linking, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
-import { Shadow } from "react-native-shadow-2";
+import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
-import { Camera } from "expo-camera";
+import {Camera} from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useToken } from "../context/TokenContext";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "../../firebase";
-import { userContext } from "../context/UserContext";
+import {useToken} from "../context/TokenContext";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
+import {storage} from "../../firebase";
+import {userContext} from "../context/UserContext";
 
 export const UserProfileScreen = ({ navigation }) => {
-  const { globalUserId, globalFullName } = userContext();
-  const [image, setImage] = useState(null);
+  const { globalUserId, globalFullName, globalProfilePic, setGlobalProfilePic } = userContext();
   const { getToken } = useToken();
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      const url = await getProfilePicture(globalUserId);
-      setImage(url);
-    };
-
-    fetchImage();
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   const openSettings = () => {
     Linking.openSettings();
@@ -111,24 +94,25 @@ export const UserProfileScreen = ({ navigation }) => {
 
   const processImageResult = async (result) => {
     if (!result.canceled) {
-      const uploadUrl = await uploadImageAsync(result.assets[0].uri);
-      const encodedUrl = encodeURIComponent(uploadUrl);
-      axios
-        .post(
-          `http://localhost:8080/profiles/${globalUserId}/update-picture`,
-          encodedUrl,
-     {
+      setLoading(true); // Start loading before the upload begins
+      try {
+        const uploadUrl = await uploadImageAsync(result.assets[0].uri);
+        setGlobalProfilePic(uploadUrl);
+        const encodedUrl = encodeURIComponent(uploadUrl);
+        await axios.post(
+            `http://localhost:8080/profiles/${globalUserId}/update-picture`,
+            encodedUrl,
+            {
               headers: {
                 Authorization: `Bearer ${await getToken()}`,
               },
             }
-        )
-        .then((response) => {
-          setImage(uploadUrl);
-        })
-        .catch((error) => {
-          console.error("Error updating profile picture:", error);
-        });
+        );
+      } catch (error) {
+        console.error("Error updating profile picture:", error);
+      } finally {
+        setLoading(false); // Stop loading regardless of the outcome
+      }
     }
   };
 
@@ -157,27 +141,6 @@ export const UserProfileScreen = ({ navigation }) => {
       return await getDownloadURL(storageRef);
     } catch (e) {
       console.log(e);
-    }
-  };
-
-  const getProfilePicture = async (userId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/profiles/${userId}/get-picture`, {
-            headers: {
-              Authorization: `Bearer ${await getToken()}`,
-            },
-          }
-      );
-      if (response.data) {
-        return decodeURIComponent(response.data.profilePicture);
-      } else {
-        console.error("No profile found for this user.");
-        return null;
-      }
-    } catch (error) {
-      console.error("Error fetching profile picture:", error);
-      return null;
     }
   };
 
@@ -238,10 +201,14 @@ export const UserProfileScreen = ({ navigation }) => {
         <TouchableOpacity onPress={showImagePickerOptions}>
           <View style={styles.imageContainer}>
             <Shadow distance="10" radius="5" size="10">
-              <Image
-                source={image ? { uri: image } : defaultProfilePic}
-                style={styles.profilePic}
-              />
+              {loading ? (
+                  <ActivityIndicator size="large" color="#FFFFFF" style={styles.profilePic} />
+              ) : (
+                  <Image
+                      source={globalProfilePic ? { uri: globalProfilePic } : defaultProfilePic}
+                      style={styles.profilePic}
+                  />
+              )}
             </Shadow>
             <View style={styles.iconContainer}>
               <Icon name="camera-alt" size={19} color="#291400" />

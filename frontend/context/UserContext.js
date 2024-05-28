@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
   const [allUsers, setAllUsers] = useState(null);
   const [globalUserId, setGlobalUserId] = useState(null);
   const [globalFullName, setGlobalFullName] = useState("");
+  const [globalProfilePic, setGlobalProfilePic] = useState(null);
 
   const fetchAllUsers = () => {
     axios
@@ -35,6 +36,8 @@ export const UserProvider = ({ children }) => {
         globalFullName,
         setGlobalFullName,
         refreshUsers,
+        globalProfilePic,
+        setGlobalProfilePic,
       }}
     >
       {children}

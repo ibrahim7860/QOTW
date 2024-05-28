@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Camera } from "expo-camera";
 import {
+  ActivityIndicator,
   Alert,
   Image,
   Linking,
@@ -20,9 +21,9 @@ import { useToken } from "../context/TokenContext";
 import { userContext } from "../context/UserContext";
 
 export const CreateProfilePictureScreen = ({ navigation }) => {
-  const { globalUserId } = userContext();
+  const { globalUserId, globalProfilePic, setGlobalProfilePic } = userContext();
   const { getToken } = useToken();
-  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const openSettings = () => {
     Linking.openSettings();
@@ -100,25 +101,26 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
 
   const processImageResult = async (result) => {
     if (!result.canceled) {
-      const uploadUrl = await uploadImageAsync(result.assets[0].uri);
-      const encodedUrl = encodeURIComponent(uploadUrl);
-      axios
-        .post(
-          `http://localhost:8080/profiles/${globalUserId}/update-picture`,
-          encodedUrl,
-          {
-            headers: {
-              Authorization: `Bearer ${await getToken()}`,
-            },
-          }
-        )
-        .then((response) => {
-          setImage(uploadUrl);
-          navigation.navigate("Question", { alreadyResponded: false });
-        })
-        .catch((error) => {
-          console.error("Error updating profile picture:", error);
-        });
+      setLoading(true); // Start loading before the upload begins
+      try {
+        const uploadUrl = await uploadImageAsync(result.assets[0].uri);
+        setGlobalProfilePic(uploadUrl);
+        const encodedUrl = encodeURIComponent(uploadUrl);
+        await axios.post(
+            `http://localhost:8080/profiles/${globalUserId}/update-picture`,
+            encodedUrl,
+            {
+              headers: {
+                Authorization: `Bearer ${await getToken()}`,
+              },
+            }
+        );
+        navigation.navigate("Question", { alreadyResponded: false });
+      } catch (error) {
+        console.error("Error updating profile picture:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -159,10 +161,14 @@ export const CreateProfilePictureScreen = ({ navigation }) => {
         <TouchableOpacity onPress={showImagePickerOptions}>
           <View style={styles.imageContainer}>
             <Shadow distance="10" radius="5" size="10">
-              <Image
-                source={image ? { uri: image } : defaultProfilePic}
-                style={styles.profilePic}
-              />
+              {loading ? (
+                  <ActivityIndicator size="large" color="#FFFFFF" style={styles.profilePic} />
+              ) : (
+                  <Image
+                      source={globalProfilePic ? { uri: globalProfilePic } : defaultProfilePic}
+                      style={styles.profilePic}
+                  />
+              )}
             </Shadow>
             <View style={styles.iconContainer}>
               <Icon name="camera-alt" size={35} color="#291400" />

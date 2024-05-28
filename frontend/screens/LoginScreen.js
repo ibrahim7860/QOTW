@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -23,13 +23,46 @@ export const LoginScreen = ({ navigation }) => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
   const inputUserStyle = focus ? styles.focusInput : styles.textInputStyle;
   const inputPassStyle = passwordfocus
     ? styles.focusInput
     : styles.textInputStyle;
   const { updateResponse } = useResponses();
-  const { setGlobalFullName, setGlobalUserId, refreshUsers } = userContext();
+  const { setGlobalFullName, setGlobalUserId, refreshUsers, globalUserId, setGlobalProfilePic } = userContext();
   const { storeToken, getToken } = useToken();
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (loggedIn) {
+        const url = await getProfilePicture(globalUserId);
+        setGlobalProfilePic(url);
+      }
+    };
+
+    fetchImage();
+  }, [loggedIn]);
+
+  const getProfilePicture = async (userId) => {
+    try {
+      const response = await axios.get(
+          `http://localhost:8080/profiles/${userId}/get-picture`, {
+            headers: {
+              Authorization: `Bearer ${await getToken()}`,
+            },
+          }
+      );
+      if (response.data) {
+        return decodeURIComponent(response.data.profilePicture);
+      } else {
+        console.error("No profile found for this user.");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching profile picture:", error);
+      return null;
+    }
+  };
 
   const handleForgotPassword = () => {
     navigation.navigate("Forgot Password");
@@ -66,6 +99,7 @@ export const LoginScreen = ({ navigation }) => {
         console.log("Login successful:", token);
         storeToken(token);
         setGlobalUserId(username);
+        setLoggedIn(true);
         setGlobalFullName(response.data.fullName);
         try {
           const response = await axios.get(
