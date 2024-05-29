@@ -44,7 +44,7 @@ const slightAnimation = {
         ],
       },
     };
-  }
+  },
 };
 
 const leftToRightAnimation = {
@@ -100,12 +100,12 @@ const bottomToTopAnimation = ({ current, layouts }) => {
 
 export default function App() {
   return (
-    <UserProvider>
-      <ResponsesProvider>
-        <ConversationsProvider>
-          <FriendsProvider>
-            <ReactionsProvider>
-              <TokenProvider>
+    <TokenProvider>
+      <UserProvider>
+        <ResponsesProvider>
+          <ConversationsProvider>
+            <FriendsProvider>
+              <ReactionsProvider>
                 <View style={styles.container}>
                   <NavigationContainer>
                     <Stack.Navigator
@@ -173,12 +173,12 @@ export default function App() {
                     </Stack.Navigator>
                   </NavigationContainer>
                 </View>
-              </TokenProvider>
-            </ReactionsProvider>
-          </FriendsProvider>
-        </ConversationsProvider>
-      </ResponsesProvider>
-    </UserProvider>
+              </ReactionsProvider>
+            </FriendsProvider>
+          </ConversationsProvider>
+        </ResponsesProvider>
+      </UserProvider>
+    </TokenProvider>
   );
 }
 

@@ -35,9 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/actuator/**",
-                                "/users/**",
                                 "/reset-password-form",
-                                "/friends/**",
                                 "/chats/**")
 
                         .permitAll())
