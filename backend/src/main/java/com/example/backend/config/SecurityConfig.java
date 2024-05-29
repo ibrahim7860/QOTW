@@ -36,8 +36,12 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/actuator/**",
                                 "/reset-password-form",
-                                "/chats/**")
-
+                                "/chats/**",
+                                "/users/register",
+                                "/users/login",
+                                "/users/verify",
+                                "/users/reset-password",
+                                "/users/forgot-password")
                         .permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated())

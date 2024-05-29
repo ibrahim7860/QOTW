@@ -69,7 +69,7 @@ public class UserController {
         return ResponseEntity.ok("Password reset successfully.");
     }
 
-    @GetMapping("/")
+    @GetMapping("/get-users")
     public ResponseEntity<?> getAllUsers() {
         List<String> allUsers = userService.getAllUsers();
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
