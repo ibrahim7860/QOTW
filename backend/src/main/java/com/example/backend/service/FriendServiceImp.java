@@ -53,35 +53,6 @@ public class FriendServiceImp implements FriendService {
         friendRepository.save(friendToAccept);
     }
 
-    public void manageFriendRequest(String user_1_id, String user_2_id, String status) {
-        boolean user_1_present = userRepository.existsById(user_1_id);
-        boolean user_2_present = userRepository.existsById(user_2_id);
-
-        if (user_1_present && user_2_present) {
-            //Friend request exists
-            Friend request1 = friendRepository.findByUser1IdAndUser2Id(user_1_id, user_2_id);
-            Friend request2 = friendRepository.findByUser1IdAndUser2Id(user_2_id, user_1_id);
-
-            Friend request = request1 != null ? request1 : request2;
-
-            //request is in pending status
-            if (request.getStatus().equals("pending")) {
-                request.setStatus(status);
-                friendRepository.save(request);
-            } else if (request.getStatus().equals("declined")) {
-                throw new CustomAuthenticationException("Request was declined", HttpStatus.BAD_REQUEST);
-            } else {
-                throw new CustomAuthenticationException("Request not in pending", HttpStatus.BAD_REQUEST);
-            }
-        } else {
-            if (!user_1_present) {
-                throw new CustomAuthenticationException("Requester ID not valid", HttpStatus.NOT_FOUND);
-            } else {
-                throw new CustomAuthenticationException("Receiver ID not valid", HttpStatus.NOT_FOUND);
-            }
-        }
-    }
-
 
     @Override
     public void removeFriend(Long friendship_id) {
@@ -132,22 +103,6 @@ public class FriendServiceImp implements FriendService {
                 throw new CustomAuthenticationException("User you are sending friend request to does not exist", HttpStatus.NOT_FOUND);
             }
         }
-
-    }
-
-    public boolean areFriends(String user_1_id, String user_2_id) {
-        boolean user_1_present = userRepository.existsById(user_1_id);
-        boolean user_2_present = userRepository.existsById(user_2_id);
-
-        if (user_1_present && user_2_present) {
-            Friend combination1 = friendRepository.findByUser1IdAndUser2Id(user_1_id, user_2_id);
-            Friend combination2 = friendRepository.findByUser1IdAndUser2Id(user_2_id, user_1_id);
-
-            Friend friends = combination1 != null ? combination1 : combination2;
-            return friends.getStatus().equals("accepted");
-        }
-
-        throw new CustomAuthenticationException("Users not found", HttpStatus.NOT_FOUND);
 
     }
 }
