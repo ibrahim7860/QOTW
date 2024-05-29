@@ -2,9 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.FriendRequestDto;
 import com.example.backend.entity.Friend;
-import com.example.backend.repository.FriendRepository;
 import com.example.backend.service.FriendService;
-import com.example.backend.service.FriendServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,14 +36,13 @@ public class FriendsController {
         friendService.sendFriendRequest(friendRequestDto);
         return ResponseEntity.ok().build();
     }
-    
+
     @PutMapping("/requests/acceptRequest/{friendship_id}")
-    public ResponseEntity<?> acceptFriendRequest(@PathVariable Long friendship_id)
-    {
+    public ResponseEntity<?> acceptFriendRequest(@PathVariable Long friendship_id) {
         friendService.acceptFriendRequest(friendship_id);
         return ResponseEntity.ok().build();
     }
-    
+
     @DeleteMapping("/delete/{friendship_id}")
     public ResponseEntity<?> removeFriend(@PathVariable Long friendship_id) {
         friendService.removeFriend(friendship_id);

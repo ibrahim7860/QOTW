@@ -12,6 +12,7 @@ public class AuthenticationResponseDto {
     private String message;
     private String userId;
     private String fullName;
+
     public AuthenticationResponseDto(String message) {
         this.message = message;
     }

@@ -7,7 +7,10 @@ import com.example.backend.entity.Response;
 
 public interface QuestionAndAnswerService {
     QuestionDto getQuestionById(Long questionId);
+
     Question addQuestion(QuestionDto questionDto);
+
     Response createResponse(ResponseDto responseDto);
+
     ResponseDto getUserResponse(String userId);
 }

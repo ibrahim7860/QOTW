@@ -5,7 +5,7 @@ const TokenContext = createContext();
 
 export const useToken = () => useContext(TokenContext);
 
-export const TokenProvider = ({ children }) => {
+export const TokenProvider = ({children}) => {
 
     const getToken = async () => {
         try {
@@ -30,7 +30,7 @@ export const TokenProvider = ({ children }) => {
     };
 
     return (
-        <TokenContext.Provider value={{ getToken, storeToken }}>
+        <TokenContext.Provider value={{getToken, storeToken}}>
             {children}
         </TokenContext.Provider>
     );

@@ -2,7 +2,6 @@ package com.example.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 @Data
 public class FriendRequestDto {
@@ -15,6 +14,6 @@ public class FriendRequestDto {
 
     @NotBlank(message = "Status cant be blank")
     private String status;
-    
-    
+
+
 }

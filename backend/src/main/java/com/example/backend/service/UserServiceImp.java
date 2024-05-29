@@ -54,8 +54,8 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     private UserDetailsServiceImp userDetailsServiceImp;
-    
-    
+
+
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -161,6 +161,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<String> getAllUsers() {
-         return userRepository.getAllUserIDs();
+        return userRepository.getAllUserIDs();
     }
 }
