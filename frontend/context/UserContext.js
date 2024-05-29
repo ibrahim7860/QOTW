@@ -182,6 +182,28 @@ export const UserProvider = ({children}) => {
         setResult(result);
     };
 
+    const getProfilePicture = async (userId) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8080/profiles/${userId}/get-picture`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${await getToken()}`,
+                    },
+                }
+            );
+            if (response.data) {
+                return decodeURIComponent(response.data.profilePicture);
+            } else {
+                console.error("No profile found for this user.");
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching profile picture:", error);
+            return null;
+        }
+    };
+
     return (
         <UserContext.Provider
             value={{
@@ -199,7 +221,8 @@ export const UserProvider = ({children}) => {
                 result,
                 loading,
                 setNavigate,
-                setNavigation
+                setNavigation,
+                getProfilePicture
             }}
         >
             {children}
