@@ -19,6 +19,9 @@ export const UserProvider = ({children}) => {
     const [globalFullName, setGlobalFullName] = useState("");
     const [globalProfilePic, setGlobalProfilePic] = useState(null);
     const [result, setResult] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [navigate, setNavigate] = useState(false);
+    const [navigation, setNavigation] = useState(null);
 
     const fetchAllUsers = async () => {
         axios
@@ -36,6 +39,42 @@ export const UserProvider = ({children}) => {
             fetchAllUsers();
         }
     }, [globalUserId]);
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            if (result && globalUserId) {
+                await processImageResult(result);
+            }
+        };
+        fetchImage();
+    }, [result, globalUserId]);
+
+    const processImageResult = async (result) => {
+        if (!result.canceled) {
+            setLoading(true);
+            try {
+                const uploadUrl = await uploadImageAsync(result.assets[0].uri);
+                setGlobalProfilePic(uploadUrl);
+                const encodedUrl = encodeURIComponent(uploadUrl);
+                await axios.post(
+                    `http://localhost:8080/profiles/${globalUserId}/update-picture`,
+                    encodedUrl,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${await getToken()}`,
+                        },
+                    }
+                );
+                if (navigate) {
+                    navigation.navigate("Question", {alreadyResponded: false});
+                }
+            } catch (error) {
+                console.error("Error updating profile picture:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
 
     const refreshUsers = () => {
         fetchAllUsers();
@@ -158,6 +197,9 @@ export const UserProvider = ({children}) => {
                 showImagePickerOptions,
                 uploadImageAsync,
                 result,
+                loading,
+                setNavigate,
+                setNavigation
             }}
         >
             {children}
