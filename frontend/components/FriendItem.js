@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Alert, Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import {userContext} from "../context/UserContext";
+import defaultProfilePic from "../../assets/default.jpeg";
+import Button from "./Button";
+import {useNavigation} from "@react-navigation/native";
 
 export const FriendItem = ({
                                friend,
                                onRemove,
-                               onSendRequest,
                                onAcceptRequest,
                                onRejectRequest,
                                onCancelRequest,
@@ -16,6 +19,18 @@ export const FriendItem = ({
                            }) => {
     const friendUserID =
         friend.user_2_id !== currentUserId ? friend.user_2_id : friend.user_1_id;
+    const [profilePic, setProfilePic] = useState(null);
+    const {getProfilePicture, allUsers} = userContext();
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            const url = await getProfilePicture(friendUserID);
+            setProfilePic(url);
+        };
+
+        fetchImage();
+    }, []);
 
     const handleRemovePress = () => {
         Alert.alert(
@@ -56,19 +71,20 @@ export const FriendItem = ({
         );
     };
 
-    const handleSendRequestPress = () => {
-        Alert.alert(
-            "Send Request",
-            `Do you really want to send a friend request to: ${friendUserID}?`,
-            [{text: "No"}, {text: "Yes", onPress: () => onSendRequest(friend.id)}]
-        );
-    };
+    const goToFriendProfile = () => {
+        const user = allUsers.find(user => user.userId === friendUserID);
+        navigation.navigate("Friend Profile", {
+            fullName: `${user.firstName} ${user.lastName}`,
+            username: friendUserID,
+            profilePic: profilePic,
+        });
+    }
 
     return (
         <View style={styles.friendItem}>
-            <View style={styles.imageContainer}>
-                <Image source={friend.profilePicUri} style={styles.profilePic}/>
-            </View>
+            <Button style={styles.imageContainer} onPress={goToFriendProfile}>
+                <Image source={profilePic ? {uri: profilePic} : defaultProfilePic} style={styles.profilePic}/>
+            </Button>
             <View style={styles.friendInfo}>
                 <Text style={styles.username}>{friendUserID}</Text>
             </View>

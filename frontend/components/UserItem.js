@@ -31,7 +31,7 @@ export const UserItem = ({onSendRequest, user, currentUserId}) => {
 
         Alert.alert(
             "Send Request",
-            `Do you really want to send a friend request to: ${user}?`,
+            `Do you really want to send a friend request to: ${user.userId}?`,
             [
                 {text: "No"},
                 {

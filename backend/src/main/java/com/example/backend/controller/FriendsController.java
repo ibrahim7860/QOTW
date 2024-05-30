@@ -49,7 +49,7 @@ public class FriendsController {
         return new ResponseEntity<>("Friend removed successfully", HttpStatus.OK);
     }
 
-    @DeleteMapping("/requests/delete/{friendship_id}")
+    @DeleteMapping("/requests/reject/{friendship_id}")
     public ResponseEntity<?> rejectFriendRequest(@PathVariable Long friendship_id) {
         friendService.removeFriend(friendship_id);
         return new ResponseEntity<>("Friend request rejected successfully successfully", HttpStatus.OK);
