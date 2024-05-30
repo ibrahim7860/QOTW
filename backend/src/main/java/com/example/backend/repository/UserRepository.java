@@ -17,8 +17,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     User findByEmail(String email);
 
-    @Query(value = "SELECT user_id FROM users WHERE email_verified = true", nativeQuery = true)
-    List<String> getAllUserIDs();
+    @Query(value = "SELECT user_id, email, first_name, last_name FROM users WHERE email_verified = true", nativeQuery = true)
+    List<Object[]> getAllUserDetails();
 
 }
 

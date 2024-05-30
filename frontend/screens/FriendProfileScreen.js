@@ -6,7 +6,7 @@ import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
 
 export const FriendProfileScreen = ({route, navigation}) => {
-    const {fullName, username} = route.params;
+    const {fullName, username, profilePic} = route.params;
 
     return (
         <View style={styles.mainContainer}>
@@ -24,7 +24,7 @@ export const FriendProfileScreen = ({route, navigation}) => {
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Shadow distance="10" radius="5" size="10">
-                        <Image source={defaultProfilePic} style={styles.profilePic}/>
+                        <Image source={profilePic ? {uri: profilePic} : defaultProfilePic} style={styles.profilePic}/>
                     </Shadow>
                 </View>
                 <Text style={styles.name}>{fullName}</Text>

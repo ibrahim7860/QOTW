@@ -27,10 +27,13 @@ export const UserProvider = ({children}) => {
         axios
             .get(`http://localhost:8080/users/get-users`, {
                 headers: {
+                    "Content-Type": "application/json",
                     Authorization: `Bearer ${await getToken()}`,
                 },
             })
-            .then((response) => setAllUsers(response.data))
+            .then((response) => {
+                setAllUsers(response.data);
+            })
             .catch((error) => console.error("Error fetching users:", error));
     };
 

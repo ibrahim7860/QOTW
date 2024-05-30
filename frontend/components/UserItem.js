@@ -3,24 +3,29 @@ import React, {useEffect, useState} from "react";
 import {Alert, Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {userContext} from "../context/UserContext";
+import Button from "./Button";
+import {useNavigation} from "@react-navigation/native";
+import defaultProfilePic from "../../assets/default.jpeg";
 
 export const UserItem = ({onSendRequest, user, currentUserId}) => {
     const [profilePic, setProfilePic] = useState(null);
-    const {getProfilePicture} = userContext()
+    const navigation = useNavigation();
+    const {getProfilePicture} = userContext();
+    const fullName = `${user.firstName} ${user.lastName}`;
 
     useEffect(() => {
-        const intervalId = setInterval(async () => {
-            const url = await getProfilePicture(user);
+        const fetchImage = async () => {
+            const url = await getProfilePicture(user.userId);
             setProfilePic(url);
-        }, 5000);
+        };
 
-        return () => clearInterval(intervalId);
+        fetchImage();
     }, []);
 
     const handleSendRequestPress = () => {
         const newFriend = {
             user_1_id: currentUserId,
-            user_2_id: user,
+            user_2_id: user.userId,
             status: "pending",
         };
 
@@ -37,13 +42,21 @@ export const UserItem = ({onSendRequest, user, currentUserId}) => {
         );
     };
 
+    const goToFriendProfile = () => {
+        navigation.navigate("Friend Profile", {
+            fullName: fullName,
+            username: user.userId,
+            profilePic: profilePic,
+        });
+    }
+
     return (
         <View style={styles.userItem}>
-            <View style={styles.imageContainer}>
-                <Image source={{uri: profilePic}} style={styles.profilePic}/>
-            </View>
+            <Button style={styles.imageContainer} onPress={goToFriendProfile}>
+                <Image source={profilePic ? {uri: profilePic} : defaultProfilePic} style={styles.profilePic}/>
+            </Button>
             <View style={styles.userInfo}>
-                <Text style={styles.username}>{user}</Text>
+                <Text style={styles.username}>{user.userId}</Text>
             </View>
             <View style={{flexDirection: "row"}}>
                 <TouchableOpacity onPress={handleSendRequestPress}>

@@ -51,7 +51,7 @@ export const AddFriendsScreen = ({navigation}) => {
             }
 
             const finalFilteredUsers = allUsers.filter(
-                (user) => !usersToFilter.includes(user)
+                (user) => !usersToFilter.includes(user.userId)
             );
 
             setFilteredUsers(finalFilteredUsers);
@@ -68,7 +68,7 @@ export const AddFriendsScreen = ({navigation}) => {
                 {filteredUsers.length > 0 ? (
                     filteredUsers.map((item) => (
                         <UserItem
-                            key={item.id}
+                            key={item.userId}
                             user={item}
                             onSendRequest={sendFriendRequest}
                             currentUserId={globalUserId}

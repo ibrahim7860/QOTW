@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.AuthenticationRequestDto;
 import com.example.backend.dto.AuthenticationResponseDto;
+import com.example.backend.dto.UserDetailsDto;
 import com.example.backend.dto.UserRegistrationDto;
 import com.example.backend.entity.User;
 import com.example.backend.repository.UserRepository;
@@ -71,7 +72,7 @@ public class UserController {
 
     @GetMapping("/get-users")
     public ResponseEntity<?> getAllUsers() {
-        List<String> allUsers = userService.getAllUsers();
+        List<UserDetailsDto> allUsers = userService.getAllUsers();
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 }

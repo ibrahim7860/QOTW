@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.AuthenticationRequestDto;
 import com.example.backend.dto.AuthenticationResponseDto;
+import com.example.backend.dto.UserDetailsDto;
 import com.example.backend.dto.UserRegistrationDto;
 import com.example.backend.entity.BlacklistedToken;
 import com.example.backend.entity.PasswordResetToken;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -160,7 +162,15 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public List<String> getAllUsers() {
-        return userRepository.getAllUserIDs();
+    public List<UserDetailsDto> getAllUsers() {
+        List<Object[]> userDetails = userRepository.getAllUserDetails();
+        return userDetails.stream()
+                .map(objects -> new UserDetailsDto(
+                        (String) objects[0],  // user_id
+                        (String) objects[1],  // email
+                        (String) objects[2],  // first_name
+                        (String) objects[3]   // last_name
+                ))
+                .collect(Collectors.toList());
     }
 }

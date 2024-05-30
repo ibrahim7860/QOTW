@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.AuthenticationRequestDto;
 import com.example.backend.dto.AuthenticationResponseDto;
+import com.example.backend.dto.UserDetailsDto;
 import com.example.backend.dto.UserRegistrationDto;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -21,5 +22,5 @@ public interface UserService {
 
     void blacklistToken(String authHeader);
 
-    List<String> getAllUsers();
+    List<UserDetailsDto> getAllUsers();
 }
