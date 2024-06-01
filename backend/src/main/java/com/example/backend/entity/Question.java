@@ -21,7 +21,4 @@ public class Question {
     @Column(name = "question_text", nullable = false)
     private String questionText;
 
-    @Column(name = "date_posted", nullable = false)
-    private LocalDateTime datePosted;
-
 }

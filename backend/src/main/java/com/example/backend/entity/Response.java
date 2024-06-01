@@ -24,7 +24,7 @@ public class Response {
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
+    private Question questionId;
 
     @Column(name = "response_text", nullable = false)
     private String responseText;
