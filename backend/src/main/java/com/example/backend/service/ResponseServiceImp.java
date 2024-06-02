@@ -1,7 +1,6 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.ResponseDto;
-import com.example.backend.dto.UserDetailsDto;
 import com.example.backend.entity.Question;
 import com.example.backend.entity.Response;
 import com.example.backend.entity.User;
@@ -13,18 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ResponseServiceImp implements ResponseService{
+public class ResponseServiceImp implements ResponseService {
 
     @Autowired
     private QuestionRepository questionRepository;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -43,7 +41,7 @@ public class ResponseServiceImp implements ResponseService{
         response.setUser(user);
         response.setQuestion(question);
         response.setResponseText(responseDto.getResponseText());
-        
+
 
         return responseRepository.save(response);
     }
@@ -72,10 +70,12 @@ public class ResponseServiceImp implements ResponseService{
 
         return allResponses.stream()
                 .map(objects -> new ResponseDto(
-                        (Long) objects[0],    // 
+                        (Long) objects[0],    //
                         (String) objects[3],  // userId
                         (Long) objects[2],    // questionId
-                        (String) objects[1]   // responseText
+                        (String) objects[1],   // responseText
+                        (String) objects[4], // firstName
+                        (String) objects[5] // lastName
                 ))
                 .collect(Collectors.toMap(
                         ResponseDto::getResponseId, // Key mapper
