@@ -10,6 +10,6 @@ public interface ResponseService {
     Response createResponse(ResponseDto responseDto);
 
     ResponseDto getUserResponse(String userId);
-    
-    Map<Long,ResponseDto> getAllResponses();
+
+    Map<Long, ResponseDto> getAllResponses(String userId);
 }

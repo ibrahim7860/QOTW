@@ -14,25 +14,18 @@ import java.util.Map;
 @RequestMapping("/response")
 public class ResponsesController {
 
-@Autowired
-public ResponseService responseService;
+    @Autowired
+    public ResponseService responseService;
 
-
-    @GetMapping("/get-all-responses")
-    public ResponseEntity<?> getAllResponses()
-    {
-        Map<Long, ResponseDto> allResponses = responseService.getAllResponses();
+    @GetMapping("/get-friend-responses")
+    public ResponseEntity<?> getFriendResponses(@RequestParam String userId) {
+        Map<Long, ResponseDto> allResponses = responseService.getAllResponses(userId);
         return new ResponseEntity<>(allResponses, HttpStatus.OK);
     }
+
     @PostMapping("/create-response")
     public ResponseEntity<Response> createResponse(@RequestBody ResponseDto responseDto) {
         Response response = responseService.createResponse(responseDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/get-user-response/{userId}")
-    public ResponseEntity<ResponseDto> getUserResponse(@PathVariable String userId) {
-        ResponseDto responseDto = responseService.getUserResponse(userId);
-        return ResponseEntity.ok(responseDto);
     }
 }

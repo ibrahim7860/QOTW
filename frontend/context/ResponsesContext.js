@@ -22,7 +22,7 @@ export const ResponsesProvider = ({children}) => {
         try {
             if (globalUserId) {
                 const response = await axios.get(
-                    `http://localhost:8080/response/get-all-responses`,
+                    `http://localhost:8080/response/get-friend-responses?userId=${globalUserId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${await getToken()}`,
@@ -43,7 +43,7 @@ export const ResponsesProvider = ({children}) => {
     }, [globalUserId]);
 
     useEffect(() => {
-        if (globalUserId && responses) {
+        if (globalUserId && responses && responses !== {}) {
             const userResponse = Object.values(responses).find(
                 (response) => response.userId === globalUserId
             );
