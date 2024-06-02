@@ -12,6 +12,7 @@ export const FriendsProvider = ({ children }) => {
   const [friendRequests, setFriendRequests] = useState([]);
   const { getToken } = useToken();
   const { globalUserId, refreshUsers } = userContext();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fetchFriends = async () => {
     try {
@@ -56,10 +57,17 @@ export const FriendsProvider = ({ children }) => {
     }
   }, [globalUserId]);
 
-  const fetchFriendsAndRequests = () => {
+  const fetchFriendsAndRequests = async () => {
     if (globalUserId) {
-      fetchFriends();
-      fetchFriendRequests();
+      try {
+        setIsRefreshing(true); // Set refreshing to true before starting the refresh operation
+        await fetchFriends();
+        await fetchFriendRequests();
+      } catch (error) {
+        console.error("Error during fetchFriendsAndRequests:", error);
+      } finally {
+        setIsRefreshing(false); // Set refreshing to false when the refresh operation is done
+      }
     }
   };
 
@@ -181,6 +189,7 @@ export const FriendsProvider = ({ children }) => {
         acceptFriendRequest,
         handleSearch,
         fetchFriendsAndRequests,
+        isRefreshing,
       }}
     >
       {children}

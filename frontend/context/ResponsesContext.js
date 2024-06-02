@@ -13,12 +13,13 @@ export const ResponsesProvider = ({ children }) => {
   const { getToken } = useToken();
   const { globalUserId } = userContext();
   const [responseSubmitted, setResponseSubmitted] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [responses, setResponses] = useState(null);
   const [myResponse, setMyResponse] = useState(null);
   const [responsesFetchFinished, setResponsesFetchFinished] = useState(false);
 
-  const fetchAllResponses = async () => {
+  const fetchFriendsResponses = async () => {
     try {
       if (globalUserId) {
         const response = await axios.get(
@@ -36,13 +37,27 @@ export const ResponsesProvider = ({ children }) => {
     }
   };
 
+  const refreshResponses = async () => {
+    if (globalUserId) {
+      try {
+        setIsRefreshing(true);
+        await fetchFriendsResponses();
+        await fetchMyResponse();
+      } catch (error) {
+        console.error("Error during fetchResponses:", error);
+      } finally {
+        setIsRefreshing(false); // Set refreshing to false when the refresh operation is done
+      }
+    }
+  };
+
   useEffect(() => {
     if (globalUserId) {
-      fetchAllResponses();
+      fetchFriendsResponses();
     }
   }, [globalUserId]);
 
-  useEffect(() => {
+  const fetchMyResponse = async () => {
     if (globalUserId && responses) {
       const userResponse = Object.values(responses).find(
         (response) => response.userId === globalUserId
@@ -52,6 +67,10 @@ export const ResponsesProvider = ({ children }) => {
       }
       setResponsesFetchFinished(true); //triggers regardless if myResponse exists or not
     }
+  };
+
+  useEffect(() => {
+    fetchMyResponse();
   }, [responses]);
 
   return (
@@ -64,7 +83,8 @@ export const ResponsesProvider = ({ children }) => {
         myResponse,
         setMyResponse,
         responsesFetchFinished,
-        fetchAllResponses,
+        refreshResponses,
+        isRefreshing,
       }}
     >
       {children}
