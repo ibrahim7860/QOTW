@@ -14,10 +14,8 @@ import java.time.LocalDateTime;
 public class QuestionDto {
 
     private Long questionId;
-
+    
     @NotBlank(message = "Question text cannot be blank")
     private String questionText;
 
-    @NotNull(message = "Date posted cannot be null")
-    private LocalDateTime datePosted;
 }

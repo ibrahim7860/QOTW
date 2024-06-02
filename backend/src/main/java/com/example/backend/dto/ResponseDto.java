@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseDto {
+    
     private Long responseId;
-
+    
     @NotBlank(message = "User id cannot be blank")
     private String userId;
 
@@ -23,6 +24,4 @@ public class ResponseDto {
     @NotBlank(message = "Response text cannot be blank")
     private String responseText;
 
-    @NotNull(message = "Date responded cannot be null")
-    private LocalDateTime dateResponded;
 }

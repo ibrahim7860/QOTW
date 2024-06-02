@@ -18,77 +18,41 @@ import axios from "axios";
 import { useToken } from "../context/TokenContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { userContext } from "../context/UserContext";
+import { useQuestion } from "../context/QuestionContext";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
-  const { setResponseSubmitted, responseSubmitted, setMyResponse } =
-    useResponses();
+  const { setResponseSubmitted, responseSubmitted } = useResponses();
   const [userInput, setUserInput] = useState("");
-  const [questionText, setQuestionText] = useState("");
-  const questionId = 1;
+  const { questionText, questionId } = useQuestion();
+
   const { getToken } = useToken();
 
   const { globalUserId } = userContext();
 
   useEffect(() => {
-    const fetchQuestion = async () => {
-      axios
-        .get(`http://localhost:8080/question/${questionId}`, {
+    if (globalUserId) {
+      fetchQuestion();
+    }
+  }, [globalUserId]);
+
+  const responseDto = {
+    userId: globalUserId,
+    questionId: questionId,
+    responseText: userInput,
+  };
+
+  const handleSubmit = async () => {
+    axios
+      .post(
+        "http://192.168.254.138:8080/response/create-response",
+        responseDto,
+        {
           headers: {
             Authorization: `Bearer ${await getToken()}`,
           },
-        })
-        .then((response) => {
-          setQuestionText(response.data.questionText);
-        })
-        .catch((error) => {
-          console.error("Error fetching question:", error);
-        });
-    };
-
-    fetchQuestion();
-  }, []);
-
-  useEffect(() => {
-    if (responseSubmitted) {
-      const fetchUserResponse = async () => {
-        try {
-          const token = await AsyncStorage.getItem("jwtToken");
-          const response = await axios.get(
-            `http://localhost:8080/${globalUserId}/response`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setMyResponse((prevState) => ({
-            ...prevState,
-            userResponse: response.data.responseText,
-          }));
-        } catch (error) {
-          console.error("Error fetching user response:", error);
         }
-      };
-
-      fetchUserResponse();
-    }
-  }, [responseSubmitted]);
-
-  const handleSubmit = async () => {
-    const responseDto = {
-      userId: globalUserId,
-      questionId: questionId,
-      responseText: userInput,
-      dateResponded: new Date().toISOString(),
-    };
-
-    axios
-      .post("http://localhost:8080/response", responseDto, {
-        headers: {
-          Authorization: `Bearer ${await getToken()}`,
-        },
-      })
+      )
       .then((response) => {
         console.log("Response created:", response.data);
         setResponseSubmitted(true);

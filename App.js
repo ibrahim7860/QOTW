@@ -20,7 +20,7 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from "@react-navigation/stack";
-import { ReactionsProvider } from "./frontend/context/ReactionsContext";
+import { QuestionProvider } from "./frontend/context/QuestionContext";
 import { TokenProvider } from "./frontend/context/TokenContext";
 import { CreateProfilePictureScreen } from "./frontend/screens/CreateProfilePictureScreen";
 import { CreateChatScreen } from "./frontend/screens/CreateChatScreen";
@@ -102,10 +102,10 @@ export default function App() {
   return (
     <TokenProvider>
       <UserProvider>
-        <ResponsesProvider>
-          <ConversationsProvider>
-            <FriendsProvider>
-              <ReactionsProvider>
+        <QuestionProvider>
+          <ResponsesProvider>
+            <ConversationsProvider>
+              <FriendsProvider>
                 <View style={styles.container}>
                   <NavigationContainer>
                     <Stack.Navigator
@@ -173,10 +173,10 @@ export default function App() {
                     </Stack.Navigator>
                   </NavigationContainer>
                 </View>
-              </ReactionsProvider>
-            </FriendsProvider>
-          </ConversationsProvider>
-        </ResponsesProvider>
+              </FriendsProvider>
+            </ConversationsProvider>
+          </ResponsesProvider>
+        </QuestionProvider>
       </UserProvider>
     </TokenProvider>
   );

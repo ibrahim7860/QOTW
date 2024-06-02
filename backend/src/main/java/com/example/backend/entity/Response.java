@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -24,12 +22,8 @@ public class Response {
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
-    private Question questionId;
+    private Question question;
 
     @Column(name = "response_text", nullable = false)
     private String responseText;
-
-    @Column(name = "date_responded", nullable = false)
-    private LocalDateTime dateResponded;
 }
-

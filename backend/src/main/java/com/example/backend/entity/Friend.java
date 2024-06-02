@@ -15,6 +15,7 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long friendship_id;
 
+    
     //User 1 is the person who requests (requester) 
     @Column(name = "user_1_id", nullable = false)
     private String user_1_id;
