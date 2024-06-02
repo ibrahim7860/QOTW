@@ -40,7 +40,7 @@ export const UserProfileScreen = ({ navigation }) => {
     if (token) {
       axios
         .post(
-          "http://192.168.254.138:8080/users/logout",
+          "http://localhost:8080/users/logout",
           {},
           {
             headers: {

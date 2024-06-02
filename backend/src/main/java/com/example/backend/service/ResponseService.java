@@ -3,7 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.ResponseDto;
 import com.example.backend.entity.Response;
 
-import java.util.List;
+import java.util.Map;
 
 public interface ResponseService {
 
@@ -11,5 +11,5 @@ public interface ResponseService {
 
     ResponseDto getUserResponse(String userId);
     
-    List<ResponseDto> getAllResponses();
+    Map<Long,ResponseDto> getAllResponses();
 }

@@ -16,7 +16,7 @@ export const QuestionProvider = ({ children }) => {
 
   const fetchQuestion = async () => {
     axios
-      .get(`http://192.168.254.138:8080/question/get-question`, {
+      .get(`http://localhost:8080/question/get-question`, {
         headers: {
           Authorization: `Bearer ${await getToken()}`,
         },

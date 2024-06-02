@@ -14,13 +14,15 @@ export const ResponsesProvider = ({ children }) => {
   const { globalUserId } = userContext();
   const [responseSubmitted, setResponseSubmitted] = useState(false);
 
-  const [responses, setResponses] = useState([]);
+  const [responses, setResponses] = useState(null);
+  const [myResponse, setMyResponse] = useState(null);
+  const [responsesFetchFinished, setResponsesFetchFinished] = useState(false);
 
   const fetchAllResponses = async () => {
     try {
       if (globalUserId) {
         const response = await axios.get(
-          `http://192.168.254.138:8080/response/get-all-responses`,
+          `http://localhost:8080/response/get-all-responses`,
           {
             headers: {
               Authorization: `Bearer ${await getToken()}`,
@@ -28,6 +30,7 @@ export const ResponsesProvider = ({ children }) => {
           }
         );
         setResponses(response.data);
+        console.log("RESPONSES:", response.data);
       }
     } catch (error) {
       console.error("Error fetching responses:", error);
@@ -40,6 +43,20 @@ export const ResponsesProvider = ({ children }) => {
     }
   }, [globalUserId]);
 
+  useEffect(() => {
+    if (globalUserId && responses) {
+      const userResponse = Object.values(responses).find(
+        (response) => response.userId === globalUserId
+      );
+      if (userResponse) {
+        setMyResponse(userResponse);
+      }
+      setResponsesFetchFinished(true); //triggers regardless if myResponse exists or not
+
+      console.log("MY RESPONSE", userResponse);
+    }
+  }, [responses]);
+
   return (
     <ResponsesContext.Provider
       value={{
@@ -47,6 +64,10 @@ export const ResponsesProvider = ({ children }) => {
         setResponses,
         responseSubmitted,
         setResponseSubmitted,
+        myResponse,
+        setMyResponse,
+        responsesFetchFinished,
+        fetchAllResponses,
       }}
     >
       {children}

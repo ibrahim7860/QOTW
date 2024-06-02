@@ -17,7 +17,7 @@ export const FriendsProvider = ({ children }) => {
     try {
       if (globalUserId) {
         const response = await axios.get(
-          `http://192.168.254.138:8080/friends/${globalUserId}`,
+          `http://localhost:8080/friends/${globalUserId}`,
           {
             headers: {
               Authorization: `Bearer ${await getToken()}`,
@@ -35,7 +35,7 @@ export const FriendsProvider = ({ children }) => {
     try {
       if (globalUserId) {
         const response = await axios.get(
-          `http://192.168.254.138:8080/friends/requests/${globalUserId}`,
+          `http://localhost:8080/friends/requests/${globalUserId}`,
           {
             headers: {
               Authorization: `Bearer ${await getToken()}`,
@@ -67,7 +67,7 @@ export const FriendsProvider = ({ children }) => {
     try {
       if (globalUserId) {
         const response = await axios.put(
-          `http://192.168.254.138:8080/friends/requests/sendFriendRequest`,
+          `http://localhost:8080/friends/requests/sendFriendRequest`,
           newFriend,
           {
             headers: {
@@ -87,7 +87,7 @@ export const FriendsProvider = ({ children }) => {
     try {
       if (globalUserId) {
         const response = await axios.delete(
-          `http://192.168.254.138:8080/friends/delete/${friendship_id}`,
+          `http://localhost:8080/friends/delete/${friendship_id}`,
           {
             headers: {
               Authorization: `Bearer ${await getToken()}`,
@@ -105,7 +105,7 @@ export const FriendsProvider = ({ children }) => {
     try {
       if (globalUserId) {
         const response = await axios.put(
-          `http://192.168.254.138:8080/friends/requests/acceptRequest/${friendship_id}`,
+          `http://localhost:8080/friends/requests/acceptRequest/${friendship_id}`,
           null,
           {
             headers: {
@@ -125,7 +125,7 @@ export const FriendsProvider = ({ children }) => {
     try {
       if (globalUserId) {
         const response = await axios.delete(
-          `http://192.168.254.138:8080/friends/requests/reject/${friendship_id}`,
+          `http://localhost:8080/friends/requests/reject/${friendship_id}`,
           {
             headers: {
               Authorization: `Bearer ${await getToken()}`,
@@ -143,7 +143,7 @@ export const FriendsProvider = ({ children }) => {
     try {
       if (globalUserId) {
         const response = await axios.delete(
-          `http://192.168.254.138:8080/friends/requests/cancel/${friendship_id}`,
+          `http://localhost:8080/friends/requests/cancel/${friendship_id}`,
           {
             headers: {
               Authorization: `Bearer ${await getToken()}`,

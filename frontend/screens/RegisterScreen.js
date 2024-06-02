@@ -53,7 +53,7 @@ export const RegisterScreen = ({ navigation }) => {
     if (localUserId) {
       intervalId = setInterval(async () => {
         axios
-          .get(`http://192.168.254.138:8080/users/${localUserId}/status`, {
+          .get(`http://localhost:8080/users/${localUserId}/status`, {
             headers: {
               "Content-Type": "multipart/form-data",
               Authorization: `Bearer ${await getToken()}`,
@@ -124,7 +124,7 @@ export const RegisterScreen = ({ navigation }) => {
     };
 
     axios
-      .post("http://192.168.254.138:8080/users/register", userData)
+      .post("http://localhost:8080/users/register", userData)
       .then((response) => {
         storeToken(response.data.jwt);
         setGlobalUserId(response.data.userId);

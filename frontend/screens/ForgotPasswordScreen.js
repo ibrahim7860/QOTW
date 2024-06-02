@@ -36,7 +36,7 @@ export const ForgotPasswordScreen = ({ navigation }) => {
     if (email === confirmEmail) {
       axios
         .post(
-          `http://192.168.254.138:8080/users/forgot-password?email=${encodeURIComponent(
+          `http://localhost:8080/users/forgot-password?email=${encodeURIComponent(
             email
           )}`
         )

@@ -24,12 +24,6 @@ export const Response = ({ user }) => {
     });
   };
 
-  const responseAuthor = {
-    name: associatedResponse.fullName,
-    username: associatedResponse.username,
-    profilePic: associatedResponse.profilePicUri,
-  };
-
   return (
     <>
       <View style={styles.responseBox}>
@@ -57,7 +51,7 @@ export const Response = ({ user }) => {
           </View>
         </View>
         <View style={styles.containerStyle}>
-          <Text style={styles.responseText}>{user.userResponse}</Text>
+          <Text style={styles.responseText}>{user.responseText}</Text>
           <View style={styles.textInputStyle}>
             <View style={{ flex: 1 }}>
               <TextInput
@@ -96,7 +90,7 @@ const styles = StyleSheet.create({
     padding: "2%",
     marginVertical: "3%",
   },
-  repsonseText: {
+  responseText: {
     fontSize: 20,
     color: "white",
     fontWeight: "700",

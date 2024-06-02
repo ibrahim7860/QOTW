@@ -25,7 +25,7 @@ export const UserProvider = ({ children }) => {
 
   const fetchAllUsers = async () => {
     axios
-      .get(`http://192.168.254.138:8080/users/get-users`, {
+      .get(`http://localhost:8080/users/get-users`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${await getToken()}`,
@@ -60,7 +60,7 @@ export const UserProvider = ({ children }) => {
         setGlobalProfilePic(uploadUrl);
         const encodedUrl = encodeURIComponent(uploadUrl);
         await axios.post(
-          `http://192.168.254.138:8080/profiles/${globalUserId}/update-picture`,
+          `http://localhost:8080/profiles/${globalUserId}/update-picture`,
           encodedUrl,
           {
             headers: {
@@ -188,7 +188,7 @@ export const UserProvider = ({ children }) => {
   const getProfilePicture = async (userId) => {
     try {
       const response = await axios.get(
-        `http://192.168.254.138:8080/profiles/${userId}/get-picture`,
+        `http://localhost:8080/profiles/${userId}/get-picture`,
         {
           headers: {
             Authorization: `Bearer ${await getToken()}`,

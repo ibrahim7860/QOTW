@@ -14,7 +14,7 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendVerificationEmail(User user, String token) {
         String subject = "Email Verification";
-        String verificationUrl = "http://192.168.254.138:8080/users/verify?token=" + token;
+        String verificationUrl = "http://localhost:8080/users/verify?token=" + token;
         String message = "Please click the link below to verify your email:\n" + verificationUrl;
 
         SimpleMailMessage email = new SimpleMailMessage();
@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendPasswordResetEmail(User user, String token) {
         String subject = "Password Reset Request";
-        String resetUrl = "http://192.168.254.138:8080/reset-password-form?token=" + token;
+        String resetUrl = "http://localhost:8080/reset-password-form?token=" + token;
         String message = "To reset your password, please click the link below:\n" + resetUrl;
 
         SimpleMailMessage email = new SimpleMailMessage();

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/response")
@@ -21,7 +21,7 @@ public ResponseService responseService;
     @GetMapping("/get-all-responses")
     public ResponseEntity<?> getAllResponses()
     {
-        List<ResponseDto> allResponses = responseService.getAllResponses();
+        Map<Long, ResponseDto> allResponses = responseService.getAllResponses();
         return new ResponseEntity<>(allResponses, HttpStatus.OK);
     }
     @PostMapping("/create-response")

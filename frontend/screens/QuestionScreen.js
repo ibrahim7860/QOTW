@@ -22,19 +22,13 @@ import { useQuestion } from "../context/QuestionContext";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
-  const { setResponseSubmitted, responseSubmitted } = useResponses();
+  const { setResponseSubmitted, fetchAllResponses } = useResponses();
   const [userInput, setUserInput] = useState("");
   const { questionText, questionId } = useQuestion();
 
   const { getToken } = useToken();
 
   const { globalUserId } = userContext();
-
-  useEffect(() => {
-    if (globalUserId) {
-      fetchQuestion();
-    }
-  }, [globalUserId]);
 
   const responseDto = {
     userId: globalUserId,
@@ -44,18 +38,15 @@ export const QuestionScreen = ({ route, navigation }) => {
 
   const handleSubmit = async () => {
     axios
-      .post(
-        "http://192.168.254.138:8080/response/create-response",
-        responseDto,
-        {
-          headers: {
-            Authorization: `Bearer ${await getToken()}`,
-          },
-        }
-      )
+      .post("http://localhost:8080/response/create-response", responseDto, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      })
       .then((response) => {
         console.log("Response created:", response.data);
         setResponseSubmitted(true);
+        fetchAllResponses();
         navigation.navigate("Responses");
       })
       .catch((error) => {
@@ -84,7 +75,9 @@ export const QuestionScreen = ({ route, navigation }) => {
           paddingVertical: 20,
         }}
       >
-        <Text style={styles.qotwStyle}>{questionText}</Text>
+        <Text
+          style={styles.qotwStyle}
+        >{`Week ${questionId}: ${questionText}`}</Text>
       </ScrollView>
 
       {!alreadyResponded && (

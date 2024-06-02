@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,6 +57,7 @@ public class ResponseServiceImp implements ResponseService{
         if (response.isPresent()) {
             Response r = response.get();
             ResponseDto responseDto = new ResponseDto();
+            responseDto.setResponseId(r.getResponseId());
             responseDto.setUserId(r.getUser().getUserId());
             responseDto.setQuestionId(r.getQuestion().getQuestionId());
             responseDto.setResponseText(r.getResponseText());
@@ -65,17 +67,20 @@ public class ResponseServiceImp implements ResponseService{
         }
     }
 
-    public List<ResponseDto> getAllResponses() {
-        
-       List<Object[]> allResponses = responseRepository.getAllResponses();
+    public Map<Long, ResponseDto> getAllResponses() {
+        List<Object[]> allResponses = responseRepository.getAllResponses();
+
         return allResponses.stream()
                 .map(objects -> new ResponseDto(
-                        (Long) objects[0],
-                        (String) objects[1],  // user_id
-                        (Long) objects[2],  // questionId
-                        (String) objects[3]  // response_text
+                        (Long) objects[0],    // 
+                        (String) objects[3],  // userId
+                        (Long) objects[2],    // questionId
+                        (String) objects[1]   // responseText
                 ))
-                .collect(Collectors.toList());
+                .collect(Collectors.toMap(
+                        ResponseDto::getResponseId, // Key mapper
+                        responseDto -> responseDto  // Value mapper
+                ));
     }
     
 }

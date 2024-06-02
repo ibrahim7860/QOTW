@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   Platform,
@@ -17,8 +17,12 @@ import defaultProfilePic from "../../assets/default.jpeg";
 import { userContext } from "../context/UserContext";
 
 export const ResponsesScreen = ({ navigation }) => {
-  const { responses } = useResponses();
+  const { responses, myResponse } = useResponses();
   const { globalProfilePic } = userContext();
+
+  const filteredResponses = Object.fromEntries(
+    Object.entries(responses).filter(([key, value]) => value !== myResponse)
+  );
 
   const goToMessages = () => {
     navigation.navigate("Chats");
@@ -35,6 +39,10 @@ export const ResponsesScreen = ({ navigation }) => {
   const goToQOTW = () => {
     navigation.push("Question", { alreadyResponded: true });
   };
+
+  useEffect(() => {
+    console.log("RESPONSES IN RESPONSE SCREEN:", responses);
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: "#291400" }}>
@@ -76,9 +84,10 @@ export const ResponsesScreen = ({ navigation }) => {
         enableResetScrollToCoords={false}
         showsVerticalScrollIndicator={false}
       >
-        {responses.map((item) => (
-          <Response user={item} />
-        ))}
+        {filteredResponses &&
+          Object.values(filteredResponses).map((item) => (
+            <Response key={item.responseId} user={item} />
+          ))}
       </KeyboardAwareScrollView>
     </View>
   );

@@ -28,7 +28,8 @@ export const LoginScreen = ({ navigation }) => {
   const inputPassStyle = passwordfocus
     ? styles.focusInput
     : styles.textInputStyle;
-  const { updateResponse } = useResponses();
+
+  const { responses, myResponse, responsesFetchFinished } = useResponses();
   const {
     setGlobalFullName,
     setGlobalUserId,
@@ -79,42 +80,39 @@ export const LoginScreen = ({ navigation }) => {
       password: password,
     };
 
-    axios
-      .post("http://192.168.254.138:8080/users/login", loginData)
-      .then(async (response) => {
-        const token = response.data.jwt;
-        storeToken(token);
-        setGlobalUserId(username.toLowerCase());
-        setLoggedIn(true);
-        setGlobalFullName(response.data.fullName);
-        try {
-          const response = await axios.get(
-            `http://192.168.254.138:8080/response/get-user-response`,
-            {
-              headers: {
-                Authorization: `Bearer ${await getToken()}`,
-              },
-            }
-          );
-          const userResponse = response.data.responseText;
-
-          if (!userResponse) {
-            navigation.navigate("Question", { alreadyResponded: false });
-          } else {
-            updateResponse(response);
-            navigation.navigate("Responses");
-          }
-        } catch (error) {
-          console.error("Error fetching user response:", error);
-        }
-
-        //Fetch all current users (faster than querying database each time -- updates reflected when user logs in)
-        refreshUsers();
-      })
-      .catch((error) => {
-        setErrorMessage(error.response.data.message);
-      });
+    handleLogin(loginData);
   };
+
+  const handleLogin = async (loginData) => {
+    try {
+      await axios
+        .post("http://localhost:8080/users/login", loginData)
+        .then((loginResponse) => {
+          storeToken(loginResponse.data.jwt);
+          setGlobalUserId(loginData.userId);
+          setGlobalFullName(loginResponse.data.fullName);
+          setLoggedIn(true);
+          refreshUsers();
+        })
+        .catch((error) => {
+          setErrorMessage(error.loginResponse.data.message);
+        });
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (responsesFetchFinished && loggedIn && globalUserId) {
+      console.log(responses);
+      console.log("MY RESPONSE IN LOGIN SCREEN:", myResponse);
+      if (!myResponse) {
+        navigation.navigate("Question", { alreadyResponded: false });
+      } else {
+        navigation.navigate("Responses");
+      }
+    }
+  }, [responsesFetchFinished, loggedIn, globalUserId]);
 
   return (
     <DismissKeyboard>
