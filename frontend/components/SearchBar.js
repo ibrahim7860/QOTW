@@ -3,7 +3,7 @@ import {KeyboardAvoidingView, Platform, StyleSheet, TextInput, View,} from "reac
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Button from "./Button";
 
-export const SearchBar = ({onSearch}) => {
+export const SearchBar = ({onSearch, isSearching}) => {
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleInputChange = (text) => {
@@ -25,7 +25,7 @@ export const SearchBar = ({onSearch}) => {
                 <View style={{flex: 1}}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Add or search friends"
+                        placeholder={isSearching ? "Search for friends to add" : "Find your friends"}
                         value={searchQuery}
                         placeholderTextColor="#ababab"
                         keyboardAppearance="dark"
