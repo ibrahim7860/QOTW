@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "white",
         fontWeight: "semibold",
+        fontSize: 16,
     },
     topRightButton: {
         position: "absolute",
