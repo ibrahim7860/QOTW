@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 import {UserItem} from "../components/UserItem";
 import {FriendsHeader} from "../components/FriendsHeader";
@@ -17,54 +17,54 @@ export const AddFriendsScreen = ({navigation}) => {
         fetchFriendsAndRequests,
     } = useFriends();
 
-    const [filteredUsers, setFilteredUsers] = useState(allUsers);
+    const [filteredUsers, setFilteredUsers] = useState([]);
 
     const handleSearchChange = (query) => {
-        const results = handleSearch(allUsers, query);
-        setFilteredUsers(results);
-    };
+        if (query) {
+            if (allUsers && allUsers.length > 0) {
+                let usersToFilter = [globalUserId];
 
-    useEffect(() => {
-        if (allUsers && allUsers.length > 0) {
-            let usersToFilter = [globalUserId];
+                // Filter out users who are friends or have pending friend requests
+                if (friends && friends.length > 0) {
+                    const filteredFriends = friends.map((friend) =>
+                        friend.user_1_id === globalUserId
+                            ? friend.user_2_id
+                            : friend.user_1_id
+                    );
 
-            // Filter out users who are friends or have pending friend requests
-            if (friends && friends.length > 0) {
-                const filteredFriends = friends.map((friend) =>
-                    friend.user_1_id === globalUserId
-                        ? friend.user_2_id
-                        : friend.user_1_id
-                );
+                    usersToFilter = [...usersToFilter, ...filteredFriends];
+                }
 
-                usersToFilter = [...usersToFilter, ...filteredFriends];
-            }
+                if (friendRequests.Incoming && friendRequests.Incoming.length > 0) {
+                    const filteredIncomingFriendRequests = friendRequests.Incoming.map(
+                        (request) =>
+                            request.user_1_id === globalUserId
+                                ? request.user_2_id
+                                : request.user_1_id
+                    );
+                    usersToFilter = [...usersToFilter, ...filteredIncomingFriendRequests];
+                }
 
-            if (friendRequests.Incoming && friendRequests.Incoming.length > 0) {
-                const filteredIncomingFriendRequests = friendRequests.Incoming.map(
-                    (request) =>
+                if (friendRequests.Sent && friendRequests.Sent.length > 0) {
+                    const filteredSentFriendRequests = friendRequests.Sent.map((request) =>
                         request.user_1_id === globalUserId
                             ? request.user_2_id
                             : request.user_1_id
+                    );
+                    usersToFilter = [...usersToFilter, ...filteredSentFriendRequests];
+                }
+
+                const finalFilteredUsers = allUsers.filter(user =>
+                    user.userId.toLowerCase().includes(query.toLowerCase()) &&
+                    !usersToFilter.includes(user.userId)
                 );
-                usersToFilter = [...usersToFilter, ...filteredIncomingFriendRequests];
+
+                setFilteredUsers(finalFilteredUsers);
             }
-
-            if (friendRequests.Sent && friendRequests.Sent.length > 0) {
-                const filteredSentFriendRequests = friendRequests.Sent.map((request) =>
-                    request.user_1_id === globalUserId
-                        ? request.user_2_id
-                        : request.user_1_id
-                );
-                usersToFilter = [...usersToFilter, ...filteredSentFriendRequests];
-            }
-
-            const finalFilteredUsers = allUsers.filter(
-                (user) => !usersToFilter.includes(user.userId)
-            );
-
-            setFilteredUsers(finalFilteredUsers);
+        } else {
+            setFilteredUsers([]);
         }
-    }, [allUsers, friends, friendRequests, globalUserId]);
+    };
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: "#291400"}}>

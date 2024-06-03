@@ -51,7 +51,7 @@ export const MyFriendsScreen = ({navigation}) => {
                             />
                         ))
                     ) : (
-                        <Text style={styles.bodyStyle}>No friends available</Text>
+                        <Text style={styles.bodyStyle}>No friends added</Text>
                     )}
                 </ScrollView>
             </PullToRefreshScrollView>
