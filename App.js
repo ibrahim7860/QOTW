@@ -20,7 +20,6 @@ import {createStackNavigator,} from "@react-navigation/stack";
 import {QuestionProvider} from "./frontend/context/QuestionContext";
 import {TokenProvider} from "./frontend/context/TokenContext";
 import {CreateProfilePictureScreen} from "./frontend/screens/CreateProfilePictureScreen";
-import {CreateChatScreen} from "./frontend/screens/CreateChatScreen";
 import {UserProvider} from "./frontend/context/UserContext";
 import {AddFriendsScreen} from "./frontend/screens/AddFriendsScreen";
 
@@ -125,10 +124,6 @@ export default function App() {
                                                 options={{
                                                     cardStyleInterpolator: bottomToTopAnimation,
                                                 }}
-                                            />
-                                            <Stack.Screen
-                                                name="Create Chat"
-                                                component={CreateChatScreen}
                                             />
                                         </Stack.Navigator>
                                     </NavigationContainer>
