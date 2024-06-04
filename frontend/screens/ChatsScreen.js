@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {ConversationItem} from "../components/ConversationItem";
 import {useConversations} from "../context/ConversationsContext";
 import {MaterialIcons} from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
-import {useResponses} from "../context/ResponsesContext";
 import {userContext} from "../context/UserContext";
 
 export const ChatsScreen = ({navigation}) => {
     const {conversations} = useConversations();
-    const {responses} = useResponses();
     const {globalUserId} = userContext();
-    const [profilePic, setProfilePic] = useState(null);
     const {getProfilePicture} = userContext();
 
 
@@ -28,10 +25,6 @@ export const ChatsScreen = ({navigation}) => {
         });
     };
 
-    const handleNewChatPress = () => {
-        navigation.navigate("Create Chat");
-    };
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -44,16 +37,10 @@ export const ChatsScreen = ({navigation}) => {
                 >
                     <MaterialIcons name="arrow-back" size={24} color="white"/>
                 </Ripple>
-                <Text style={styles.headerStyle}>My Chats</Text>
-                <Ripple
-                    rippleColor="#fff"
-                    rippleOpacity={0.9}
-                    rippleSize={100}
-                    onPress={handleNewChatPress}
-                    style={styles.newChat}
-                >
-                    <MaterialIcons name="edit" size={24} color="white"/>
-                </Ripple>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerStyle}>My Chats</Text>
+                </View>
+                <View style={styles.placeholder}></View>
             </View>
             <FlatList
                 data={conversations}
@@ -83,15 +70,19 @@ const styles = StyleSheet.create({
     backArrow: {
         marginLeft: 15,
     },
-    newChat: {
-        marginRight: 15,
+    headerContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     headerStyle: {
         fontSize: 30,
         fontWeight: "bold",
-        textAlign: "left",
+        textAlign: "center",
         marginVertical: 20,
-        marginLeft: 10,
         color: "white",
+    },
+    placeholder: {
+        marginLeft: 30,
     },
 });

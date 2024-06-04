@@ -33,11 +33,6 @@ export const ChatScreen = ({route, navigation}) => {
     const [newMessage, setNewMessage] = useState("");
     const flatListRef = useRef();
 
-    async function handleGoBack() {
-        await fetchConversations(conversationName);
-        navigation.goBack();
-    }
-
     useEffect(() => {
         if (flatListRef.current) {
             setTimeout(() => {
@@ -45,6 +40,11 @@ export const ChatScreen = ({route, navigation}) => {
             }, 500);
         }
     }, [messages]);
+
+    const handleGoBack = async () => {
+        await fetchConversations(conversationName);
+        navigation.goBack();
+    }
 
     const fetchMessages = async () => {
         try {
