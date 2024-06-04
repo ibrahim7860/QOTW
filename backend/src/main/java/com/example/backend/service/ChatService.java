@@ -16,4 +16,6 @@ public interface ChatService {
     Chat getChat(Long chatId);
 
     List<Chat> getChatsForUser(String userId);
+
+    Chat checkForExistingChat(String userId1, String userId2);
 }

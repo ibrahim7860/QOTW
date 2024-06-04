@@ -4,13 +4,18 @@ import Button from "./Button";
 import {useNavigation} from "@react-navigation/native";
 import {userContext} from "../context/UserContext";
 import defaultProfilePic from "../../assets/default.jpeg";
+import {useToken} from "../context/TokenContext";
+import {useFocusEffect} from '@react-navigation/native';
 
 export const Response = ({user}) => {
     const navigation = useNavigation();
-    const {getProfilePicture} = userContext();
+    const {getProfilePicture, globalUserId} = userContext();
     const [profilePic, setProfilePic] = useState(null);
+    const [hasExistingConversation, setHasExistingConversation] = useState(false);
     const [userInput, setUserInput] = useState("");
     const fullName = `${user.firstName} ${user.lastName}`;
+    const {getToken} = useToken();
+    const [chatThatExists, setChatThatExists] = useState(null);
 
     useEffect(() => {
         const fetchImage = async () => {
@@ -19,7 +24,38 @@ export const Response = ({user}) => {
         };
 
         fetchImage();
+        checkConversation();
     }, []);
+
+    const checkConversation = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/chats/checkConversation/${globalUserId}/${user.userId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${await getToken()}`,
+                },
+            });
+
+            if (response.status === 204) {
+                setHasExistingConversation(false);
+            } else if (response.ok) {
+                const chat = await response.json();
+                setHasExistingConversation(true);
+                setChatThatExists(chat);
+            } else {
+                throw new Error('Failed to fetch conversation');
+            }
+        } catch (error) {
+            console.error('Error checking conversation:', error);
+        }
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            checkConversation();
+        }, [])
+    );
 
     const goToFriendProfile = () => {
         navigation.navigate("Friend Profile", {
@@ -28,6 +64,45 @@ export const Response = ({user}) => {
             profilePic: profilePic,
         });
     };
+
+    const handleStartChat = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/chats/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${await getToken()}`,
+                },
+                body: JSON.stringify({
+                    initiatorId: globalUserId,
+                    responderId: user.userId,
+                    senderId: globalUserId,
+                    messageContent: userInput,
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to start chat');
+            }
+
+            const chatData = await response.json();
+            setChatThatExists(chatData);
+            setHasExistingConversation(true);
+
+            navigation.navigate("Chat", {
+                conversationId: chatData.chatId,
+                conversationName: globalUserId,
+                profilePic: profilePic,
+                senderName: user.userId,
+                messages: chatData.messages,
+            });
+
+            setUserInput("");
+        } catch (error) {
+            console.error('Error starting chat:', error);
+        }
+    };
+
 
     return (
         <>
@@ -57,32 +132,40 @@ export const Response = ({user}) => {
                 </View>
                 <View style={styles.containerStyle}>
                     <Text style={styles.responseText}>{user.responseText}</Text>
-                    <View style={styles.textInputStyle}>
-                        <View style={{flex: 1}}>
-                            <TextInput
-                                placeholder="Start a conversation"
-                                placeholderTextColor="#ababab"
-                                keyboardAppearance="dark"
-                                multiline
-                                selectionColor={"#ababab"}
-                                style={styles.textInputStyle}
-                                onChangeText={setUserInput}
-                                value={userInput}
-                            />
-                        </View>
-
-                        <View style={{justifyContent: "center"}}>
-                            <Button
-                                onPress={() => console.log("Submit Pressed")}
-                                disabled={!userInput.trim()}
-                            >
-                                <Image
-                                    source={require("../../assets/send.png")}
-                                    style={{width: 25, height: 25}}
+                    {hasExistingConversation ? (
+                        <Button onPress={() => navigation.navigate("Chat", {
+                            conversationId: chatThatExists.chatId,
+                            conversationName: globalUserId,
+                            profilePic: profilePic,
+                            senderName: user.userId,
+                            messages: chatThatExists.messages,
+                        })} style={styles.buttonStyle}>
+                            <Text style={styles.buttonText}>Go to Conversation</Text>
+                        </Button>
+                    ) : (
+                        <View style={styles.textInputStyle}>
+                            <View style={{flex: 1}}>
+                                <TextInput
+                                    placeholder="Start a conversation"
+                                    placeholderTextColor="#ababab"
+                                    keyboardAppearance="dark"
+                                    multiline
+                                    selectionColor={"#ababab"}
+                                    style={styles.textInputStyle}
+                                    onChangeText={setUserInput}
+                                    value={userInput}
                                 />
-                            </Button>
+                            </View>
+                            <View style={{justifyContent: "center"}}>
+                                <Button onPress={handleStartChat} disabled={!userInput.trim()}>
+                                    <Image
+                                        source={require("../../assets/send.png")}
+                                        style={{width: 25, height: 25}}
+                                    />
+                                </Button>
+                            </View>
                         </View>
-                    </View>
+                    )}
                 </View>
             </View>
         </>
@@ -136,5 +219,20 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "flex-end",
         justifyContent: "center",
+    },
+    buttonStyle: {
+        fontSize: 14,
+        backgroundColor: "#424140",
+        borderRadius: 10,
+        paddingVertical: 7, // Adjusted for button context
+        paddingHorizontal: 7,
+        flexDirection: "row",
+        alignItems: "center", // Center items inside the button
+        justifyContent: "center",
+        height: 50, // Specify height to ensure adequate touch area
+    },
+    buttonText: {
+        color: "white",
+        fontWeight: "500",
     },
 });

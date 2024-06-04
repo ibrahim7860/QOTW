@@ -11,6 +11,7 @@ import com.example.backend.repository.MessageRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -72,6 +73,15 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<Chat> getChatsForUser(String userId) {
         return chatRepository.findByParticipant1IdOrParticipant2Id(userId, userId);
+    }
+
+    public Chat checkForExistingChat(String userId1, String userId2) {
+        Optional<Chat> chat = chatRepository.findByParticipant1IdAndParticipant2Id(userId1, userId2);
+        if (!chat.isPresent()) {
+            // Try the reverse as well, since the order of participants might be reversed.
+            chat = chatRepository.findByParticipant1IdAndParticipant2Id(userId2, userId1);
+        }
+        return chat.orElse(null);
     }
 }
 

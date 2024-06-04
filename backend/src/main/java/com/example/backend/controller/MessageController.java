@@ -18,6 +18,4 @@ public class MessageController {
     public List<Message> getMessages(@PathVariable Long chatId) {
         return chatService.getMessages(chatId);
     }
-
-
 }

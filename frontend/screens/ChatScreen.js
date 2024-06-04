@@ -39,7 +39,7 @@ export const ChatScreen = ({route, navigation}) => {
                 flatListRef.current.scrollToEnd({animated: true});
             }, 500);
         }
-    }, [messages]);
+    }, [updatedMessages]);
 
     const handleGoBack = async () => {
         await fetchConversations(conversationName);
