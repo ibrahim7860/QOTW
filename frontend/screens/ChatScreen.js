@@ -16,6 +16,7 @@ import Button from "../components/Button";
 import {MaterialIcons} from "@expo/vector-icons";
 import {useConversations} from "../context/ConversationsContext";
 import * as Animatable from 'react-native-animatable';
+import {useToken} from "../context/TokenContext";
 
 
 export const ChatScreen = ({route, navigation}) => {
@@ -27,6 +28,7 @@ export const ChatScreen = ({route, navigation}) => {
     const {senderName} = route.params;
     const {messages} = route.params;
     const [updatedMessages, setUpdatedMessages] = useState(messages);
+    const {getToken} = useToken();
 
     const [newMessage, setNewMessage] = useState("");
     const flatListRef = useRef();
@@ -40,7 +42,7 @@ export const ChatScreen = ({route, navigation}) => {
         if (flatListRef.current) {
             setTimeout(() => {
                 flatListRef.current.scrollToEnd({animated: true});
-            }, 100);
+            }, 500);
         }
     }, [messages]);
 
@@ -50,7 +52,7 @@ export const ChatScreen = ({route, navigation}) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include other headers as required, such as authentication tokens.
+                    Authorization: `Bearer ${await getToken()}`,
                 }
             });
 
@@ -59,10 +61,9 @@ export const ChatScreen = ({route, navigation}) => {
             }
 
             const messagesData = await response.json();
-            setUpdatedMessages(messagesData);  // Assume the backend sends an array of message objects
+            setUpdatedMessages(messagesData);
         } catch (error) {
             console.error('Error fetching messages:', error);
-            // Optionally handle the error in the UI, e.g., show an error message.
         }
     };
 
@@ -79,7 +80,7 @@ export const ChatScreen = ({route, navigation}) => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        // Include other headers as required, such as authentication tokens.
+                        Authorization: `Bearer ${await getToken()}`,
                     },
                     body: JSON.stringify(newMessageObj)
                 });
@@ -92,7 +93,6 @@ export const ChatScreen = ({route, navigation}) => {
                 setNewMessage("");
             } catch (error) {
                 console.error('Error sending message:', error);
-                // Optionally handle the error in the UI, e.g., show an error message.
             }
         }
     };
@@ -115,6 +115,7 @@ export const ChatScreen = ({route, navigation}) => {
                     ref={flatListRef}
                     data={updatedMessages}
                     keyExtractor={(item) => item.messageId}
+                    ListFooterComponent={<View style={{height: 15}}/>}
                     renderItem={({item}) => (
                         <View>
                             <Text

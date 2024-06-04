@@ -1,5 +1,5 @@
-import React, {createContext, useContext, useState, useEffect} from "react";
-import {userContext} from "./UserContext";
+import React, {createContext, useContext, useState} from "react";
+import {useToken} from "./TokenContext";
 
 const ConversationsContext = createContext();
 
@@ -9,6 +9,7 @@ export const ConversationsProvider = ({children}) => {
     const [conversations, setConversations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const {getToken} = useToken();
 
 
     const fetchConversations = async (userId) => {
@@ -16,7 +17,11 @@ export const ConversationsProvider = ({children}) => {
             setLoading(true);
             setError(null);
             try {
-                const response = await fetch(`http://localhost:8080/chats/user/${userId}`);  // Adjust the API endpoint as needed
+                const response = await fetch(`http://localhost:8080/chats/user/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${await getToken()}`,
+                    }
+                });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
