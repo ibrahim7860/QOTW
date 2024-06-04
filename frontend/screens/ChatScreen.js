@@ -17,36 +17,24 @@ import {MaterialIcons} from "@expo/vector-icons";
 import {useConversations} from "../context/ConversationsContext";
 import * as Animatable from 'react-native-animatable';
 
+
 export const ChatScreen = ({route, navigation}) => {
     const {conversationId} = route.params;
     const {conversationName} = route.params;
     const {profilePic} = route.params;
-    const {updateLastMessage} = useConversations();
+    const {fetchConversations} = useConversations();
     const {isReadOnly} = route.params;
     const {senderName} = route.params;
-
-    // Fetch and display messages based on conversationId
-    // Replace this with your logic to fetch real messages
-    const [messages, setMessages] = useState([
-        {
-            id: 1,
-            text: "Hello There",
-            isSender: true,
-        },
-        {
-            id: 2,
-            text: "Woah There",
-            isSender: false,
-        },
-        {
-            id: 3,
-            text: "Wassup There",
-            isSender: true,
-        },
-    ]);
+    const {messages} = route.params;
+    const [updatedMessages, setUpdatedMessages] = useState(messages);
 
     const [newMessage, setNewMessage] = useState("");
     const flatListRef = useRef();
+
+    async function handleGoBack() {
+        await fetchConversations(conversationName);
+        navigation.goBack();
+    }
 
     useEffect(() => {
         if (flatListRef.current) {
@@ -56,21 +44,59 @@ export const ChatScreen = ({route, navigation}) => {
         }
     }, [messages]);
 
-    const handleSend = () => {
-        if (!isReadOnly && newMessage.trim() !== "") {
-            const newMessageObj = {
-                id: `${messages.length + 1}`,
-                text: newMessage,
-                isSender: true,
-                senderName: senderName,
-                animation: 'slideInLeft',
-            };
+    const fetchMessages = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/messages/${conversationId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include other headers as required, such as authentication tokens.
+                }
+            });
 
-            setMessages([...messages, newMessageObj]);
-            setNewMessage("");
-            updateLastMessage(conversationId, newMessage);
+            if (!response.ok) {
+                throw new Error('Failed to fetch messages');
+            }
+
+            const messagesData = await response.json();
+            setUpdatedMessages(messagesData);  // Assume the backend sends an array of message objects
+        } catch (error) {
+            console.error('Error fetching messages:', error);
+            // Optionally handle the error in the UI, e.g., show an error message.
         }
     };
+
+    const handleSend = async () => {
+        if (!isReadOnly && newMessage.trim() !== "") {
+            const newMessageObj = {
+                chatId: conversationId,
+                senderId: conversationName,
+                content: newMessage,
+            };
+
+            try {
+                const response = await fetch('http://localhost:8080/chats/message/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Include other headers as required, such as authentication tokens.
+                    },
+                    body: JSON.stringify(newMessageObj)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send message');
+                }
+
+                await fetchMessages();
+                setNewMessage("");
+            } catch (error) {
+                console.error('Error sending message:', error);
+                // Optionally handle the error in the UI, e.g., show an error message.
+            }
+        }
+    };
+
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -79,28 +105,29 @@ export const ChatScreen = ({route, navigation}) => {
                 style={styles.container}
             >
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <TouchableOpacity onPress={handleGoBack}>
                         <MaterialIcons name="arrow-back" size={24} color="white"/>
                     </TouchableOpacity>
-                    <Image source={profilePic} style={styles.profilePic}/>
+                    <Image source={{uri: profilePic}} style={styles.profilePic}/>
                     <Text style={styles.headerText}>{senderName}</Text>
                 </View>
                 <FlatList
                     ref={flatListRef}
-                    data={messages}
-                    keyExtractor={(item) => item.id}
+                    data={updatedMessages}
+                    keyExtractor={(item) => item.messageId}
                     renderItem={({item}) => (
                         <View>
                             <Text
                                 style={[
                                     styles.senderName,
-                                    item.isSender ? styles.senderRight : styles.senderLeft,
+                                    item.senderId === conversationName ? styles.senderRight : styles.senderLeft,
                                 ]}
                             >
-                                {item.isSender ? conversationName : senderName}
+                                {item.senderId === conversationName ? conversationName : senderName}
                             </Text>
                             <Animatable.View animation={item.animation} duration={450}>
-                                <MessageBubble message={item.text} isSender={item.isSender}/>
+                                <MessageBubble message={item.content}
+                                               isSender={item.senderId === conversationName}/>
                             </Animatable.View>
                         </View>
                     )}
