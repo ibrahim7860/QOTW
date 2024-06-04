@@ -6,6 +6,7 @@ import com.example.backend.entity.Chat;
 import com.example.backend.entity.Message;
 import com.example.backend.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,16 @@ public class ChatController {
             return ResponseEntity.ok(chat);
         } else {
             return ResponseEntity.noContent().build();  // No conversation exists
+        }
+    }
+
+    @DeleteMapping("/{chatId}")
+    public ResponseEntity<?> deleteChat(@PathVariable Long chatId) {
+        try {
+            chatService.deleteChat(chatId);
+            return ResponseEntity.ok().body("Chat and all associated messages deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete chat: " + e.getMessage());
         }
     }
 }

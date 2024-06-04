@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {
     FlatList,
     Image,
@@ -32,14 +32,6 @@ export const ChatScreen = ({route, navigation}) => {
 
     const [newMessage, setNewMessage] = useState("");
     const flatListRef = useRef();
-
-    useEffect(() => {
-        if (flatListRef.current) {
-            setTimeout(() => {
-                flatListRef.current.scrollToEnd({animated: true});
-            }, 500);
-        }
-    }, [updatedMessages]);
 
     const handleGoBack = async () => {
         await fetchConversations(conversationName);
@@ -115,7 +107,10 @@ export const ChatScreen = ({route, navigation}) => {
                     ref={flatListRef}
                     data={updatedMessages}
                     keyExtractor={(item) => item.messageId}
-                    ListFooterComponent={<View style={{height: 15}}/>}
+                    onContentSizeChange={() => {
+                        flatListRef.current?.scrollToEnd({animated: true});
+                    }}
+                    ListFooterComponent={<View style={{height: 10}}/>}
                     renderItem={({item}) => (
                         <View>
                             <Text

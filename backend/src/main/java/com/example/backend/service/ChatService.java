@@ -1,6 +1,5 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.MessageDto;
 import com.example.backend.entity.Chat;
 import com.example.backend.entity.Message;
 
@@ -18,4 +17,6 @@ public interface ChatService {
     List<Chat> getChatsForUser(String userId);
 
     Chat checkForExistingChat(String userId1, String userId2);
+
+    void deleteChat(Long chatId);
 }

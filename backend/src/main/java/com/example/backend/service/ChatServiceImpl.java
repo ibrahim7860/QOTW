@@ -1,13 +1,12 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.MessageDto;
 import com.example.backend.entity.Chat;
 import com.example.backend.entity.Message;
+import com.example.backend.repository.ChatRepository;
+import com.example.backend.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.backend.repository.ChatRepository;
-import com.example.backend.repository.MessageRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,13 +74,21 @@ public class ChatServiceImpl implements ChatService {
         return chatRepository.findByParticipant1IdOrParticipant2Id(userId, userId);
     }
 
+    @Override
     public Chat checkForExistingChat(String userId1, String userId2) {
         Optional<Chat> chat = chatRepository.findByParticipant1IdAndParticipant2Id(userId1, userId2);
-        if (!chat.isPresent()) {
+        if (chat.isEmpty()) {
             // Try the reverse as well, since the order of participants might be reversed.
             chat = chatRepository.findByParticipant1IdAndParticipant2Id(userId2, userId1);
         }
         return chat.orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public void deleteChat(Long chatId) {
+        messageRepository.deleteByChat_ChatId(chatId);
+        chatRepository.deleteById(chatId);
     }
 }
 
