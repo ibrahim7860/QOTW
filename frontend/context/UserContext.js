@@ -2,11 +2,14 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import {storage} from "../../firebase";
-import {Alert, Linking} from "react-native";
+import {Alert, Linking, Platform} from "react-native";
 import {Camera} from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 
 import {useToken} from "./TokenContext";
+import * as Notifications from "expo-notifications";
+import Constants from 'expo-constants';
+import * as Device from "expo-device";
 
 const UserContext = createContext();
 
@@ -36,6 +39,65 @@ export const UserProvider = ({children}) => {
             })
             .catch((error) => console.error("Error fetching users:", error));
     };
+
+    const registerForPushNotificationsAsync = async () => {
+        let token;
+        if (Device.isDevice) {
+            const {status: existingStatus} = await Notifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const {status} = await Notifications.requestPermissionsAsync();
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return;
+            }
+            token = (await Notifications.getExpoPushTokenAsync({
+                projectId: Constants.expoConfig.extra.eas.projectId,
+            })).data;
+        } else {
+            alert('Must use physical device for Push Notifications');
+        }
+
+        if (Platform.OS === 'android') {
+            await Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
+
+        return token;
+    }
+
+    const saveExpoPushToken = async () => {
+        const token = await registerForPushNotificationsAsync();
+        const payload = {
+            token: token,
+            userId: globalUserId
+        };
+
+        const response = await fetch('http://localhost:8080/notification/save-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${await getToken()}`,
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save push token');
+        }
+    }
+
+    useEffect(() => {
+        if (globalUserId) {
+            saveExpoPushToken();
+        }
+    }, [globalUserId]);
 
     useEffect(() => {
         if (globalUserId) {

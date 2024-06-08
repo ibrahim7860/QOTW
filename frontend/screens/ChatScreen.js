@@ -96,8 +96,28 @@ export const ChatScreen = ({route, navigation}) => {
                     body: JSON.stringify(newMessageObj)
                 });
 
-                if (!response.ok) {
-                    throw new Error('Failed to send message');
+                if (response.ok) {
+                    const notificationResponse = await fetch('http://localhost:8080/notification/send', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${await getToken()}`,
+                        },
+                        body: JSON.stringify({
+                            recipientId: senderName,
+                            title: "New Message",
+                            body: "You have a new message from " + conversationName,
+                        })
+                    });
+
+                    if (notificationResponse.ok) {
+                        console.log('Notification sent successfully.');
+                    } else {
+                        console.log('Failed to send notification.');
+                    }
+
+                } else {
+                    console.log('Failed to send message');
                 }
 
                 await fetchMessages();
