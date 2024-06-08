@@ -7,10 +7,10 @@ import com.example.backend.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -89,6 +89,32 @@ public class ChatServiceImpl implements ChatService {
     public void deleteChat(Long chatId) {
         messageRepository.deleteByChat_ChatId(chatId);
         chatRepository.deleteById(chatId);
+    }
+
+    private final Map<Long, List<SseEmitter>> emitters = new HashMap<>();
+
+    public void addEmitter(Long chatId, SseEmitter emitter) {
+        this.emitters.computeIfAbsent(chatId, id -> new ArrayList<>()).add(emitter);
+    }
+
+    public void removeEmitter(Long chatId, SseEmitter emitter) {
+        List<SseEmitter> chatEmitters = this.emitters.get(chatId);
+        if (chatEmitters != null) {
+            chatEmitters.remove(emitter);
+        }
+    }
+
+    public void sendMessage(Long chatId, Message message) {
+        List<SseEmitter> chatEmitters = this.emitters.get(chatId);
+        if (chatEmitters != null) {
+            chatEmitters.forEach(emitter -> {
+                try {
+                    emitter.send(message);
+                } catch (IOException e) {
+                    emitter.complete();
+                }
+            });
+        }
     }
 }
 

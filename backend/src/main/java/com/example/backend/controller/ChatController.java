@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -35,8 +36,14 @@ public class ChatController {
     }
 
     @PostMapping("/message/send")
-    public Message sendMessage(@RequestBody MessageDto message) {
-        return chatService.sendMessage(message.getChatId(), message.getSenderId(), message.getContent());
+    public ResponseEntity<?> sendMessage(@RequestBody MessageDto messageDto) {
+        try {
+            Message message = chatService.sendMessage(messageDto.getChatId(), messageDto.getSenderId(), messageDto.getContent());
+            chatService.sendMessage(messageDto.getChatId(), message);
+            return ResponseEntity.ok().body("Message sent successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message: " + e.getMessage());
+        }
     }
 
     @GetMapping("/checkConversation/{currentUser}/{otherUserId}")
@@ -57,5 +64,14 @@ public class ChatController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete chat: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/stream/{chatId}")
+    public SseEmitter stream(@PathVariable Long chatId) {
+        SseEmitter emitter = new SseEmitter();
+        chatService.addEmitter(chatId, emitter);
+        emitter.onCompletion(() -> chatService.removeEmitter(chatId, emitter));
+        emitter.onTimeout(() -> chatService.removeEmitter(chatId, emitter));
+        return emitter;
     }
 }

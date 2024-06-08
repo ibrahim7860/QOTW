@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.entity.Chat;
 import com.example.backend.entity.Message;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -19,4 +20,10 @@ public interface ChatService {
     Chat checkForExistingChat(String userId1, String userId2);
 
     void deleteChat(Long chatId);
+
+    void addEmitter(Long chatId, SseEmitter emitter);
+
+    void removeEmitter(Long chatId, SseEmitter emitter);
+
+    void sendMessage(Long chatId, Message message);
 }

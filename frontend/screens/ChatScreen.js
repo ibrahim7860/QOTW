@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
     FlatList,
     Image,
@@ -17,6 +17,7 @@ import {MaterialIcons} from "@expo/vector-icons";
 import {useConversations} from "../context/ConversationsContext";
 import * as Animatable from 'react-native-animatable';
 import {useToken} from "../context/TokenContext";
+import EventSource from 'react-native-event-source';
 
 
 export const ChatScreen = ({route, navigation}) => {
@@ -33,9 +34,27 @@ export const ChatScreen = ({route, navigation}) => {
     const [newMessage, setNewMessage] = useState("");
     const flatListRef = useRef();
 
+    useEffect(() => {
+        connectToStream();
+    }, []);
+
     const handleGoBack = async () => {
         await fetchConversations(conversationName);
         navigation.goBack();
+    }
+
+    const connectToStream = async () => {
+        const token = await getToken();
+        const eventSource = new EventSource(`http://localhost:8080/chats/stream/${conversationId}?token=${token}`);
+
+        eventSource.addEventListener('message', function (event) {
+            const newMessage = JSON.parse(event.data);
+            setUpdatedMessages(prevMessages => [...prevMessages, newMessage]);
+        });
+
+        eventSource.addEventListener('error', function (event) {
+            console.error('EventSource failed:', event);
+        });
     }
 
     const fetchMessages = async () => {

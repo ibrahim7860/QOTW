@@ -95,7 +95,7 @@ export const LoginScreen = ({navigation}) => {
                     refreshUsers();
                 })
                 .catch((error) => {
-                    setErrorMessage(error.loginResponse.data.message);
+                    setErrorMessage(error.response.data.message);
                 });
         } catch (error) {
             console.error("Error logging in:", error);

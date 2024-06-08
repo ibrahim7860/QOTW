@@ -1,6 +1,7 @@
 package com.example.backend.config;
 
 import com.example.backend.filters.JwtRequestFilter;
+import com.example.backend.filters.QueryParamAuthenticationFilter;
 import com.example.backend.filters.TokenBlacklistFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,9 @@ public class SecurityConfig {
     @Autowired
     private TokenBlacklistFilter tokenBlacklistFilter;
 
+    @Autowired
+    private QueryParamAuthenticationFilter queryParamAuthenticationFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -48,6 +52,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(tokenBlacklistFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(queryParamAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

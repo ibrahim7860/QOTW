@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Image, StyleSheet, Text, TextInput, View,} from "react-native";
 import Button from "./Button";
-import {useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {userContext} from "../context/UserContext";
 import defaultProfilePic from "../../assets/default.jpeg";
 import {useToken} from "../context/TokenContext";
-import {useFocusEffect} from '@react-navigation/native';
 
 export const Response = ({user}) => {
     const navigation = useNavigation();
