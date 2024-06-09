@@ -93,6 +93,20 @@ export const UserProvider = ({children}) => {
         }
     }
 
+    const fetchTokenByUserId = async (userId) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/notification/get-token?recipientId=${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${await getToken()}`,
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching token:', error);
+        }
+    };
+
     useEffect(() => {
         if (globalUserId) {
             saveExpoPushToken();
@@ -288,6 +302,7 @@ export const UserProvider = ({children}) => {
                 setNavigate,
                 setNavigation,
                 getProfilePicture,
+                fetchTokenByUserId
             }}
         >
             {children}

@@ -22,6 +22,7 @@ import {TokenProvider} from "./frontend/context/TokenContext";
 import {CreateProfilePictureScreen} from "./frontend/screens/CreateProfilePictureScreen";
 import {UserProvider} from "./frontend/context/UserContext";
 import {AddFriendsScreen} from "./frontend/screens/AddFriendsScreen";
+import * as Notifications from "expo-notifications";
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,14 @@ const bottomToTopAnimation = ({current, layouts}) => {
         },
     };
 };
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
 
 export default function App() {
     return (
