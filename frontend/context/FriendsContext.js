@@ -11,7 +11,7 @@ export const FriendsProvider = ({children}) => {
     const [friends, setFriends] = useState([]);
     const [friendRequests, setFriendRequests] = useState([]);
     const {getToken} = useToken();
-    const {globalUserId, refreshUsers} = userContext();
+    const {globalUserId, refreshUsers, sendNotification} = userContext();
     const [isRefreshing, setIsRefreshing] = useState(false);
 
     const fetchFriends = async () => {
@@ -84,6 +84,10 @@ export const FriendsProvider = ({children}) => {
                         },
                     }
                 );
+                if (response.status === 200) {
+                    await sendNotification(newFriend.user_2_id, "Friend Request", "You have a new friend request from " + newFriend.user_1_id);
+                }
+
                 fetchFriendRequests();
                 refreshUsers();
             }
