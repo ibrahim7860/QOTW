@@ -1,145 +1,145 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 import Button from "../components/Button";
-import {MaterialIcons} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
-import {useResponses} from "../context/ResponsesContext";
+import { useResponses } from "../context/ResponsesContext";
 import axios from "axios";
-import {useToken} from "../context/TokenContext";
-import {userContext} from "../context/UserContext";
-import {useQuestion} from "../context/QuestionContext";
+import { useToken } from "../context/TokenContext";
+import { userContext } from "../context/UserContext";
+import { useQuestion } from "../context/QuestionContext";
 
-export const QuestionScreen = ({route, navigation}) => {
-    const {alreadyResponded} = route.params;
-    const {setResponseSubmitted, refreshResponses} = useResponses();
-    const [userInput, setUserInput] = useState("");
-    const {questionText, questionId} = useQuestion();
+export const QuestionScreen = ({ route, navigation }) => {
+  const { alreadyResponded } = route.params;
+  const { setResponseSubmitted, refreshResponses } = useResponses();
+  const [userInput, setUserInput] = useState("");
+  const { questionText, questionId } = useQuestion();
 
-    const {getToken} = useToken();
+  const { getToken } = useToken();
 
-    const {globalUserId} = userContext();
+  const { globalUserId } = userContext();
 
-    const responseDto = {
-        userId: globalUserId,
-        questionId: questionId,
-        responseText: userInput,
-    };
+  const responseDto = {
+    userId: globalUserId,
+    questionId: questionId,
+    responseText: userInput,
+  };
 
-    const handleSubmit = async () => {
-        axios
-            .post("http://localhost:8080/response/create-response", responseDto, {
-                headers: {
-                    Authorization: `Bearer ${await getToken()}`,
-                },
-            })
-            .then((response) => {
-                setResponseSubmitted(true);
-                refreshResponses();
-                navigation.navigate("Responses");
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    };
+  const handleSubmit = async () => {
+    axios
+      .post("http://localhost:8080/response/create-response", responseDto, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      })
+      .then((response) => {
+        setResponseSubmitted(true);
+        refreshResponses();
+        navigation.navigate("Responses");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
-    return (
-        <SafeAreaView style={styles.mainContainer}>
-            {alreadyResponded && (
-                <View style={styles.iconContainer}>
-                    <Ripple
-                        rippleColor="#fff"
-                        rippleOpacity={0.9}
-                        rippleSize={100}
-                        onPress={() => navigation.goBack()}
-                    >
-                        <MaterialIcons name="close" size={24} color="white"/>
-                    </Ripple>
-                </View>
-            )}
+  return (
+    <SafeAreaView style={styles.mainContainer}>
+      {alreadyResponded && (
+        <View style={styles.iconContainer}>
+          <Ripple
+            rippleColor="#fff"
+            rippleOpacity={0.9}
+            rippleSize={100}
+            onPress={() => navigation.goBack()}
+          >
+            <MaterialIcons name="close" size={24} color="white" />
+          </Ripple>
+        </View>
+      )}
 
-            <ScrollView
-                contentContainerStyle={{
-                    paddingHorizontal: 20,
-                    paddingVertical: 20,
-                }}
-            >
-                <Text
-                    style={styles.qotwStyle}
-                >{`Week ${questionId}: ${questionText}`}</Text>
-            </ScrollView>
+      <ScrollView
+        contentContainerStyle={{
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+        }}
+      >
+        <Text
+          style={styles.qotwStyle}
+        >{`Week ${questionId}: ${questionText}`}</Text>
+      </ScrollView>
 
-            {!alreadyResponded && (
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={{marginVertical: 10}}
-                    extraScrollHeight={50}
-                >
-                    <View style={styles.textInputStyle}>
-                        <View style={{flex: 1}}>
-                            <TextInput
-                                multiline
-                                placeholder="Your response..."
-                                placeholderTextColor="#ababab"
-                                keyboardAppearance="dark"
-                                selectionColor={"#ababab"}
-                                style={styles.textInputStyle}
-                                onChangeText={setUserInput}
-                                value={userInput}
-                            />
-                        </View>
+      {!alreadyResponded && (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ marginVertical: 10 }}
+          extraScrollHeight={50}
+        >
+          <View style={styles.textInputStyle}>
+            <View style={{ flex: 1 }}>
+              <TextInput
+                multiline
+                placeholder="Your response..."
+                placeholderTextColor="#ababab"
+                keyboardAppearance="dark"
+                selectionColor={"#ababab"}
+                style={styles.textInputStyle}
+                onChangeText={setUserInput}
+                value={userInput}
+              />
+            </View>
 
-                        <View style={{padding: 5}}>
-                            <Button onPress={handleSubmit} disabled={!userInput.trim()}>
-                                <Image
-                                    source={require("../../assets/send.png")}
-                                    style={{width: 30, height: 30}}
-                                />
-                            </Button>
-                        </View>
-                    </View>
-                </KeyboardAvoidingView>
-            )}
-        </SafeAreaView>
-    );
+            <View style={{ padding: 5 }}>
+              <Button onPress={handleSubmit} disabled={!userInput.trim()}>
+                <Image
+                  source={require("../../assets/send.png")}
+                  style={{ width: 30, height: 30 }}
+                />
+              </Button>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      )}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        backgroundColor: "#291400",
-    },
-    iconContainer: {
-        paddingHorizontal: "5%",
-        paddingTop: "5%",
-        alignItems: "flex-end",
-    },
-    qotwStyle: {
-        fontSize: 30,
-        fontWeight: "700",
-        color: "white",
-    },
-    textInputStyle: {
-        fontSize: 20,
-        marginBottom: 10,
-        color: "white",
-        fontWeight: "500",
-        paddingTop: 6,
-        paddingLeft: 0,
-        flexDirection: "row",
-        alignItems: "flex-end",
-        backgroundColor: "#424140",
-        borderRadius: 10,
-        marginHorizontal: 10,
-        justifyContent: "center",
-    },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: "#291400",
+  },
+  iconContainer: {
+    paddingHorizontal: "5%",
+    paddingTop: "5%",
+    alignItems: "flex-end",
+  },
+  qotwStyle: {
+    fontSize: 30,
+    fontWeight: "700",
+    color: "white",
+  },
+  textInputStyle: {
+    fontSize: 20,
+    marginBottom: 10,
+    color: "white",
+    fontWeight: "500",
+    paddingTop: 6,
+    paddingLeft: 0,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    backgroundColor: "#424140",
+    borderRadius: 10,
+    marginHorizontal: 10,
+    justifyContent: "center",
+  },
 });
