@@ -30,7 +30,7 @@ export const ChatScreen = ({ route, navigation }) => {
   const { messages } = route.params;
   const [updatedMessages, setUpdatedMessages] = useState(messages);
   const { getToken } = useToken();
-  const { fetchTokenByUserId } = userContext();
+  const { sendNotification } = userContext();
 
   const [newMessage, setNewMessage] = useState("");
   const flatListRef = useRef();
@@ -106,36 +106,11 @@ export const ChatScreen = ({ route, navigation }) => {
         );
 
         if (response.ok) {
-          try {
-            const expoToken = await fetchTokenByUserId(senderName);
-            const notification = {
-              to: expoToken,
-              sound: "default",
-              title: "New Message",
-              body: "You have a new message from " + conversationName,
-            };
-
-            const notificationResponse = await fetch(
-              "https://exp.host/--/api/v2/push/send",
-              {
-                method: "POST",
-                headers: {
-                  host: "exp.host",
-                  accept: "application/json",
-                  "accept-encoding": "gzip, deflate",
-                  "content-type": "application/json",
-                },
-                body: JSON.stringify(notification),
-              }
-            );
-            if (notificationResponse.ok) {
-              console.log("Notification sent successfully.");
-            } else {
-              console.log("Failed to send notification.");
-            }
-          } catch (error) {
-            console.error("Error sending push notification:", error.message);
-          }
+          await sendNotification(
+            senderName,
+            "New Message",
+            "You have a new message from " + conversationName
+          );
         } else {
           console.log("Failed to send message");
         }
@@ -206,6 +181,7 @@ export const ChatScreen = ({ route, navigation }) => {
                 onChangeText={(text) => setNewMessage(text)}
                 onSubmitEditing={handleSend}
                 returnKeyType="send"
+                blurOnSubmit={true}
               />
             </View>
 

@@ -18,16 +18,18 @@ import axios from "axios";
 import { useToken } from "../context/TokenContext";
 import { userContext } from "../context/UserContext";
 import { useQuestion } from "../context/QuestionContext";
+import { useFriends } from "../context/FriendsContext";
 
 export const QuestionScreen = ({ route, navigation }) => {
   const { alreadyResponded } = route.params;
   const { setResponseSubmitted, refreshResponses } = useResponses();
   const [userInput, setUserInput] = useState("");
   const { questionText, questionId } = useQuestion();
+  const { friends } = useFriends();
 
   const { getToken } = useToken();
 
-  const { globalUserId } = userContext();
+  const { globalUserId, sendNotification } = userContext();
 
   const responseDto = {
     userId: globalUserId,
@@ -42,10 +44,21 @@ export const QuestionScreen = ({ route, navigation }) => {
           Authorization: `Bearer ${await getToken()}`,
         },
       })
-      .then((response) => {
+      .then(async (response) => {
         setResponseSubmitted(true);
         refreshResponses();
         navigation.navigate("Responses");
+        for (let friend of friends) {
+          const friendUserID =
+            friend.user_2_id !== globalUserId
+              ? friend.user_2_id
+              : friend.user_1_id;
+          await sendNotification(
+            friendUserID,
+            "New response!",
+            globalUserId + " has responded to the question of the week!"
+          );
+        }
       })
       .catch((error) => {
         console.error("Error:", error);

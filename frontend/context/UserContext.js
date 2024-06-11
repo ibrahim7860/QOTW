@@ -116,6 +116,39 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const sendNotification = async (recipient, title, body) => {
+    try {
+      const expoToken = await fetchTokenByUserId(recipient);
+      const notification = {
+        to: expoToken,
+        sound: "default",
+        title: title,
+        body: body,
+      };
+
+      const notificationResponse = await fetch(
+        "https://exp.host/--/api/v2/push/send",
+        {
+          method: "POST",
+          headers: {
+            host: "exp.host",
+            accept: "application/json",
+            "accept-encoding": "gzip, deflate",
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(notification),
+        }
+      );
+      if (notificationResponse.ok) {
+        console.log("Notification sent successfully.");
+      } else {
+        console.log("Failed to send notification.");
+      }
+    } catch (error) {
+      console.error("Error sending notification:", error);
+    }
+  };
+
   useEffect(() => {
     if (globalUserId) {
       saveExpoPushToken();
@@ -311,7 +344,7 @@ export const UserProvider = ({ children }) => {
         setNavigate,
         setNavigation,
         getProfilePicture,
-        fetchTokenByUserId,
+        sendNotification,
       }}
     >
       {children}
