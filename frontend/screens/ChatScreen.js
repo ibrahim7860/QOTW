@@ -57,7 +57,12 @@ export const ChatScreen = ({route, navigation}) => {
 
         eventSource.addEventListener("error", function (event) {
             console.error("EventSource failed:", event);
+            eventSource.close();
         });
+
+        return () => {
+            eventSource.close();
+        };
     };
 
     const fetchMessages = async () => {
@@ -142,6 +147,9 @@ export const ChatScreen = ({route, navigation}) => {
                     data={updatedMessages}
                     keyExtractor={(item) => item.messageId}
                     onContentSizeChange={() => {
+                        flatListRef.current?.scrollToEnd({animated: true});
+                    }}
+                    onLayout={() => {
                         flatListRef.current?.scrollToEnd({animated: true});
                     }}
                     ListFooterComponent={<View style={{height: 10}}/>}

@@ -9,7 +9,7 @@ import {ReactionItem} from "./ReactionItem";
 
 export const Response = ({user}) => {
     const navigation = useNavigation();
-    const {getProfilePicture, globalUserId} = userContext();
+    const {getProfilePicture, globalUserId, sendNotification} = userContext();
     const [profilePic, setProfilePic] = useState(null);
     const [hasExistingConversation, setHasExistingConversation] = useState(false);
     const [userInput, setUserInput] = useState("");
@@ -134,6 +134,12 @@ export const Response = ({user}) => {
                 senderName: user.userId,
                 messages: chatData.messages,
             });
+
+            await sendNotification(
+                user.userId,
+                "New Message",
+                "You have a new message from " + globalUserId
+            );
 
             setUserInput("");
         } catch (error) {

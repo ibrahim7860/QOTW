@@ -139,9 +139,7 @@ export const UserProvider = ({children}) => {
                     body: JSON.stringify(notification),
                 }
             );
-            if (notificationResponse.ok) {
-                console.log("Notification sent successfully.");
-            } else {
+            if (!notificationResponse.ok) {
                 console.error("Failed to send notification.");
             }
         } catch (error) {
