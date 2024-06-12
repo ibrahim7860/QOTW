@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {KeyboardAvoidingView, Platform, StyleSheet, TextInput, View,} from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Button from "./Button";
 
 export const SearchBar = ({onSearch, isSearching}) => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -18,9 +17,9 @@ export const SearchBar = ({onSearch, isSearching}) => {
         >
             <View style={styles.container}>
                 <View>
-                    <Button onPress={() => console.log("Search Pressed")}>
+                    <View>
                         <MaterialIcons name="search" size={25} color="gray"/>
-                    </Button>
+                    </View>
                 </View>
                 <View style={{flex: 1}}>
                     <TextInput

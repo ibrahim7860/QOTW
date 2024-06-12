@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: "row",
         justifyContent: "center",
-        paddingTop: 40,
+        paddingTop: 50,
         position: "relative",
     },
     button: {

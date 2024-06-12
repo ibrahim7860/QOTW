@@ -25,7 +25,7 @@ export const TokenProvider = ({children}) => {
         try {
             await AsyncStorage.setItem('jwtToken', token);
         } catch (e) {
-            console.log(e.message)
+            console.error(e.message)
         }
     };
 
