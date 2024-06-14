@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Alert, Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Alert, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {userContext} from "../context/UserContext";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Button from "./Button";
 import {useNavigation} from "@react-navigation/native";
+import {Image} from 'expo-image';
 
 export const FriendItem = ({
                                friend,

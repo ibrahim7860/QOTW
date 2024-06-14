@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {
-    Image,
     KeyboardAvoidingView,
     Platform,
     SafeAreaView,
@@ -19,6 +18,7 @@ import {useToken} from "../context/TokenContext";
 import {userContext} from "../context/UserContext";
 import {useQuestion} from "../context/QuestionContext";
 import {useFriends} from "../context/FriendsContext";
+import {Image} from 'expo-image';
 
 export const QuestionScreen = ({route, navigation}) => {
     const {alreadyResponded} = route.params;

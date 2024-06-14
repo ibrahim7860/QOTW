@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 
-import {Alert, Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Alert, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {userContext} from "../context/UserContext";
 import Button from "./Button";
 import {useNavigation} from "@react-navigation/native";
 import defaultProfilePic from "../../assets/default.jpeg";
+import {Image} from 'expo-image';
 
 export const UserItem = ({onSendRequest, user, currentUserId}) => {
     const [profilePic, setProfilePic] = useState(null);

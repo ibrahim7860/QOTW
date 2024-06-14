@@ -1,9 +1,10 @@
 import React from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
+import {Image} from 'expo-image';
 
 export const FriendProfileScreen = ({route, navigation}) => {
     const {fullName, username, profilePic} = route.params;

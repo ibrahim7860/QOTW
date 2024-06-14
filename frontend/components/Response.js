@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {Image, ScrollView, StyleSheet, Text, TextInput, View,} from "react-native";
+import {ScrollView, StyleSheet, Text, TextInput, View,} from "react-native";
 import Button from "./Button";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {userContext} from "../context/UserContext";
 import defaultProfilePic from "../../assets/default.jpeg";
 import {useToken} from "../context/TokenContext";
 import {ReactionItem} from "./ReactionItem";
+import {Image} from 'expo-image';
 
 export const Response = ({user}) => {
     const navigation = useNavigation();
@@ -82,7 +83,7 @@ export const Response = ({user}) => {
                 setHasExistingConversation(true);
                 setChatThatExists(chat);
             } else {
-                throw new Error("Failed to fetch conversation");
+                console.error("Failed to fetch conversation");
             }
         } catch (error) {
             console.error("Error checking conversation:", error);
@@ -120,7 +121,7 @@ export const Response = ({user}) => {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to start chat");
+                console.error("Failed to start chat");
             }
 
             const chatData = await response.json();

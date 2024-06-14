@@ -1,6 +1,7 @@
 import React from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import {Image} from 'expo-image';
 
 import {useNavigation} from "@react-navigation/native";
 

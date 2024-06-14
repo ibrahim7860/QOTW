@@ -25,10 +25,6 @@ export const UserProvider = ({children}) => {
     const [loading, setLoading] = useState(false);
     const [navigate, setNavigate] = useState(false);
     const [navigation, setNavigation] = useState(null);
-    const storageRef = ref(
-        storage,
-        `profile_pictures/${globalUserId}/profile.jpg`
-    );
 
     const fetchAllUsers = async () => {
         axios
@@ -256,6 +252,10 @@ export const UserProvider = ({children}) => {
             xhr.send(null);
         });
         try {
+            const storageRef = ref(
+                storage,
+                `profile_pictures/${globalUserId}/profile.jpg`
+            );
             const result = await uploadBytesResumable(storageRef, blob);
 
             blob.close();
@@ -303,6 +303,10 @@ export const UserProvider = ({children}) => {
 
     const getProfilePicture = async (userId) => {
         try {
+            const storageRef = ref(
+                storage,
+                `profile_pictures/${userId}/profile.jpg`
+            );
             await getMetadata(storageRef);
             const response = await axios.get(
                 `http://localhost:8080/profiles/${userId}/get-picture`,

@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {
     FlatList,
-    Image,
     KeyboardAvoidingView,
     Platform,
     SafeAreaView,
@@ -19,6 +18,7 @@ import * as Animatable from "react-native-animatable";
 import {useToken} from "../context/TokenContext";
 import EventSource from "react-native-event-source";
 import {userContext} from "../context/UserContext";
+import {Image} from 'expo-image';
 
 export const ChatScreen = ({route, navigation}) => {
     const {conversationId} = route.params;
@@ -79,7 +79,7 @@ export const ChatScreen = ({route, navigation}) => {
             );
 
             if (!response.ok) {
-                throw new Error("Failed to fetch messages");
+                console.error("Failed to fetch messages");
             }
 
             const messagesData = await response.json();

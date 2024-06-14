@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Image} from 'expo-image';
 
 import defaultProfilePic from "../../assets/default.jpeg";
 

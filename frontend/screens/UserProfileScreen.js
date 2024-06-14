@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {ActivityIndicator, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
@@ -7,6 +7,7 @@ import Ripple from "react-native-material-ripple";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import {userContext} from "../context/UserContext";
+import {Image} from 'expo-image';
 
 export const UserProfileScreen = ({navigation}) => {
     const {

@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Alert, Image, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Alert, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import {userContext} from "../context/UserContext";
 import defaultProfilePic from "../../assets/default.jpeg";
 import {MaterialIcons} from "@expo/vector-icons";
 import {useToken} from "../context/TokenContext";
 import {useConversations} from "../context/ConversationsContext";
+import {Image} from 'expo-image';
 
 export const ConversationItem = ({conversation, userId, onPress}) => {
     const [profilePic, setProfilePic] = useState(null);
@@ -47,7 +48,7 @@ export const ConversationItem = ({conversation, userId, onPress}) => {
             );
 
             if (!response.ok) {
-                throw new Error("Failed to delete the chat");
+                console.error("Failed to delete the chat");
             }
 
             await fetchConversations(globalUserId);
