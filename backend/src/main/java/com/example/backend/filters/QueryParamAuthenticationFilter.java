@@ -22,6 +22,12 @@ public class QueryParamAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getRequestURI();
+        if (path.startsWith("/users/verify")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = request.getParameter("token");
         if (token != null) {
             HttpServletRequest wrapper = new HttpServletRequestWrapper(request) {
