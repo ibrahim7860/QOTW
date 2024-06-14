@@ -46,7 +46,7 @@ export const QuestionScreen = ({route, navigation}) => {
             })
             .then(async (response) => {
                 setResponseSubmitted(true);
-                refreshResponses();
+                await refreshResponses();
                 navigation.navigate("Responses");
                 for (let friend of friends) {
                     const friendUserID =
