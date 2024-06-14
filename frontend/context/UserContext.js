@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import axios from "axios";
-import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
+import {getDownloadURL, getMetadata, ref, uploadBytesResumable} from "firebase/storage";
 import {storage} from "../../firebase";
 import {Alert, Linking, Platform} from "react-native";
 import {Camera} from "expo-camera";
@@ -25,6 +25,10 @@ export const UserProvider = ({children}) => {
     const [loading, setLoading] = useState(false);
     const [navigate, setNavigate] = useState(false);
     const [navigation, setNavigation] = useState(null);
+    const storageRef = ref(
+        storage,
+        `profile_pictures/${globalUserId}/profile.jpg`
+    );
 
     const fetchAllUsers = async () => {
         axios
@@ -252,10 +256,6 @@ export const UserProvider = ({children}) => {
             xhr.send(null);
         });
         try {
-            const storageRef = ref(
-                storage,
-                `profile_pictures/${globalUserId}/profile.jpg`
-            );
             const result = await uploadBytesResumable(storageRef, blob);
 
             blob.close();
@@ -303,6 +303,7 @@ export const UserProvider = ({children}) => {
 
     const getProfilePicture = async (userId) => {
         try {
+            await getMetadata(storageRef);
             const response = await axios.get(
                 `http://localhost:8080/profiles/${userId}/get-picture`,
                 {
@@ -318,8 +319,12 @@ export const UserProvider = ({children}) => {
                 return null;
             }
         } catch (error) {
-            console.error("Error fetching profile picture:", error);
-            return null;
+            if (error.code === 'storage/object-not-found') {
+                return null;
+            } else {
+                console.error("Error fetching profile picture:", error);
+                return null;
+            }
         }
     };
 
