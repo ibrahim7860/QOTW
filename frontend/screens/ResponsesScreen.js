@@ -9,7 +9,7 @@ import defaultProfilePic from "../../assets/default.jpeg";
 import {userContext} from "../context/UserContext";
 import {MyResponse} from "../components/MyResponse";
 import {useConversations} from "../context/ConversationsContext";
-import {Image} from 'expo-image';
+import CachedImage from "../components/CachedImage";
 
 export const ResponsesScreen = ({navigation}) => {
     const {responses, myResponse, refreshResponses, isRefreshing} =
@@ -58,12 +58,9 @@ export const ResponsesScreen = ({navigation}) => {
                             <Icon name="comment" size={28} color="#ababab" solid/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={goToUserProfile}>
-                            <Image
-                                source={
-                                    globalProfilePic
-                                        ? {uri: globalProfilePic}
-                                        : defaultProfilePic
-                                }
+                            <CachedImage
+                                uri={globalProfilePic}
+                                defaultImage={defaultProfilePic}
                                 style={styles.profilePic}
                             />
                         </TouchableOpacity>

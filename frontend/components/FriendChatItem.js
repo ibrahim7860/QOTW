@@ -1,9 +1,10 @@
 import React from "react";
 import {StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import {Image} from 'expo-image';
+import defaultProfilePic from "../../assets/default.jpeg";
 
 import {useNavigation} from "@react-navigation/native";
+import CachedImage from "./CachedImage";
 
 export const FriendChatItem = ({friend}) => {
     const navigation = useNavigation();
@@ -14,7 +15,7 @@ export const FriendChatItem = ({friend}) => {
     return (
         <View style={styles.friendItem}>
             <View style={styles.imageContainer}>
-                <Image source={friend.profilePicUri} style={styles.profilePic}/>
+                <CachedImage uri={friend.profilePicUri} defaultImage={defaultProfilePic} style={styles.profilePic}/>
             </View>
             <View style={styles.friendInfo}>
                 <Text style={styles.fullName}>{friend.fullName}</Text>

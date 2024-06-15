@@ -6,7 +6,8 @@ import {userContext} from "../context/UserContext";
 import defaultProfilePic from "../../assets/default.jpeg";
 import {useToken} from "../context/TokenContext";
 import {ReactionItem} from "./ReactionItem";
-import {Image} from 'expo-image';
+import CachedImage from "./CachedImage";
+import {Image} from "expo-image";
 
 export const Response = ({user}) => {
     const navigation = useNavigation();
@@ -159,8 +160,9 @@ export const Response = ({user}) => {
                     }}
                 >
                     <Button onPress={goToFriendProfile}>
-                        <Image
-                            source={profilePic ? {uri: profilePic} : defaultProfilePic}
+                        <CachedImage
+                            uri={profilePic}
+                            defaultImage={defaultProfilePic}
                             style={styles.profilePic}
                         />
                     </Button>
@@ -208,7 +210,7 @@ export const Response = ({user}) => {
                             <View style={{justifyContent: "center"}}>
                                 <Button onPress={handleStartChat} disabled={!userInput.trim()}>
                                     <Image
-                                        source={require("../../assets/send.png")}
+                                        url={require("../../assets/send.png")}
                                         style={{width: 25, height: 25}}
                                     />
                                 </Button>

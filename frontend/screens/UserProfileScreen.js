@@ -7,7 +7,7 @@ import Ripple from "react-native-material-ripple";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import {userContext} from "../context/UserContext";
-import {Image} from 'expo-image';
+import CachedImage from "../components/CachedImage";
 
 export const UserProfileScreen = ({navigation}) => {
     const {
@@ -95,12 +95,9 @@ export const UserProfileScreen = ({navigation}) => {
                                     style={styles.profilePic}
                                 />
                             ) : (
-                                <Image
-                                    source={
-                                        globalProfilePic
-                                            ? {uri: globalProfilePic}
-                                            : defaultProfilePic
-                                    }
+                                <CachedImage
+                                    uri={globalProfilePic}
+                                    defaultImage={defaultProfilePic}
                                     style={styles.profilePic}
                                 />
                             )}

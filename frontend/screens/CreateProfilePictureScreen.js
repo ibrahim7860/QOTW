@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import {userContext} from "../context/UserContext";
-import {Image} from 'expo-image';
+import CachedImage from "../components/CachedImage";
 
 export const CreateProfilePictureScreen = ({navigation}) => {
     const {
@@ -36,12 +36,9 @@ export const CreateProfilePictureScreen = ({navigation}) => {
                                     style={styles.profilePic}
                                 />
                             ) : (
-                                <Image
-                                    source={
-                                        globalProfilePic
-                                            ? {uri: globalProfilePic}
-                                            : defaultProfilePic
-                                    }
+                                <CachedImage
+                                    uri={globalProfilePic}
+                                    defaultImage={defaultProfilePic}
                                     style={styles.profilePic}
                                 />
                             )}

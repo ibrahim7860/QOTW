@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import {Shadow} from "react-native-shadow-2";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Ripple from "react-native-material-ripple";
-import {Image} from 'expo-image';
+import CachedImage from "../components/CachedImage";
 
 export const FriendProfileScreen = ({route, navigation}) => {
     const {fullName, username, profilePic} = route.params;
@@ -25,7 +25,7 @@ export const FriendProfileScreen = ({route, navigation}) => {
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Shadow distance="10" radius="5" size="10">
-                        <Image source={profilePic ? {uri: profilePic} : defaultProfilePic} style={styles.profilePic}/>
+                        <CachedImage uri={profilePic} defaultImage={defaultProfilePic} style={styles.profilePic}/>
                     </Shadow>
                 </View>
                 <Text style={styles.name}>{fullName}</Text>

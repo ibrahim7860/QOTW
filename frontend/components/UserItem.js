@@ -6,7 +6,7 @@ import {userContext} from "../context/UserContext";
 import Button from "./Button";
 import {useNavigation} from "@react-navigation/native";
 import defaultProfilePic from "../../assets/default.jpeg";
-import {Image} from 'expo-image';
+import CachedImage from "./CachedImage";
 
 export const UserItem = ({onSendRequest, user, currentUserId}) => {
     const [profilePic, setProfilePic] = useState(null);
@@ -54,7 +54,7 @@ export const UserItem = ({onSendRequest, user, currentUserId}) => {
     return (
         <View style={styles.userItem}>
             <Button style={styles.imageContainer} onPress={goToFriendProfile}>
-                <Image source={profilePic ? {uri: profilePic} : defaultProfilePic} style={styles.profilePic}/>
+                <CachedImage uri={profilePic} defaultImage={defaultProfilePic} style={styles.profilePic}/>
             </Button>
             <View style={styles.userInfo}>
                 <Text style={styles.username}>{user.userId}</Text>

@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Image} from 'expo-image';
 
 import defaultProfilePic from "../../assets/default.jpeg";
 
 import {userContext} from "../context/UserContext";
 import {useConversations} from "../context/ConversationsContext";
+import CachedImage from "./CachedImage";
 
 export const ReactionItem = ({reaction, responseUserId, navigation}) => {
     const {getProfilePicture} = userContext();
     const [profilePic, setProfilePic] = useState(null);
     const [reactorUserId, setReactorUserId] = useState(null);
+    const [otherUserId, setOtherUserId] = useState(null);
+    const [otherProfilePic, setOtherProfilePic] = useState(null);
     const {fetchReactionMessages} = useConversations();
 
     if (!reaction || !responseUserId) {
@@ -22,7 +24,9 @@ export const ReactionItem = ({reaction, responseUserId, navigation}) => {
     useEffect(() => {
         const userId =
             participant1Id === responseUserId ? participant2Id : participant1Id;
+        const otherUserId = participant1Id === responseUserId ? participant1Id : participant2Id;
         setReactorUserId(userId);
+        setOtherUserId(otherUserId);
     }, [reaction, responseUserId]);
 
     const onReactionPress = async () => {
@@ -34,25 +38,29 @@ export const ReactionItem = ({reaction, responseUserId, navigation}) => {
             senderName: responseUserId,
             messages: messages,
             isReadOnly: true,
+            profilePic: otherProfilePic
         });
     };
 
-    const fetchImage = async () => {
+    const fetchImages = async () => {
         const url = await getProfilePicture(reactorUserId);
         setProfilePic(url);
+        const otherUrl = await getProfilePicture(otherUserId);
+        setOtherProfilePic(otherUrl);
     };
 
     useEffect(() => {
-        if (reactorUserId) {
-            fetchImage();
+        if (reactorUserId && otherUserId) {
+            fetchImages();
         }
-    }, [reactorUserId]);
+    }, [reactorUserId, otherUserId]);
 
     return (
         <TouchableOpacity onPress={onReactionPress} style={styles.container}>
             <View style={styles.profileContainer}>
-                <Image
-                    source={profilePic ? {uri: profilePic} : defaultProfilePic}
+                <CachedImage
+                    uri={profilePic}
+                    defaultImage={defaultProfilePic}
                     style={styles.profilePic}
                 />
                 <Text

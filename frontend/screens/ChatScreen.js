@@ -19,6 +19,8 @@ import {useToken} from "../context/TokenContext";
 import EventSource from "react-native-event-source";
 import {userContext} from "../context/UserContext";
 import {Image} from 'expo-image';
+import CachedImage from "../components/CachedImage";
+import defaultProfilePic from "../../assets/default.jpeg";
 
 export const ChatScreen = ({route, navigation}) => {
     const {conversationId} = route.params;
@@ -139,7 +141,7 @@ export const ChatScreen = ({route, navigation}) => {
                     <TouchableOpacity onPress={handleGoBack}>
                         <MaterialIcons name="arrow-back" size={24} color="white"/>
                     </TouchableOpacity>
-                    <Image source={{uri: profilePic}} style={styles.profilePic}/>
+                    <CachedImage uri={profilePic} defaultImage={defaultProfilePic} style={styles.profilePic}/>
                     <Text style={styles.headerText}>{senderName}</Text>
                 </View>
                 <FlatList
@@ -196,7 +198,7 @@ export const ChatScreen = ({route, navigation}) => {
                         <View style={{padding: 3, paddingTop: 0}}>
                             <Button onPress={handleSend} disabled={!newMessage.trim()}>
                                 <Image
-                                    source={require("../../assets/send.png")}
+                                    url={require("../../assets/send.png")}
                                     style={{width: 30, height: 30}}
                                 />
                             </Button>

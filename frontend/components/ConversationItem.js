@@ -5,7 +5,7 @@ import defaultProfilePic from "../../assets/default.jpeg";
 import {MaterialIcons} from "@expo/vector-icons";
 import {useToken} from "../context/TokenContext";
 import {useConversations} from "../context/ConversationsContext";
-import {Image} from 'expo-image';
+import CachedImage from "./CachedImage";
 
 export const ConversationItem = ({conversation, userId, onPress}) => {
     const [profilePic, setProfilePic] = useState(null);
@@ -62,8 +62,9 @@ export const ConversationItem = ({conversation, userId, onPress}) => {
             style={styles.itemContainer}
             onPress={() => onPress(conversation)}
         >
-            <Image
-                source={profilePic ? {uri: profilePic} : defaultProfilePic}
+            <CachedImage
+                uri={profilePic}
+                defaultImage={defaultProfilePic}
                 style={styles.profilePic}
             />
             <View style={styles.textContainer}>

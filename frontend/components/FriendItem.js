@@ -5,7 +5,7 @@ import {userContext} from "../context/UserContext";
 import defaultProfilePic from "../../assets/default.jpeg";
 import Button from "./Button";
 import {useNavigation} from "@react-navigation/native";
-import {Image} from 'expo-image';
+import CachedImage from "./CachedImage";
 
 export const FriendItem = ({
                                friend,
@@ -84,7 +84,7 @@ export const FriendItem = ({
     return (
         <View style={styles.friendItem}>
             <Button style={styles.imageContainer} onPress={goToFriendProfile}>
-                <Image source={profilePic ? {uri: profilePic} : defaultProfilePic} style={styles.profilePic}/>
+                <CachedImage uri={profilePic} defaultImage={defaultProfilePic} style={styles.profilePic}/>
             </Button>
             <View style={styles.friendInfo}>
                 <Text style={styles.username}>{friendUserID}</Text>

@@ -18,7 +18,7 @@ import {useToken} from "../context/TokenContext";
 import {userContext} from "../context/UserContext";
 import {useQuestion} from "../context/QuestionContext";
 import {useFriends} from "../context/FriendsContext";
-import {Image} from 'expo-image';
+import {Image} from "expo-image";
 
 export const QuestionScreen = ({route, navigation}) => {
     const {alreadyResponded} = route.params;
@@ -114,7 +114,7 @@ export const QuestionScreen = ({route, navigation}) => {
                         <View style={{padding: 5}}>
                             <Button onPress={handleSubmit} disabled={!userInput.trim()}>
                                 <Image
-                                    source={require("../../assets/send.png")}
+                                    url={require("../../assets/send.png")}
                                     style={{width: 30, height: 30}}
                                 />
                             </Button>
