@@ -56,7 +56,7 @@ export const ChatScreen = ({ route, navigation }) => {
   };
 
   const handleGoBack = async () => {
-    await deleteEmitter(emitter);
+    //await deleteEmitter(emitter);
     await fetchConversations(conversationName);
     navigation.goBack();
   };
