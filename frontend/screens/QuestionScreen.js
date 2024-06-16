@@ -39,7 +39,7 @@ export const QuestionScreen = ({ route, navigation }) => {
 
   const handleSubmit = async () => {
     axios
-      .post("http://localhost:8080/response/create-response", responseDto, {
+      .post("http://192.168.200.128:8080/response/create-response", responseDto, {
         headers: {
           Authorization: `Bearer ${await getToken()}`,
         },
@@ -114,7 +114,7 @@ export const QuestionScreen = ({ route, navigation }) => {
             <View style={{ padding: 5 }}>
               <Button onPress={handleSubmit} disabled={!userInput.trim()}>
                 <Image
-                  url={require("../../assets/send.png")}
+                  source={require("../../assets/send.png")}
                   style={{ width: 30, height: 30 }}
                 />
               </Button>
