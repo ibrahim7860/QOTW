@@ -27,7 +27,7 @@
 > - **Regular Engagement:** With a new question each week, there is always something new to look forward to. The regular posting schedule keeps users engaged and provides a consistent source of conversation starters.
 
 ### Feedback and Support
-> We value your feedback! If you have any suggestions, questions, or need support, please reach out to our team at **qotw@gmail.com**.
+> We value your feedback! If you have any suggestions, questions, or need support, please reach out to our team at **qotw1767@gmail.com**.
 
 ### Technology Stack
 > **QOTW** is built using a robust and scalable technology stack:
