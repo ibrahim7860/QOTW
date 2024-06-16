@@ -17,12 +17,10 @@ const CachedImage = ({uri, style, defaultImage}) => {
 
             const image = await FileSystem.getInfoAsync(path);
             if (image.exists) {
-                console.log('Loading image from cache');
                 setSource({uri: image.uri});
                 return;
             }
 
-            console.log('Downloading image to cache');
             try {
                 const newImage = await FileSystem.downloadAsync(uri, path);
                 setSource({uri: newImage.uri});
