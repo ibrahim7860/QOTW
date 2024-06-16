@@ -39,7 +39,7 @@ export const QuestionScreen = ({ route, navigation }) => {
 
   const handleSubmit = async () => {
     axios
-      .post("http://192.168.200.128:8080/response/create-response", responseDto, {
+      .post("http://localhost:8080/response/create-response", responseDto, {
         headers: {
           Authorization: `Bearer ${await getToken()}`,
         },
