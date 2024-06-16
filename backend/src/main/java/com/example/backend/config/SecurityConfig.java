@@ -45,7 +45,8 @@ public class SecurityConfig {
                                 "/users/verify",
                                 "/users/reset-password",
                                 "/users/forgot-password",
-                                "/question/**")
+                                "/question/**",
+                        "chats/**")
                         .permitAll())
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated())

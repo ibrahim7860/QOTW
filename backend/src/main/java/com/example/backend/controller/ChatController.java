@@ -74,4 +74,10 @@ public class ChatController {
         emitter.onTimeout(() -> chatService.removeEmitter(chatId, emitter));
         return emitter;
     }
+    
+    @PostMapping("/delete-emitter/{chatId}/{emitter}")
+    public void deleteEmitter(@PathVariable Long chatId, @PathVariable SseEmitter emitter)
+    {
+        chatService.removeEmitter(chatId, emitter);
+    }
 }

@@ -71,7 +71,28 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<Chat> getChatsForUser(String userId) {
-        return chatRepository.findByParticipant1IdOrParticipant2Id(userId, userId);
+        List<Chat> chats = chatRepository.findByParticipant1IdOrParticipant2Id(userId, userId);
+
+
+        chats = chats.stream()
+                .filter(chat -> !chat.getMessages().isEmpty())
+                .toList();
+
+        List<Chat> chatsToDelete = chats.stream()
+                .filter(chat -> chat.getMessages().isEmpty())
+                .toList();
+
+        deleteChatsWithZeroMessages(chatsToDelete);
+        return chats;
+    }
+
+    @Override
+    public void deleteChatsWithZeroMessages(List<Chat> chatsToDelete) {
+        for (Chat chat : chatsToDelete) {
+            if (chat.getMessages().isEmpty()) {
+                chatRepository.delete(chat);
+            }
+        }
     }
 
     @Override
@@ -102,6 +123,7 @@ public class ChatServiceImpl implements ChatService {
         if (chatEmitters != null) {
             chatEmitters.remove(emitter);
         }
+
     }
 
     public void sendMessage(Long chatId, Message message) {
@@ -116,7 +138,7 @@ public class ChatServiceImpl implements ChatService {
             });
         }
     }
-    
-    
+
+
 }
 

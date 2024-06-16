@@ -18,6 +18,8 @@ public interface ChatService {
     List<Chat> getChatsForUser(String userId);
 
     Chat checkForExistingChat(String userId1, String userId2);
+    
+    void deleteChatsWithZeroMessages(List<Chat> chats);
 
     void deleteChat(Long chatId);
 
