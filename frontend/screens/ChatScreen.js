@@ -218,7 +218,7 @@ export const ChatScreen = ({ route, navigation }) => {
             <View style={{ padding: 3, paddingTop: 0 }}>
               <Button onPress={handleSend} disabled={!newMessage.trim()}>
                 <Image
-                  url={require("../../assets/send.png")}
+                  source={require("../../assets/send.png")}
                   style={{ width: 30, height: 30 }}
                 />
               </Button>
