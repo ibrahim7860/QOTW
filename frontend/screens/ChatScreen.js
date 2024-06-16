@@ -44,7 +44,7 @@ export const ChatScreen = ({ route, navigation }) => {
 
   const deleteEmitter = async (emitter) => {
     const response = await fetch(
-      `http://localhost:8080/chats/delete-emitter/${conversationId}/${emitter}`,
+      `http://192.168.200.128:8080/chats/delete-emitter/${conversationId}/${emitter}`,
       {
         method: "POST",
         headers: {
@@ -64,7 +64,7 @@ export const ChatScreen = ({ route, navigation }) => {
   const connectToStream = async () => {
     const token = await getToken();
     const eventSource = new EventSource(
-      `http://localhost:8080/chats/stream/${conversationId}?token=${token}`
+      `http://192.168.200.128:8080/chats/stream/${conversationId}?token=${token}`
     );
 
     setEmitter(eventSource);
@@ -86,7 +86,7 @@ export const ChatScreen = ({ route, navigation }) => {
   const fetchMessages = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/messages/${conversationId}`,
+        `http://192.168.200.128:8080/messages/${conversationId}`,
         {
           method: "GET",
           headers: {
@@ -119,7 +119,7 @@ export const ChatScreen = ({ route, navigation }) => {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/chats/message/send",
+          "http://192.168.200.128:8080/chats/message/send",
           {
             method: "POST",
             headers: {
@@ -218,7 +218,7 @@ export const ChatScreen = ({ route, navigation }) => {
             <View style={{ padding: 3, paddingTop: 0 }}>
               <Button onPress={handleSend} disabled={!newMessage.trim()}>
                 <Image
-                  url={require("../../assets/send.png")}
+                  source={require("../../assets/send.png")}
                   style={{ width: 30, height: 30 }}
                 />
               </Button>
