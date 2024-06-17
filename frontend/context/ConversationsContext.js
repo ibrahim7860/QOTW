@@ -25,7 +25,7 @@ export const ConversationsProvider = ({children}) => {
                     }
                 );
                 if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                    console.error("Network response was not ok");
                 }
                 const data = await response.json();
                 setConversations(data);
@@ -45,7 +45,7 @@ export const ConversationsProvider = ({children}) => {
         );
     };
 
-    const fetchReactionMessages = async (chatId) => {
+    const fetchMessages = async (chatId) => {
         try {
             const response = await fetch(`http://localhost:8080/messages/${chatId}`, {
                 headers: {
@@ -53,7 +53,7 @@ export const ConversationsProvider = ({children}) => {
                 },
             });
             if (!response.ok) {
-                throw new Error("Network response was not ok");
+                console.error("Network response was not ok");
             }
             return await response.json();
         } catch (error) {
@@ -69,7 +69,7 @@ export const ConversationsProvider = ({children}) => {
                 loading,
                 error,
                 fetchConversations,
-                fetchReactionMessages,
+                fetchMessages,
             }}
         >
             {children}

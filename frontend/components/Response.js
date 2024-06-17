@@ -210,7 +210,7 @@ export const Response = ({user}) => {
                             <View style={{justifyContent: "center"}}>
                                 <Button onPress={handleStartChat} disabled={!userInput.trim()}>
                                     <Image
-                                        url={require("../../assets/send.png")}
+                                        source={require("../../assets/send.png")}
                                         style={{width: 25, height: 25}}
                                     />
                                 </Button>

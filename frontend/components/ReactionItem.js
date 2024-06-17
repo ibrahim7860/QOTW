@@ -13,7 +13,7 @@ export const ReactionItem = ({reaction, responseUserId, navigation}) => {
     const [reactorUserId, setReactorUserId] = useState(null);
     const [otherUserId, setOtherUserId] = useState(null);
     const [otherProfilePic, setOtherProfilePic] = useState(null);
-    const {fetchReactionMessages} = useConversations();
+    const {fetchMessages} = useConversations();
 
     if (!reaction || !responseUserId) {
         return null;
@@ -30,7 +30,7 @@ export const ReactionItem = ({reaction, responseUserId, navigation}) => {
     }, [reaction, responseUserId]);
 
     const onReactionPress = async () => {
-        const messages = await fetchReactionMessages(chatId);
+        const messages = await fetchMessages(chatId);
 
         navigation.navigate("Chat", {
             conversationId: chatId,
