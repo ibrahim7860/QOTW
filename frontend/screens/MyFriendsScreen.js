@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 import {FriendItem} from "../components/FriendItem";
 import {SearchBar} from "../components/SearchBar";
@@ -17,10 +17,18 @@ export const MyFriendsScreen = ({navigation}) => {
     } = useFriends();
     const {globalUserId} = userContext();
     const [filteredFriends, setFilteredFriends] = useState(friends);
+    const searchBarRef = useRef(null);
 
     const handleSearchChange = (query) => {
         const results = handleSearch(friends, query);
         setFilteredFriends(results);
+    };
+
+    const clearSearchBar = () => {
+        if (searchBarRef.current) {
+            searchBarRef.current.clear(); // Call clearInput function from SearchBar
+        }
+        setFilteredFriends([]); // This function clears the search bar
     };
 
     useEffect(() => {
@@ -48,6 +56,7 @@ export const MyFriendsScreen = ({navigation}) => {
                                 isSentRequest={false}
                                 isFriend={true}
                                 currentUserId={globalUserId}
+                                clearSearchBar={clearSearchBar}
                             />
                         ))
                     ) : (
@@ -56,7 +65,7 @@ export const MyFriendsScreen = ({navigation}) => {
                 </ScrollView>
             </PullToRefreshScrollView>
 
-            <SearchBar onSearch={handleSearchChange} isSearching={false}/>
+            <SearchBar onSearch={handleSearchChange} isSearching={false} searchBarRef={searchBarRef}/>
         </SafeAreaView>
     );
 };

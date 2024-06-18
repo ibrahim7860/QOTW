@@ -8,7 +8,7 @@ import {useNavigation} from "@react-navigation/native";
 import defaultProfilePic from "../../assets/default.jpeg";
 import CachedImage from "./CachedImage";
 
-export const UserItem = ({onSendRequest, user, currentUserId}) => {
+export const UserItem = ({onSendRequest, user, currentUserId, clearSearchBar}) => {
     const [profilePic, setProfilePic] = useState(null);
     const navigation = useNavigation();
     const {getProfilePicture} = userContext();
@@ -37,7 +37,10 @@ export const UserItem = ({onSendRequest, user, currentUserId}) => {
                 {text: "No"},
                 {
                     text: "Yes",
-                    onPress: () => onSendRequest(newFriend),
+                    onPress: async () => {
+                        await onSendRequest(newFriend);
+                        clearSearchBar();
+                    },
                 },
             ]
         );

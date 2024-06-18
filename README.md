@@ -59,6 +59,9 @@
     server.
 > - **Database**: [PostgreSQL](https://www.postgresql.org/), ensuring reliable and secure storage of user data and
     conversations.
+> - **Database Hosting**: [AWS RDS](https://aws.amazon.com/rds/), for reliable, scalable, and secure hosting of our
+    PostgreSQL database,
+    ensuring high performance and durability.
 > - **Image Storage**: [Firebase](https://firebase.google.com/), used for storing and retrieving user profile pictures
     and other image assets.
 >

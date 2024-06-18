@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 import {UserItem} from "../components/UserItem";
 import {FriendsHeader} from "../components/FriendsHeader";
@@ -18,6 +18,7 @@ export const AddFriendsScreen = ({navigation}) => {
     } = useFriends();
 
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const searchBarRef = useRef(null);
 
     const handleSearchChange = (query) => {
         if (query) {
@@ -66,6 +67,13 @@ export const AddFriendsScreen = ({navigation}) => {
         }
     };
 
+    const clearSearchBar = () => {
+        if (searchBarRef.current) {
+            searchBarRef.current.clear(); // Call clearInput function from SearchBar
+        }
+        setFilteredUsers([]); // This function clears the search bar
+    };
+
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: "#291400"}}>
             <FriendsHeader/>
@@ -84,6 +92,7 @@ export const AddFriendsScreen = ({navigation}) => {
                                 user={item}
                                 onSendRequest={sendFriendRequest}
                                 currentUserId={globalUserId}
+                                clearSearchBar={clearSearchBar}
                             />
                         ))
                     ) : (
@@ -91,7 +100,7 @@ export const AddFriendsScreen = ({navigation}) => {
                     )}
                 </ScrollView>
             </PullToRefreshScrollView>
-            <SearchBar onSearch={handleSearchChange} isSearching={true}/>
+            <SearchBar onSearch={handleSearchChange} isSearching={true} searchBarRef={searchBarRef}/>
         </SafeAreaView>
     );
 };

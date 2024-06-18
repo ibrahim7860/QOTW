@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {KeyboardAvoidingView, Platform, StyleSheet, TextInput, View,} from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-export const SearchBar = ({onSearch, isSearching}) => {
+export const SearchBar = ({onSearch, isSearching, searchBarRef}) => {
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleInputChange = (text) => {
@@ -30,6 +30,7 @@ export const SearchBar = ({onSearch, isSearching}) => {
                         keyboardAppearance="dark"
                         selectionColor={"#ababab"}
                         onChangeText={handleInputChange}
+                        ref={searchBarRef}
                     />
                 </View>
             </View>

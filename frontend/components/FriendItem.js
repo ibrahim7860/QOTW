@@ -17,6 +17,7 @@ export const FriendItem = ({
                                isSentRequest,
                                isFriend,
                                currentUserId,
+                               clearSearchBar
                            }) => {
     const friendUserID =
         friend.user_2_id !== currentUserId ? friend.user_2_id : friend.user_1_id;
@@ -37,7 +38,12 @@ export const FriendItem = ({
         Alert.alert(
             "Remove Friend",
             `Do you really want to remove ${friendUserID} as a friend?`,
-            [{text: "No"}, {text: "Yes", onPress: () => onRemove(friend.id)}]
+            [{text: "No"}, {
+                text: "Yes", onPress: async () => {
+                    await onRemove(friend.id)
+                    clearSearchBar();
+                }
+            }]
         );
     };
     const handleAcceptPress = () => {
@@ -46,7 +52,11 @@ export const FriendItem = ({
             `Do you really want to accept ${friendUserID}'s friend request?`,
             [
                 {text: "No"},
-                {text: "Yes", onPress: () => onAcceptRequest(friend.id)},
+                {
+                    text: "Yes", onPress: async () => {
+                        await onAcceptRequest(friend.id);
+                    }
+                },
             ]
         );
     };
@@ -56,7 +66,11 @@ export const FriendItem = ({
             `Do you really want to reject ${friendUserID}'s friend request?`,
             [
                 {text: "No"},
-                {text: "Yes", onPress: () => onRejectRequest(friend.id)},
+                {
+                    text: "Yes", onPress: async () => {
+                        await onRejectRequest(friend.id)
+                    }
+                },
             ]
         );
     };
