@@ -1,10 +1,11 @@
 import React, {useState} from "react";
-import {FlatList, RefreshControl, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {SafeAreaView, StyleSheet, Text, View} from "react-native";
 import {ConversationItem} from "../components/ConversationItem";
 import {useConversations} from "../context/ConversationsContext";
 import {MaterialIcons} from "@expo/vector-icons";
 import Ripple from "react-native-material-ripple";
 import {userContext} from "../context/UserContext";
+import PullToRefreshScrollView from "../components/PullToRefreshScrollView";
 
 export const ChatsScreen = ({navigation}) => {
     const {conversations, fetchMessages, fetchConversations} = useConversations();
@@ -52,26 +53,23 @@ export const ChatsScreen = ({navigation}) => {
                 </View>
                 <View style={styles.placeholder}></View>
             </View>
-            {conversations ? (
-                <FlatList
-                    data={conversations}
-                    keyExtractor={(item) => item.chatId}
-                    renderItem={({item}) => (
+            <PullToRefreshScrollView
+                isRefreshing={refreshing}
+                onRefresh={handleRefresh}
+            >
+                {conversations && conversations.length > 0 ? (
+                    conversations.map((item) => (
                         <ConversationItem
+                            key={item.chatId}
                             conversation={item}
                             userId={globalUserId}
                             onPress={handleConversationPress}
                         />
-                    )}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh}/>
-                    }
-                />
-            ) : (
-                <View style={styles.placeholder}>
-                    <Text>NO CHATS</Text>
-                </View>
-            )}
+                    ))
+                ) : (
+                    <Text style={styles.noChats}>No chats</Text>
+                )}
+            </PullToRefreshScrollView>
         </SafeAreaView>
     );
 };
@@ -103,5 +101,11 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         marginLeft: 30,
+    },
+    noChats: {
+        fontSize: 25,
+        color: "white",
+        marginVertical: 10,
+        marginLeft: 20,
     },
 });

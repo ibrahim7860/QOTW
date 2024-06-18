@@ -28,7 +28,6 @@ export const MyFriendsScreen = ({navigation}) => {
         if (searchBarRef.current) {
             searchBarRef.current.clear(); // Call clearInput function from SearchBar
         }
-        setFilteredFriends([]); // This function clears the search bar
     };
 
     useEffect(() => {
