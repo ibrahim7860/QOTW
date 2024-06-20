@@ -1,3 +1,6 @@
+
+!(https://github.com/ibrahim7860/QOTW/assets/93676578/4e45315a-b089-4260-8266-4bb7c0a83bcb)
+
 # QOTW
 
 > **QOTW** is a dynamic platform designed to foster meaningful conversations and connections through thought-provoking
