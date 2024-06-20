@@ -9,7 +9,7 @@
 
 ### Demo
 
-> [QOTW Demo Video](https://drive.google.com/file/d/12O_TRn1DStZUbjBRh5Aqt0A6AcaRR1KX/view?usp=drive_link)
+> [QOTW Demo Video](https://www.youtube.com/watch?v=2b0Le3zw0tQ)
 
 ### Key Features
 
@@ -51,8 +51,8 @@
 
 ### Feedback and Support
 
-> We value your feedback! If you have any suggestions, questions, or need support, please reach out to our team at *
-*qotw1767@gmail.com**.
+> We value your feedback! If you have any suggestions, questions, or need support, please reach out to our team at 
+**qotw1767@gmail.com**.
 
 ### Technology Stack
 
