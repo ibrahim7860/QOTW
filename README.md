@@ -1,5 +1,6 @@
 
-(https://github.com/ibrahim7860/QOTW/assets/93676578/4e45315a-b089-4260-8266-4bb7c0a83bcb)
+![QOTW Logo](https://github.com/ibrahim7860/QOTW/assets/93676578/6519ee57-4183-4069-ac96-45dcd32dc737)
+
 
 # QOTW
 
